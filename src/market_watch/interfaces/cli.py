@@ -405,8 +405,9 @@ def cmd_reset(settings: Settings, *, yes: bool) -> int:
 
 def cmd_once(settings: Settings, args: argparse.Namespace, *, as_json: bool) -> int:
     """跑一轮。**唯一的真实出网路径**（单轮、不提额）。"""
-    # 同样只能单点：`..wiring` 会解析成 `market_watch.wiring`，真实是
-    # `market_watch.interfaces.wiring`（与本文件同级）。见 cmd_serve 的说明。
+    # 同单点规则：`..wiring` 会解析成 `market_watch.wiring`，真实是
+    # `market_watch.interfaces.wiring`（与本文件同级）。见 cmd_serve 的说明，
+    # 并由 `tests/unit/test_cli_relative_imports.py` 一起兜底。
     from .wiring import build_runtime
 
     async def _run() -> int:
@@ -464,13 +465,19 @@ def cmd_once(settings: Settings, args: argparse.Namespace, *, as_json: bool) -> 
 def cmd_serve(settings: Settings, args: argparse.Namespace) -> int:
     import uvicorn
 
-    # ★ 单点 `.` 不是 `..`：本文件在包 `market_watch.interfaces` 下，
+    # 单点 `.` 不是 `..`：本文件在包 `market_watch.interfaces` 下，
     #   `from ..web.app import ...` 会被解析成 `market_watch.web.app`（不存在），
     #   运行时抛 `ModuleNotFoundError: No module named 'market_watch.web'`。
     #   真实模块是 `market_watch.interfaces.web.app`。写成两点会让
     #   「源码模式 serve 一跑就崩」和「exe serve 一跑就崩」同时成立，
     #   而 `policy-check` / `--help` / `status` 全绿 —— 只有真起服务才暴露。
-    #   （2026-10-03 发布冒烟实测复现。）
+    #   （2026-10-03 发布冒烟实测复现，当次定为 P0。）
+    #
+    #   现在有回归测试兜底：`tests/unit/test_cli_relative_imports.py` 把 cli.py 里
+    #   每一条相对导入按 Python 自己的解析规则还原成绝对模块名再 `find_spec`，
+    #   指向不存在的包就红 —— 所以**下面这条延迟导入不管写成几级点都可以**，
+    #   只要目标模块真实存在；但改动必然要重跑那条测试。
+    #   （2026-10-04 从「★ 危险提示」改为「有测试兜底」：bug 已修 + 已有门禁。）
     from .web.app import create_app
 
     host = args.host or settings.web_host
