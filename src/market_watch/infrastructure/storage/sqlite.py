@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 import sqlite3
 from typing import Final
 
@@ -42,6 +43,16 @@ PRAGMAS: Final[tuple[str, ...]] = (
 )
 
 SCHEMA_VERSION: Final[str] = "0001"
+
+#: `meta` 由 `apply_migrations` 自己先建，天然恒存在，拿它当探针永远为真，
+#  所以探针必须跳过 `meta`，取该迁移建的**第一张业务表**（0001 → `source_state`）。
+_META_TABLE: Final[str] = "meta"
+#: 抠出 DDL 里所有 `CREATE TABLE [IF NOT EXISTS] <name>` 的名字，用作「这版迁移
+#  到底落地过没有」的探针。只吃 TABLE：索引/视图不进 `table_exists` 的判定口径。
+_MIGRATION_MARKER_RE: Final[re.Pattern[str]] = re.compile(
+    r"CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?[\"\[`]?(?P<name>[A-Za-z_]\w*)",
+    re.IGNORECASE,
+)
 
 _MIGRATIONS_DIR: Final[Path] = Path(__file__).resolve().parent / "migrations"
 
@@ -79,20 +90,38 @@ def connect_readonly(db_path: Path | str) -> sqlite3.Connection:
     return conn
 
 
+def _migration_probe(ddl: str) -> str | None:
+    """这版迁移的「落地探针」= DDL 里建的第一张**非 `meta`** 表（0001 → `source_state`）。"""
+    for match in _MIGRATION_MARKER_RE.finditer(ddl):
+        if match.group("name") != _META_TABLE:
+            return match.group("name")
+    return None
+
+
 def apply_migrations(conn: sqlite3.Connection) -> list[str]:
     """按文件名递增顺序执行 `000N_*.sql`。返回已应用的版本列表。
 
     幂等：DDL 全部用 `IF NOT EXISTS`；用 `meta.schema_version` 记录当前版本。
-    已应用过的迁移**不会**重复执行（除非版本号未登记）。
+
+    `meta.schema_version` 只记「我以为我跑过」，**不等于**库里真的有那批对象。
+    所以版本命中后还要验一次探针对象（该迁移建的第一张表）在不在，不在就照样重跑——
+    这条是「空库兜底」的最后一道：2026-10-03 `market-watch gc` 在全新安装上报到
+    `no such table: price_hourly`，已由 maintenance 侧补一次幂等迁移解掉；但**空壳库**
+    （`meta` 登记了 0001、数据表却被删空/被截页/半迁移态残留，例如 `reset` 只清了数据
+    没删 meta，或迁移中途被外力打断）会命中「版本已登记 → 跳过」这条短路，下一次
+    `gc` / `once` 一碰表就 `OperationalError` 崩，且崩在完全没有兜底的地方。
+    DDL 本身全是 `IF NOT EXISTS`，重跑对健康库是纯 no-op。
     """
     conn.execute("CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)")
     applied: list[str] = []
     for sql_file in sorted(_MIGRATIONS_DIR.glob("0*.sql")):
         version = sql_file.name.split("_", 1)[0]
-        row = conn.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()
-        if row is not None and row["value"] >= version:
-            continue
         ddl = sql_file.read_text(encoding="utf-8")
+        probe = _migration_probe(ddl)
+        row = conn.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()
+        versioned = row is not None and row["value"] >= version
+        if versioned and (probe is None or table_exists(conn, probe)):
+            continue
         with conn:
             conn.executescript(ddl)
             conn.execute(
@@ -101,7 +130,12 @@ def apply_migrations(conn: sqlite3.Connection) -> list[str]:
                 (version,),
             )
         applied.append(version)
-        _log.info("migration.applied version=%s file=%s", version, sql_file.name)
+        _log.info(
+            "migration.applied version=%s file=%s%s",
+            version,
+            sql_file.name,
+            "" if not versioned else " self_healed",
+        )
     return applied
 
 
