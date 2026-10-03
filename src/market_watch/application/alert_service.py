@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from datetime import datetime
-from typing import Final
+from typing import Final, Literal
 import uuid
 
 from ..domain.anomaly import Cooldown, Rule, dedupe_key, detect
@@ -97,19 +97,54 @@ def load_rules(path) -> tuple[Rule, ...]:  # noqa: ANN001 - Path
     return _rules_from_mapping(data)
 
 
+#: `kind` / `severity` 的白名单。`Rule` 是 frozen dataclass——它字段上的 `Literal`
+#: 只给类型检查器看，运行时**不校验**；配置又是外部 YAML，所以合法值集合必须在
+#: 这条边界上显式写死。非法值若放过去，`detect` → `_triggered` **没有「未知 kind」
+#: 分支**，直接落到 `curr >= threshold`（abs 语义），而告警文案却仍按 pct 拼——
+#: 配置的语义被悄悄换掉，日志里一点痕迹都没有，比直接报错更危险。
+_KINDS: Final[frozenset[Literal["pct", "zscore", "abs"]]] = frozenset({"pct", "zscore", "abs"})
+_KIND_FALLBACK: Final[Literal["pct", "zscore", "abs"]] = "pct"
+_SEVERITIES: Final[frozenset[Literal["info", "warn", "critical"]]] = frozenset(
+    {"info", "warn", "critical"}
+)
+_SEVERITY_FALLBACK: Final[Literal["info", "warn", "critical"]] = "warn"
+
+
 def _rules_from_mapping(data: Mapping) -> tuple[Rule, ...]:
     out: list[Rule] = []
     for raw in data.get("rules", []):
+        # ★ 白名单校验放在 try 之外：不合法只记 error 日志 + 退回默认值，绝不外抛
+        kind_raw = str(raw.get("kind", _KIND_FALLBACK))
+        kind: Literal["pct", "zscore", "abs"] = _KIND_FALLBACK
+        if kind_raw in _KINDS:
+            kind = kind_raw
+        else:
+            _log.error(
+                "alerts.rule.kind_invalid raw=%s kind=%r -> 退回 %r", raw, kind_raw, _KIND_FALLBACK
+            )
+
+        sev_raw = str(raw.get("severity", _SEVERITY_FALLBACK))
+        severity: Literal["info", "warn", "critical"] = _SEVERITY_FALLBACK
+        if sev_raw in _SEVERITIES:
+            severity = sev_raw
+        else:
+            _log.error(
+                "alerts.rule.severity_invalid raw=%s severity=%r -> 退回 %r",
+                raw,
+                sev_raw,
+                _SEVERITY_FALLBACK,
+            )
+
         try:
             out.append(
                 Rule(
                     rule_id=str(raw["id"]),
                     metric=str(raw["metric"]),
-                    kind=str(raw.get("kind", "pct")),
+                    kind=kind,
                     threshold=float(raw["threshold"]),
                     window=int(raw.get("window", 0)),
                     cooldown_seconds=int(raw.get("cooldown_seconds", 3600)),
-                    severity=str(raw.get("severity", "warn")),
+                    severity=severity,
                     enabled=bool(raw.get("enabled", True)),
                 )
             )

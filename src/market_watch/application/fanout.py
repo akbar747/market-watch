@@ -34,9 +34,11 @@ from ..domain.models import (
     FetchTask,
     ItemMeta,
     ListingLevel,
+    ParseResult,
     PriceTick,
     Quality,
     Record,
+    ResponseView,
     iso_z,
     utc_now,
 )
@@ -51,18 +53,24 @@ _log = get_logger("market_watch.fanout")
 MAX_PAGES_HARD_LIMIT: Final[int] = 2_000
 
 
-class _ParsedLike(Protocol):
-    records: Sequence[Record]
-    next_tasks: Sequence[FetchTask]
-    cursor: Cursor | None
-    quality: Quality
-    consistency_failures: Sequence[object]
-
-
 class _AdapterLike(Protocol):
-    def next_tasks(self, task: FetchTask, view: object) -> Sequence[FetchTask]: ...
-    def parse(self, task: FetchTask, view: object) -> _ParsedLike: ...
-    def cursor_from(self, view: object, result: object) -> Cursor | None: ...
+    """`drive` 需要的 adapter 子集。
+
+    ★ 成员类型一律写**实现能接受的最小上界**，不是「看起来最宽的 `object`」：
+
+    - 参数位（逆变）：`view` / `result` 必须写 `ResponseView` / `ParseResult`。
+      标 `object` 等于要求实现把参数收窄到 `object`，而 adapter 收窄的是
+      `ResponseView`，于是合法实现反而进不来。改声明而不是改实现，是因为
+      改实现会逼 `drive` 内部到处断言。
+    - 返回值位（协变）：`parse` 直接返回 `ParseResult`，不套一层
+      「只声明字段的结构体 Protocol」。以前那个结构 Protocol 把成员声明成
+      可写变量，而 `ParseResult` 是 `@dataclass(frozen=True)`（只读属性），
+      于是「实现比声明窄」又被判成冲突——顺带把这层无谓的间接也去掉了。
+    """
+
+    def next_tasks(self, task: FetchTask, view: ResponseView) -> Sequence[FetchTask]: ...
+    def parse(self, task: FetchTask, view: ResponseView) -> ParseResult: ...
+    def cursor_from(self, view: ResponseView, result: ParseResult) -> Cursor | None: ...
 
 
 async def drive(

@@ -8,6 +8,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import timedelta
 from typing import Any
 
@@ -30,11 +31,17 @@ def _repo(request: Request) -> Repository:
     return Repository(settings.db_path)
 
 
-def _with_repo(fn):  # noqa: ANN001, ANN202
-    def wrapper(request: Request, *args: Any, **kwargs: Any):  # noqa: ANN002
+def _with_repo[T](fn: Callable[[Repository], T]) -> Callable[[Request], T]:
+    """给每个 handler 包一层「开只读连接 → 调用 → 关连接」。
+
+    `fn` 的首参固定为 `Repository`，返回类型透传给 `wrapper`——否则 `_with_repo(...)()`
+    的返回会被推成 `Any`，各 route 的 `-> dict[str, Any]` 就变成 `Returning Any`。
+    """
+
+    def wrapper(request: Request) -> T:
         repo = _repo(request)
         try:
-            return fn(repo, *args, **kwargs)
+            return fn(repo)
         finally:
             repo.aclose()
 

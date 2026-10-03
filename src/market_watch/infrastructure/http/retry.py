@@ -20,6 +20,8 @@ import random
 import time
 from typing import Final
 
+import httpx
+
 from ...domain.errors import ErrorClass, OpenCircuit, policy_for
 from ...domain.models import FetchResult, FetchTask, ResponseView
 from ...domain.ports import Breaker, RateLimiter
@@ -134,7 +136,10 @@ async def execute(
     pool: ClientPool,
     limiter: RateLimiter,
     breaker: Breaker,
-    request: Callable[[object, FetchTask], Awaitable[ResponseView]],
+    # ★ 首参是 `httpx.AsyncClient`（`ClientPool.get` 的实际返回类型），不是 `object`。
+    # 标 `object` 会把「客户端」这道逆变位置敞开，调用方传进来的
+    # `Callable[[AsyncClient, FetchTask], ...]` 就全部对不上号（mypy 逆变报错）。
+    request: Callable[[httpx.AsyncClient, FetchTask], Awaitable[ResponseView]],
     on_event: Callable[[str, dict], None] | None = None,
     base_s: float = BACKOFF_BASE_S,
     factor: float = BACKOFF_FACTOR,
