@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}market-watch 看板{% endblock %}
+{% block content %}
+<section class="mw-grid">
+  <article class="mw-card" id="card-summary">
+    <h2>总览</h2>
+    <dl>
+      <dt>物品总数</dt><dd id="s-items">—</dd>
+      <dt>最近周期</dt><dd id="s-cycle">—</dd>
+      <dt>24h 告警</dt><dd id="s-alerts">—</dd>
+      <dt>24h 公告</dt><dd id="s-ann">—</dd>
+      <dt>PARTIAL 快照</dt><dd id="s-partial">—</dd>
+      <dt>DB 体积</dt><dd id="s-db">—</dd>
+    </dl>
+  </article>
+
+  <article class="mw-card" id="card-quality">
+    <h2>数据质量</h2>
+    <dl>
+      <dt>24h 隔离记录</dt><dd id="q-rejects">—</dd>
+      <dt>PARTIAL 周期数</dt><dd id="q-partial">—</dd>
+    </dl>
+    <ul id="q-rules" class="mw-list"></ul>
+  </article>
+
+  <article class="mw-card" id="card-health">
+    <h2>采集健康</h2>
+    <ul id="h-limiter" class="mw-list"></ul>
+    <ul id="h-breaker" class="mw-list"></ul>
+  </article>
+</section>
+
+<section class="mw-card">
+  <h2>价格序列</h2>
+  <form id="f-series" class="mw-form">
+    <label>物品搜索 <input type="text" id="fq" placeholder="输入名称关键字" autocomplete="off"></label>
+    <span id="fq-results" class="mw-hint"></span>
+    <label>item_id <input type="number" id="f-item" value="24" min="1"></label>
+    <label>表
+      <select id="f-table">
+        <option value="price_change">price_change</option>
+        <option value="price_hourly">price_hourly</option>
+      </select>
+    </label>
+    <label>窗口
+      <select id="f-since">
+        <option value="6">6 小时</option>
+        <option value="24" selected>24 小时</option>
+        <option value="168">7 天</option>
+      </select>
+    </label>
+    <button type="submit">查询</button>
+  </form>
+  <div id="chart" class="mw-chart"></div>
+</section>
+
+<section class="mw-grid">
+  <article class="mw-card">
+    <h2>最新告警</h2>
+    <ul id="a-list" class="mw-list"></ul>
+  </article>
+  <article class="mw-card">
+    <h2>官方公告</h2>
+    <ul id="n-list" class="mw-list"></ul>
+  </article>
+</section>
+{% endblock %}

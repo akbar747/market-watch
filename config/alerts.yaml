@@ -1,0 +1,55 @@
+# config/alerts.yaml
+# 异动规则：阈值 / 窗口 / 冷却 / 严重级
+#
+# kind 取值：
+#   pct     —— 环比百分比；threshold < 0 表示「下跌达到该幅度」，> 0 表示「上涨达到该幅度」
+#   zscore  —— 标准分数，|z| >= |threshold| 触发（需要 window 个历史样本）
+#   abs     —— 绝对阈值，curr >= threshold 触发
+#
+# 冷却：同一 (source_id, rule, item_id, cooldown_bucket) 在 cooldown_seconds 内只告警一次。
+# 未装 PyYAML 时由 `application/alert_service._mini_yaml` 解析（同款语义）。
+
+version: 1
+
+rules:
+  - id: price_drop_15pct
+    metric: sell_unit_price
+    kind: pct
+    threshold: -15.0
+    cooldown_seconds: 3600
+    severity: warn
+    enabled: true
+
+  - id: price_spike_25pct
+    metric: sell_unit_price
+    kind: pct
+    threshold: 25.0
+    cooldown_seconds: 3600
+    severity: warn
+    enabled: true
+
+  - id: spread_wide
+    metric: spread
+    kind: abs
+    threshold: 10000.0
+    cooldown_seconds: 7200
+    severity: info
+    enabled: true
+
+  - id: bid_collapse_30pct
+    metric: buy_unit_price
+    kind: pct
+    threshold: -30.0
+    cooldown_seconds: 7200
+    severity: warn
+    enabled: true
+
+# 未启用示例（zscore 需要历史窗口，Phase 2 默认关闭）
+#  - id: sell_price_zscore_4
+#    metric: sell_unit_price
+#    kind: zscore
+#    threshold: 4.0
+#    window: 60
+#    cooldown_seconds: 1800
+#    severity: critical
+#    enabled: false

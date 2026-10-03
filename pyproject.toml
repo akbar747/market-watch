@@ -1,0 +1,243 @@
+# pyproject.toml —— 唯一元数据源。禁止 setup.py 与 requirements.txt 双份维护。
+#
+# 全部版本号标注「常用稳定版，以官方发布为准」；依赖版本一律以 `>=` 下界声明。
+[project]
+name = "market-watch"
+version = "0.1.0"
+description = "合规版公开数据物价看板（Guild Wars 2 官方 v2 API）：httpx+asyncio 自建采集内核 + SQLite 分层归档 + 本地离线看板"
+readme = "README.md"
+requires-python = ">=3.13"
+# PEP 639：SPDX 表达式 + 显式许可证文件（LICENSE 由 Phase 3a 提供，构建时必须存在）
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "market-watch contributors" }]
+keywords = ["market", "guild-wars-2", "crawler", "sqlite", "dashboard"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Environment :: Web Environment",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Monitoring",
+]
+dependencies = [
+    "httpx>=0.28",              # 异步 HTTP；唯一出网客户端
+    "pydantic>=2.11",           # 模型与校验
+    "pydantic-settings>=2.10",  # .env -> Settings
+    "structlog>=25.1",          # 服务向结构化日志
+    "feedparser>=6.0",          # RSS/Atom 兜底解析；阻塞库，在 to_thread 里跑
+    "uvicorn>=0.34",            # ASGI server
+    "fastapi>=0.115",           # 看板 Web 框架
+    "jinja2>=3.1",              # 模板
+]
+
+[project.optional-dependencies]
+# 看板（对本就必需的依赖而言只是显式声明，便于 `pip install market-watch[ui]`）
+ui = ["jinja2>=3.1"]
+# 开发/测试/静态检查全量
+dev = [
+    # 版本必须**有上限**，且与 .pre-commit-config.yaml 的 rev 严格对齐（2026-10-03 实测教训）：
+    # 之前写无上限的 `ruff>=0.11` / `black>=25.1`，CI 的 `uv run` 会装到 ruff 0.16.10 /
+    # black 26.5.1，而 pre-commit 钉的是 ruff v0.11.13 / black 25.1.0 —— 两处口径不一致会
+    # 让「本地挂 pre-commit 绿、CI 红」常态化，而且 black 26 新增「模块 docstring 后补空行」
+    # 规则、ruff 0.16 同步跟进，导致同一批文件在两个环境里判红数量不同（实测 64 vs 34）。
+    # 上限定在「当前实测通过的那一版」的下一个 minor：装到的永远是同一套，门禁可复现。
+    "ruff>=0.16,<0.17",
+    "black>=26.5,<27",
+    # ★ mypy 同样必须有上限，且上限定在**当前这份报错清单实测出来的那一版**
+    #   （2.4.0）的下一个 major：这 19 条 mypy 报错是交给 team-lead 分派的清单，
+    #   如果 CI 哪天解析到 mypy 3.x（或 2.5 新增检查项），同一份源码会冒出
+    #   清单里没有的新红，分派出去的活就没法验收。锁死 = 清单与门禁同源。
+    "mypy>=1.15,<3",
+    "pre-commit>=4.2",
+    "pytest>=8.4",
+    "pytest-asyncio>=0.26",
+    "pytest-cov>=6.1",
+    "respx>=0.22",
+    "anyio>=4.9",
+    "types-cffi>=1.17",   # httpx 可选依赖的类型存根，mypy 走 --strict 时需要
+]
+# 性能剖析与压测（bench/bench_fetch.py、bench/profile_cli.py）
+bench = ["orjson>=3.10", "py-spy>=0.4", "memray>=1.17"]
+# 便捷聚合：一次装齐
+all = ["market-watch[ui,dev,bench]"]
+
+[project.scripts]
+market-watch = "market_watch.interfaces.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/market-watch/market-watch"
+Repository = "https://github.com/market-watch/market-watch"
+Issues = "https://github.com/market-watch/market-watch/issues"
+Changelog = "https://github.com/market-watch/market-watch/blob/main/docs/CHANGELOG.md"
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/market_watch"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "bench", "config", "docs", "examples", "LICENSE", "README.md"]
+
+# ===========================================================================
+# 测试与覆盖率
+# ===========================================================================
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-q --strict-markers"
+testpaths = ["tests"]
+# ★ 必须显式声明：本仓是 src-layout（`market_watch/` 在 `src/` 下），而它没有被
+#   pip 装进 site-packages，包也不在仓库根。不配这条，裸跑 `python -m pytest` 会
+#   直接 11 个 collection error：`ModuleNotFoundError: No module named 'market_watch'`，
+#   看起来像源码坏了，其实只是 path 没配（2026-10-03 实测复现）。
+#   配了之后 `pytest` / `python -m pytest` / `PYTHONPATH=src pytest` 三种写法等价。
+pythonpath = ["src"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+source = ["market_watch"]
+branch = true
+omit = ["*/bench/*", "*/scripts/*", "*/examples/*"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
+# ===========================================================================
+# ruff：lint + isort + 规约（格式化交给 black，见 [tool.black]，二者不可同时启用）
+# ===========================================================================
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["src", "tests", "bench", "examples", "scripts"]
+# 与 [tool.black] 的 extend-exclude 同源：release/ 是 PyInstaller 产物（实测 4013 个 .py），
+# 全局跑 `ruff format .` 会重写这 4000 个文件，这里一并挡掉。
+extend-exclude = [
+  "release/",
+  "build/",
+  "dist/",
+  "src/market_watch/interfaces/web/static/vendor/",
+]
+
+[tool.ruff.format]
+# black 兼容模式下的差异项显式化；实际格式化由 black 负责，此处仅约束 ruff format
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+
+[tool.ruff.lint]
+select = [
+    "E", "W",      # pycodestyle 错误 / 警告
+    "F",           # pyflakes
+    "I",           # isort（导入排序）
+    "UP",          # pyupgrade
+    "B",           # flake8-bugbear（可变默认参数、循环内 IO 等）
+    "A",           # flake8-builtins（遮蔽内建名）
+    "C4",          # flake8-comprehensions
+    "SIM",         # flake8-simplify
+    "ARG",         # flake8-unused-arguments
+    "PTH",         # flake8-use-pathlib（os.path -> pathlib）
+    "DTZ",         # ★ 禁止 datetime.now() 无 tz（§14 P1 时区污染防护）
+    "S",           # bandit（安全）
+    "BLE",         # blind-except（只许兜底分类，禁止裸 except）
+    "RUF",         # ruff 自家规约
+]
+ignore = [
+    "E501",    # 行长度：交给 black/ruff-format，且部分 docstring 需长行承载示例
+    "E731",    #  lambda 赋值（structlog 的 processor 链大量使用）
+    "B008",    #  函数默认参数里调函数（FastAPI 依赖注入的标准写法）
+    "B904",    #  抛异常带 from（本项目多处刻意保留异常链原文）
+    "BLE001",  #  兜底捕获分类（classification/retry/metrics 都靠它兜全部异常）
+    "SIM108",  #  三元表达式 vs if-else（可读性优先）
+    "SIM115",  #  open() 不带 with（SQLite 连接由 storage 统一托管）
+    "C901",    #  函数复杂度（orchestrator/consistency 是长编排，已拆函数）
+    "PLR0912", # 分支数（同上）
+    "A002",    #  参数遮蔽内建名（opt 参数名来自 argparse 约定）
+    "ARG001",  #  未用参数（Protocol 实现必须与签名一致，不能删）
+    "ARG002",  #  同上
+    #  RUF001/002/003 = 歧义 Unicode 字符。本仓的注释/docstring/日志全是 CJK 与
+    #  ★→✅ 等符号，匹配器会把它们全判为「易歧义」，1755 条误报，全部忽略。
+    "RUF001",
+    "RUF002",
+    "RUF003",
+    "RUF100",  # 未使用的 noqa：本仓大量 noqa 后面挂着中文说明（如 `# noqa: BLE001 - 兜底分类`），
+    #          自动清理会把说明一起删掉，故保留，由 PR 审查人工判断
+    "S101",    #  assert（测试与内部不变式大量使用）
+    "S104",    #  绑定 0.0.0.0（看板由 CLI 显式 `--host` 控制，需二次确认）
+    "S608",    #  SQL 拼接（全部走参数化 SQL，动态部分只有表名，见 storage/repositories）
+]
+
+[tool.ruff.lint.per-file-ignores]
+# 测试：断言、无类型、时区自由、目录构造用 os.path 均可
+"tests/*" = ["S", "ANN", "DTZ", "TID", "ARG", "BLE", "RUF", "A", "PTH", "C4", "SIM", "UP"]
+"bench/*" = ["S", "ANN", "DTZ", "TID", "ARG", "BLE", "A"]
+"scripts/*" = ["S", "TID", "ANN", "PTH"]
+"examples/*" = ["S", "TID", "ANN", "PTH", "DTZ"]
+"src/market_watch/__main__.py" = ["TID"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["market_watch"]
+combine-as-imports = true
+force-sort-within-sections = true
+
+# ===========================================================================
+# black（唯一的格式化器，line-length 与 ruff 保持一致）
+# ===========================================================================
+[tool.black]
+line-length = 100
+target-version = ["py313"]
+skip-string-normalization = false
+#  vendored 的 echarts 与生成的 .prof 不参与格式化
+#  release/ = PyInstaller 打包产物（实测含 4013 个 .py 依赖副本），
+#  全局跑 `black .` 会去重写这 4000 个文件，故一并排除；格式化请限定
+#  `black src tests bench scripts examples`。
+extend-exclude = 'src/market_watch/interfaces/web/static/vendor/|release/|build/|dist/'
+
+# ===========================================================================
+# mypy：渐进式。新模块先上 --strict，老模块逐步收紧
+# ===========================================================================
+[tool.mypy]
+python_version = "3.13"
+strict = false
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+no_implicit_optional = true
+warn_return_any = true
+ignore_missing_imports = true
+show_error_codes = true
+files = ["src/market_watch", "examples"]
+
+[[tool.mypy.overrides]]
+# 第三方库无存根 / 动态性强的模块放宽
+module = ["feedparser.*", "structlog.*", "respx.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# domain/ 是唯一不许沾 IO 的一层，类型严格度拉满
+module = ["market_watch.domain.*"]
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+warn_return_any = true

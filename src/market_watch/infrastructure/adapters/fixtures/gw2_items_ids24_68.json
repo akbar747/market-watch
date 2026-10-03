@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Sealed Package of Snowballs",
+    "description": "Open this package to create several snowballs that can hit anyone else holding a snowball.",
+    "type": "Consumable",
+    "level": 0,
+    "rarity": "Basic",
+    "vendor_value": 0,
+    "game_types": [
+      "Pve"
+    ],
+    "flags": [
+      "NoSalvage"
+    ],
+    "restrictions": [],
+    "id": 24,
+    "chat_link": "[&AgEYAAAA]",
+    "icon": "https://render.guildwars2.com/file/1D05D1EE04E16E69710E1EAB11AC466BBF105778/219347.png",
+    "details": {
+      "type": "Generic"
+    }
+  },
+  {
+    "name": "Mighty Country Coat",
+    "description": "",
+    "type": "Armor",
+    "level": 0,
+    "rarity": "Basic",
+    "vendor_value": 6,
+    "default_skin": 13,
+    "game_types": [
+      "Activity",
+      "Wvw",
+      "Dungeon",
+      "Pve"
+    ],
+    "flags": [
+      "NotUpgradeable"
+    ],
+    "restrictions": [],
+    "id": 68,
+    "chat_link": "[&AgFEAAAA]",
+    "icon": "https://render.guildwars2.com/file/F03808FFE89B40044671EED2E427053B389BE0A1/61007.png",
+    "details": {
+      "type": "Coat",
+      "weight_class": "Light",
+      "defense": 23,
+      "infusion_slots": [],
+      "attribute_adjustment": 11.583,
+      "infix_upgrade": {
+        "id": 137,
+        "attributes": [
+          {
+            "attribute": "Power",
+            "modifier": 4
+          }
+        ]
+      },
+      "secondary_suffix_item_id": ""
+    }
+  }
+]

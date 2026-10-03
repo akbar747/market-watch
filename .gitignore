@@ -1,0 +1,85 @@
+# .gitignore —— Python 官方模板裁剪版（项目特有项已合并）
+# 目标：仓库里只放源码与配置；运行期数据与密钥一律不进版本库。
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ── 虚拟环境 ──────────────────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── 测试 / 覆盖率 ─────────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+
+# ── 密钥与本地配置（.env.example 必须提交，.env 绝不提交）───────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.yml
+config/*.local.yaml
+
+# ── 运行期数据（SQLite + WAL + 落库缓冲）──────────────────────────────────────
+data/*
+!data/.gitkeep
+src/market_watch/data/*
+!src/market_watch/data/.gitkeep
+*.db
+*.db-wal
+*.db-shm
+
+# ── PyInstaller 产物（只保留 release/market-watch.spec 与入口脚本，其余都是构建垃圾）──
+release/dist/
+release/dist*/
+release/build/
+release/build*/
+release/*.tmp
+release/*.tar.gz
+# 仓库根下手工 onefile 构建留下的 `market-watch.spec`（datas=[] 的半成品）。
+# 带斜杠的 `/*` 只匹配仓库根一层，不会误伤 `release/market-watch.spec`。
+# 仓库根的 dist/ 与 build/ 已被上面第 10-12 行的裸 `build/` / `dist/` 覆盖（裸模式在任何深度生效），
+# 不需要单独写规则。
+/*.spec
+
+# ── 剖析与压测产物 ────────────────────────────────────────────────────────────
+profile/
+*.prof
+bench/results/
+
+# ── 编辑器 / OS ───────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

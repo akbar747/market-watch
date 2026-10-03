@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>GuildWars2.com</title>
+	<atom:link href="https://www.guildwars2.com/en/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.guildwars2.com/en</link>
+	<description></description>
+	<lastBuildDate>Tue, 22 Sep 2026 16:35:44 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.26</generator>
+	<item>
+		<title>Play the New World vs. World Borderlands Map Beta on November 10</title>
+		<link>https://www.guildwars2.com/en/news/play-the-new-world-vs-world-borderlands-map-beta-on-november-10/?utm_source=rss&#038;utm_medium=news&#038;utm_campaign=rss</link>
+		<pubDate>Tue, 22 Sep 2026 16:00:21 +0000</pubDate>
+		<dc:creator><![CDATA[The Guild Wars 2 Team]]></dc:creator>
+				<category><![CDATA[Home Page]]></category>
+		<category><![CDATA[Launcher]]></category>
+		<category><![CDATA[News]]></category>
+
+		<guid isPermaLink="false">https://www.guildwars2.com/?p=60295</guid>
+		<description><![CDATA[Learn how we'll be developing this map alongside the WvW community!</p><p class="more"><a href="https://www.guildwars2.com/en/news/play-the-new-world-vs-world-borderlands-map-beta-on-november-10/?utm_source=rss&utm_medium=news&utm_campaign=rss">Read More</a></p>]]></description>
+				<content:encoded><![CDATA[<p>Greetings Gamers!</p>
+<p>Back in June, <a href="https://www.guildwars2.com/news/future-of-the-guild-wars-franchise/" target="_blank" rel="noopener">we announced</a> that the <em>Guild Wars 2®</em> team was developing the first new borderlands map for World vs. World in over a decade and we&#8217;re building it alongside the players who live and breathe it. Our first beta test for the new map begins on November 10, so mark your calendars! Today, we&#8217;d like to share an update on our progress so far, what we&#8217;re aiming to achieve, and give you an early look at some gray-box screenshots of the map.</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/e992cenUS-gw2-wvw-borderlands-map-1-1920x1080.jpg"><img class="alignnone size-full wp-image-60324" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/e992cenUS-gw2-wvw-borderlands-map-1-1920x1080.jpg" alt="A development tracker asset indicating we're in the Prototype phase." width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/e992cenUS-gw2-wvw-borderlands-map-1-1920x1080.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/e992cenUS-gw2-wvw-borderlands-map-1-1920x1080-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/e992cenUS-gw2-wvw-borderlands-map-1-1920x1080-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/e992cenUS-gw2-wvw-borderlands-map-1-1920x1080-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/e992cenUS-gw2-wvw-borderlands-map-1-1920x1080-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/e992cenUS-gw2-wvw-borderlands-map-1-1920x1080-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<h3>Lessons from the Desert</h3>
+<p>When we developed the Desert Borderlands, we didn&#8217;t show the map to the community until it was in a mostly final state. This didn&#8217;t afford the team with ample flexibility to respond to feedback, especially when it came to changing the layout of the map. This time, just like we did with the Push PvP game mode, we&#8217;re involving you much earlier in the process. When you get your hands on the map during the first beta, it will be in a gray-box state, meaning that the art and assets won&#8217;t be final, making it much easier for us to make changes. We&#8217;ll be able to alter the layout of the map and objective placement, which will impact things like travel time and combat flow. The competitive team&#8217;s top priority is making sure this new map captures what players love about the current World vs. World battlegrounds while building an experience that is fresh and exciting.</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/9df3fnorthkeep_skyview.jpg"><img class="alignnone size-full wp-image-60325" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/9df3fnorthkeep_skyview.jpg" alt="A grey box prototype map showing the northern keep from the sky." width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/9df3fnorthkeep_skyview.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/9df3fnorthkeep_skyview-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/9df3fnorthkeep_skyview-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/9df3fnorthkeep_skyview-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/9df3fnorthkeep_skyview-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/9df3fnorthkeep_skyview-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<p>For the first beta, we won&#8217;t be introducing any new map mechanics like we did with the Desert Borderlands. We found that we threw a lot at the community all at once, such as controlling the elemental shrines for special bonuses and the energy cannon event in the oasis. While we&#8217;re interested in exploring these sorts of additions, we want to save that for when we&#8217;re further along. Instead, we&#8217;d like to focus the first beta on gathering feedback on the map and objective layout. We want to focus on how it feels to navigate the map, where battles occur, and how long it takes to get from place to place. After we&#8217;re satisfied with the layout, we&#8217;ll move on to things like unique map mechanics.</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/806f9northkeep_southwall.jpg"><img class="alignnone size-full wp-image-60328" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/806f9northkeep_southwall.jpg" alt="A grey box prototype map showing the south wall of the north keep. Bits of destroyed building float magically in the air." width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/806f9northkeep_southwall.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/806f9northkeep_southwall-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/806f9northkeep_southwall-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/806f9northkeep_southwall-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/806f9northkeep_southwall-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/806f9northkeep_southwall-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<h3>Battle in Ascalon</h3>
+<p>When this beta begins, to maximize the play time on the new map, all borderlands maps will be replaced with the new gray-box map. Eventually, we plan to have this new map permanently replace the current Green Alpine Borderlands, making each borderlands unique with a distinct theme. Set during the cataclysmic events of the Searing in Ascalon, our new map will allow our World vs. World players to explore a battlefield of one of the most iconic areas in Tyria. The Ascalon-themed map will encapsulate areas from pre-Searing and post-Searing with tie-ins to both humans and the war-driven charr of that age.</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/64631westkeep.jpg"><img class="alignnone size-full wp-image-60327" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/64631westkeep.jpg" alt="A grey box prototype map showing the west keep." width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/64631westkeep.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/64631westkeep-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/64631westkeep-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/64631westkeep-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/64631westkeep-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/64631westkeep-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<h3>Get Ready for the Beta on November 10</h3>
+<p>After the first beta test, we will be running more beta tests before this map is released to the live game. Subsequent beta tests will have changes to the map and objectives based on the feedback we gather from this first one, and potentially some brand-new map and objective mechanics. We&#8217;re hoping to take advantage of the betas to see what could work not only for this new map, but also as possible additions to WvW as a whole.</p>
+<p>When we get closer, we&#8217;ll be opening up a feedback thread on the <a href="https://en-forum.guildwars2.com/" target="_blank" rel="noopener">official forums</a> to gather your thoughts. We&#8217;re looking forward to shaping the new borderlands map with the World vs. World community. When the time comes, make sure to be vocal about what you like and don&#8217;t like!</p>
+<p>Until next time, as always, we&#8217;ll see you in the Mists!</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/12757eastkeep.jpg"><img class="alignnone size-full wp-image-60326" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/12757eastkeep.jpg" alt="A grey box prototype map showing the east keep" width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/12757eastkeep.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/12757eastkeep-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/12757eastkeep-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/12757eastkeep-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/12757eastkeep-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/12757eastkeep-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Get Four Weeks of Loot with the Code of Creation Supply Drop!</title>
+		<link>https://www.guildwars2.com/en/news/get-four-weeks-of-loot-with-the-code-of-creation-supply-drop/?utm_source=rss&#038;utm_medium=news&#038;utm_campaign=rss</link>
+		<pubDate>Fri, 18 Sep 2026 16:00:25 +0000</pubDate>
+		<dc:creator><![CDATA[The Guild Wars 2 Team]]></dc:creator>
+				<category><![CDATA[Home Page]]></category>
+		<category><![CDATA[Launcher]]></category>
+		<category><![CDATA[News]]></category>
+
+		<guid isPermaLink="false">https://www.guildwars2.com/?p=60253</guid>
+		<description><![CDATA[Black Lion Chests have also been refreshed, and we have new discounts on Bag Slot Expansions and miniatures.</p><p class="more"><a href="https://www.guildwars2.com/en/news/get-four-weeks-of-loot-with-the-code-of-creation-supply-drop/?utm_source=rss&utm_medium=news&utm_campaign=rss">Read More</a></p>]]></description>
+				<content:encoded><![CDATA[<div id="commerce-items">
+<ul>
+<p>The last episode of <em>Guild Wars 2</em>®<em>: </em><em>Visions of Eternity</em>™ has arrived with a magical twist! Follow the commander&#8217;s adventure into an all-new update, and see how this riveting story ends.</p>
+<h3>Code of Creation Supply Drop Requisition</h3>
+<p>Get ready for the final showdown in Leyspring Hollows. This supply drop has everything you need to venture into this new, magical map! When you purchase the Code of Creation Supply Drop Requisition, the Black Lion Trading Company will send you a package of valuable items each week. The first supply drop will arrive as soon as you&#8217;ve purchased the requisition, and the others will be delivered on the three following Tuesdays.</p>
+<p>Purchase the Code of Creation Supply Drop Requisition right now at a 20% discount for 2,400 gems. This discount decreases each week, so pick up yours now for the best price—get your first shipment of items today! (Limited to one purchase per account. Purchases made after week one will include items from the previous weeks in the first delivery.)</p>
+<p>This drop includes the Dreamwalker Spear Skin and the Enchanter&#8217;s Hat Package, which are new cosmetic items you&#8217;ll receive before they make their debut in the Gem Store!</p>
+<p><iframe width="590" height="332" src="//www.youtube.com/embed/rizVFcDcmG4?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe></p>
+<p>Here are the items you&#8217;ll receive each week:</p>
+<p><strong>Week 1:</strong></p>
+<ul>
+<li>Additional Requisition Team Contract Board (This adds the Black Lion Requisition Teams Post to your home instance or homestead, which can be used to collect resources across Tyria. If you already have a board, this adds an additional team you can send out. Otherwise, if this is your only contract board, you can pick from fine crafting materials.)</li>
+<li>2 Heroic Boosters</li>
+<li>2 Communal Boost Bonfires</li>
+</ul>
+<p><strong>Week 2:</strong></p>
+<ul>
+<li>Dreamwalker Spear Skin</li>
+<li>1 Upgraded Bag Slot Expansion</li>
+<li>5 Black Lion Statuettes</li>
+</ul>
+<p><strong>Week 3:</strong></p>
+<ul>
+<li>Black Lion Outfit Voucher</li>
+<li>Elite Weapons Voucher</li>
+<li>3 Smooth Berry Dye Kits</li>
+<li>3 Monstrous Dye Kits</li>
+</ul>
+<p><strong>Week 4:</strong></p>
+<ul>
+<li>Enchanter&#8217;s Hat Package (Contains the Enchanter&#8217;s Travelling Hat Skin and Enchanter&#8217;s Embroidered Hat Skin)</li>
+<li>Black Lion Backpack Voucher and Black Lion Glider Voucher</li>
+<li>5 Black Lion Chest Keys</li>
+<li>1 Golden Black Lion Chest Key</li>
+</ul>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/af617gw016.jpg"><img class="alignnone size-full wp-image-60312" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/af617gw016.jpg" alt="A female human wearing blue and yellow clothing wields an ornate spear of black and gold. The blade of the spear is a blaze of magical white fire." width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/af617gw016.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/af617gw016-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/af617gw016-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/af617gw016-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/af617gw016-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/af617gw016-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/1695egw019.jpg"><img class="alignnone size-full wp-image-60313" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/1695egw019.jpg" alt="A female human stands next to a female sylvari at night. They both are wearing hats that resemble witch or wizard attire. The hat on the left comes to a crooked point and features pink jewels and a notched brim. The hat on the right has a purple bow and spidery details." width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/1695egw019.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/1695egw019-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/1695egw019-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/1695egw019-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/1695egw019-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/1695egw019-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<h3>Black Lion Chest Update: Fiery Decree</h3>
+<p>Inside each chest, you&#8217;re guaranteed to find a redeemable Black Lion Statuette, one Mini Blue Cuckoo Hatchling, and two common items. You also have a chance to find something rarer in the fifth slot, including special items, glyphs, and skins from the Dokkaebi Weapon Collection and the Paladin&#8217;s Decree Weapon Collection.</p>
+<p><strong>Exclusive Item: </strong><strong>&#8220;/Firedance&#8221; Emote Tome</strong><br />
+Bring forth the blaze within your heart and dance with scorching vitality. The fire poi will look beautiful against the night sky. The &#8220;/Firedance&#8221; Emote Tome is a new, exclusive drop from Black Lion Chests.</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/a06bagw034.jpg"><img class="alignnone size-full wp-image-60314" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/a06bagw034.jpg" alt="A male asura wearing orange and blue twirls fire poi in each hand on a beach at night." width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/a06bagw034.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/a06bagw034-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/a06bagw034-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/a06bagw034-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/a06bagw034-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/a06bagw034-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<h3>What&#8217;s in Stock</h3>
+<p>We&#8217;re stocking up our shelves for the upcoming season! On Friday, September 18, miniatures will be 20% off until October 2. Check out some of our favorites: Mini Choya Pumpkin Gang, Mini Outlaw Puppy, Mini Shrine Guardian, Mini Jaguar Cub, and Mini Drooburt&#8217;s Ghost.</p>
+<p><strong>Returning This Week</strong></p>
+<p>A new story update means new loot to collect! Expand your inventory with our discounted Bag Slot Expansions. This offer will be available until October 22 with a 20% discount.</p>
+<li class="yui3-g">
+<div class="yui3-u-1">
+<h3>Available Now in the Gem Store!</h3>
+<p>Log into <em>Guild Wars 2</em> and press 'O' to access the Black Lion Trading Company for these great offers and more!</p>
+</div>
+</li>
+</ul>
+</div>
+<p>&nbsp;</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Play the Finale of Visions of Eternity Today with &#8220;Code of Creation&#8221;</title>
+		<link>https://www.guildwars2.com/en/news/play-the-finale-of-visions-of-eternity-today-with-code-of-creation/?utm_source=rss&#038;utm_medium=news&#038;utm_campaign=rss</link>
+		<pubDate>Tue, 15 Sep 2026 16:00:20 +0000</pubDate>
+		<dc:creator><![CDATA[The Guild Wars 2 Team]]></dc:creator>
+				<category><![CDATA[Home Page]]></category>
+		<category><![CDATA[Launcher]]></category>
+		<category><![CDATA[News]]></category>
+
+		<guid isPermaLink="false">https://www.guildwars2.com/?p=60257</guid>
+		<description><![CDATA[Explore the depths of Castora, face high-stakes raid and fractal encounters, and experience the epic conclusion to Guild Wars 2's latest expansion!</p><p class="more"><a href="https://www.guildwars2.com/en/news/play-the-finale-of-visions-of-eternity-today-with-code-of-creation/?utm_source=rss&utm_medium=news&utm_campaign=rss">Read More</a></p>]]></description>
+				<content:encoded><![CDATA[<p><em>Guild Wars 2</em>®<em>: Visions of Eternity</em>™ wraps up its dramatic story arc today with the release of &#8220;Code of Creation.&#8221; Today&#8217;s update is brimming with new content and rewards to pursue, so strap in as we give you the full rundown. To kick things off, watch the &#8220;Code of Creation&#8221; trailer below and check out the <a href="https://en-forum.guildwars2.com/topic/176681-game-update-notes-september-15-2026/" target="_blank" rel="noopener">full release notes</a> for all the specifics.</p>
+<p><iframe width="590" height="332" src="//www.youtube.com/embed/_UWVB6E-itc?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe></p>
+<h3>What&#8217;s New?</h3>
+<p>In addition to the new map, story chapters, and endgame encounters <a href="https://www.guildwars2.com/news/code-of-creation-concludes-visions-of-eternity-on-september-15" target="_blank" rel="noopener">we previewed last week</a>, &#8220;Code of Creation&#8221; is packed with new content. Here&#8217;s a complete breakdown of everything arriving in today&#8217;s release:</p>
+<ul>
+<li>New map: Leyspring Hollows</li>
+<li>Six climactic story chapters</li>
+<li>Fractal: Solitary Throne</li>
+<li>Raid encounter: Nexus of Eternity</li>
+<li>Convergence: Nexus of Eternity</li>
+<li>Legendary Sword: Wages of Stars</li>
+<li>Mastery line: Rift Amplification</li>
+<li>Wizard&#8217;s Vault seasonal refresh</li>
+<li>Scads of new rewards and achievements</li>
+</ul>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/fdfc0Leyspring.jpg"><img class="alignnone size-full wp-image-60264" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/fdfc0Leyspring.jpg" alt="" width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/fdfc0Leyspring.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/fdfc0Leyspring-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/fdfc0Leyspring-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/fdfc0Leyspring-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/fdfc0Leyspring-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/fdfc0Leyspring-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<h3>Become a Master of Rift Amplification</h3>
+<p>With the final quarterly release of <em>Guild Wars 2: Visions of Eternity</em>, players will be able to unlock a new mastery line called Rift Amplification that grants a fresh approach to how they can engage with rifts across Tyria. Throughout the story in Castora, players might have noticed something different about the rifts here, namely that they had Inquest! Our allies in the Tyrian Alliance have been investigating how the Inquest has been able to harness these powers, and in &#8220;Code of Creation,&#8221; they&#8217;ve finally found the answer.</p>
+<p>With Rift Amplification, players will be granted access to four new mastery tiers:</p>
+<ul>
+<li><strong>Rift Tears:</strong> This mastery grants you the ability to use the Heart of the Obscure to find alternate routes to the active rift you&#8217;re tracking. Now, instead of following the magics to their source, you&#8217;ll be able to go to Rift Tears that exist in nonactive rift areas spread across Castora. When interacted with, they will teleport you directly to the active rift, getting you to the fun, faster!</li>
+<li><strong>Overcharged Rifts:</strong> After the first part of a rift event is complete, you&#8217;ll now be given the option to &#8220;overcharge&#8221; the rift before the boss appears. By overcharging the rift with a motivation of the same tier, you&#8217;ll be faced with a greater challenge from the summoned boss and an additional threat from the instability of the rift itself. Those who overcome this additional challenge will receive additional rewards.</li>
+<li><strong>Tearing Across Tyria:</strong> As your bond with the Heart of the Obscure deepens, you&#8217;ll now be able to utilize Rift Tears across any rifts in Tyria.</li>
+<li><strong>Overcharge Tyria:</strong> Finally, as a master of rifts, you will now be able to overcharge all rifts in Tyria that can be opened with the Heart of the Obscure.</li>
+</ul>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/7bdb5Tenebral-Armor.jpg"><img class="alignnone size-full wp-image-60265" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/7bdb5Tenebral-Armor.jpg" alt="" width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/7bdb5Tenebral-Armor.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/7bdb5Tenebral-Armor-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/7bdb5Tenebral-Armor-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/7bdb5Tenebral-Armor-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/7bdb5Tenebral-Armor-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/7bdb5Tenebral-Armor-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<h3>New Treasures Await!</h3>
+<p>&#8220;Code of Creation&#8221; wouldn&#8217;t be complete without some awesome new rewards to seek and claim for your own. Playing through the story will reward players with the Tenebral Ward armor set, perfect for channeling a dark, gothic knight vibe. On the opposite end of the spectrum, you can craft arms from the Shining Ward weapon set. These ornate implements feature intricate designs and are made from a stunning mixture of ivory, teal, and royal blue materials.</p>
+<p>The new legendary sword, Wages of Stars, is as magnificent as the cosmos. This brilliant blade sparkles with a galaxy of stars and is unique in that it follows its wielder by hovering nearby when sheathed. This sword is truly a treasure to behold, with its starry footfalls, a draw animation that produces constellations, and a dazzling finisher effect!</p>
+<p>New rewards from the Nexus of Eternity Convergence and raid encounter include two new combat tonics for those who can&#8217;t get enough of Vloxx! Volatile Ascension is a new infusion that also drops from the Convergence, but we&#8217;ll let you discover what its visual effects are for yourself.</p>
+<p>And of course, there are many other rewards to collect, including unique one-off weapons, miniatures, seer-themed homestead decorations, emotes, relics, and more!</p>
+<p><iframe width="590" height="332" src="//www.youtube.com/embed/SNbCOIwzw6M?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe></p>
+<h3>A New Season of Wizard&#8217;s Vault Rewards</h3>
+<p>The Wizard&#8217;s Vault stock has been refreshed with new rewards! Spend your astral acclaim on the Gwyl Knight weapon set, or complete your Ward Hunter armor set with the new mask, leggings, coat, and cape. Tyrian birders won&#8217;t want to miss the Bird Pond Chair, where you can relax with a few of your avian friends.</p>
+<p>As we pause our expansions to make room for the Hall of Monuments and quality-of-life updates, rest assured that we&#8217;ll continue to rotate the Wizard&#8217;s Vault rewards on a similar cadence as we&#8217;ve done previously. And don&#8217;t forget that all our past cosmetic rewards are always available in the Wizard&#8217;s Vault Legacy tab, so you never have to fear missing out!</p>
+<p><iframe width="590" height="332" src="//www.youtube.com/embed/-_swEV8k9gg?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe></p>
+<h3>Watch Streams to Earn Twitch Drops</h3>
+<p>From now until September 20, you can earn exciting <a href="https://www.guildwars2.com/twitch-drops/" target="_blank" rel="noopener">Twitch Drops</a> just by watching your favorite <em>Guild Wars 2</em> streamers. Watch a total of six hours before 11:59 p.m. Pacific Time (UTC-7) on September 20 to unlock all available rewards, including the brand-new Arcane Occultist&#8217;s Hat!</p>
+<p>Here are the goodies you can earn:</p>
+<ul>
+<li><strong>One Hour:</strong> Item Booster</li>
+<li><strong>Two Hours:</strong> Mini Piglet</li>
+<li><strong>Four Hours:</strong> How to Dance, Volume 1</li>
+<li><strong>Six Hours:</strong> Arcane Occultist&#8217;s Hat</li>
+</ul>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/52239enUS-gw2-ex6-voe-qr3-twitch-drops-1920x1080.jpg"><img class="alignnone size-full wp-image-60266" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/52239enUS-gw2-ex6-voe-qr3-twitch-drops-1920x1080.jpg" alt="" width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/52239enUS-gw2-ex6-voe-qr3-twitch-drops-1920x1080.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/52239enUS-gw2-ex6-voe-qr3-twitch-drops-1920x1080-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/52239enUS-gw2-ex6-voe-qr3-twitch-drops-1920x1080-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/52239enUS-gw2-ex6-voe-qr3-twitch-drops-1920x1080-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/52239enUS-gw2-ex6-voe-qr3-twitch-drops-1920x1080-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/52239enUS-gw2-ex6-voe-qr3-twitch-drops-1920x1080-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<h3>Visions of Eternity Vinyl Soundtrack</h3>
+<p>Immerse yourself in the rich soundscape of <em>Guild Wars 2</em>&#8216;s sixth expansion with the official soundtrack of <em>Guild Wars 2: Visions of Eternity</em>. Composed by Bryan Atkinson, Ben Ash, Brendon Williams, and Catherine Nguyen, this soundtrack features 37 evocative tracks.</p>
+<p><a href="https://materia.store/collections/guild-wars" target="_blank" rel="noopener">Preorder</a> the deluxe 2xLP 180-gram Blood Orange vinyl today for $39.99!</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/33edfGW2-VoE_Blog.jpg"><img class="alignnone size-full wp-image-60268" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/33edfGW2-VoE_Blog.jpg" alt="" width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/33edfGW2-VoE_Blog.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/33edfGW2-VoE_Blog-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/33edfGW2-VoE_Blog-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/33edfGW2-VoE_Blog-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/33edfGW2-VoE_Blog-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/33edfGW2-VoE_Blog-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<h3>Looking Ahead</h3>
+<p>&#8220;Code of Creation&#8221; is out now, but the fun doesn&#8217;t stop there. From our brand-new Dismount Rush event later this month to the return of Fractal Incursion, along with the beta for our new WvW map, Extra Life, and our first Hall of Monuments update, there&#8217;s a lot to look forward to before the end of the year.</p>
+<p>Check out the full event schedule below, or <a href="https://www.guildwars2.com/news/code-of-creation-concludes-visions-of-eternity-on-september-15" target="_blank" rel="noopener">read last week&#8217;s blog</a> for a deeper breakdown of what&#8217;s coming next.</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080.jpg"><img class="alignnone size-full wp-image-60208" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080.jpg" alt="A roadmap in orange and purple showing the timeline of what’s coming to the game from September to December. " width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<p>The entire <em>Guild Wars 2</em> team poured their hearts into <em>Guild Wars 2: Visions of Eternity</em> and we can&#8217;t wait to see your reactions to &#8220;Code of Creation.&#8221; Tell us what you think on our <a href="https://en-forum.guildwars2.com/" target="_blank" rel="noopener">official forums</a> and <a href="https://discord.gg/guildwars" target="_blank" rel="noopener">Discord</a> server.</p>
+<p>Be safe, have fun, and game on!</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>&#8220;Code of Creation&#8221; Concludes Visions of Eternity on September 15</title>
+		<link>https://www.guildwars2.com/en/news/code-of-creation-concludes-visions-of-eternity-on-september-15/?utm_source=rss&#038;utm_medium=news&#038;utm_campaign=rss</link>
+		<pubDate>Tue, 08 Sep 2026 16:00:36 +0000</pubDate>
+		<dc:creator><![CDATA[The Guild Wars 2 Team]]></dc:creator>
+				<category><![CDATA[Home Page]]></category>
+		<category><![CDATA[Launcher]]></category>
+		<category><![CDATA[News]]></category>
+		<category><![CDATA[Sticky]]></category>
+
+		<guid isPermaLink="false">https://www.guildwars2.com/?p=60198</guid>
+		<description><![CDATA[The finale to Guild Wars 2's latest expansion is packed with a new map, raid encounter, fractal, story chapters, and more!</p><p class="more"><a href="https://www.guildwars2.com/en/news/code-of-creation-concludes-visions-of-eternity-on-september-15/?utm_source=rss&utm_medium=news&utm_campaign=rss">Read More</a></p>]]></description>
+				<content:encoded><![CDATA[<p>Greetings, Tyrians!</p>
+<p>The final chapter of <em>Guild Wars 2®: Visions of Eternity</em>™ drops September 15. Next week, &#8220;Code of Creation&#8221; will send players into the depths of Castora as they seek to stop Vloxx from achieving his goals throughout six climactic new story chapters. All eyes are on you, Commander, and here is what you need to know about next week&#8217;s update.</p>
+<h3><em>Guild Wars 2: Visions of Eternity</em>—&#8221;Code of Creation&#8221;</h3>
+<p>When the commander and their allies departed from the port of Lion&#8217;s Arch, everyone suspected typical Inquest antics—cold and calculating leadership, merciless creations, and a propensity for cruelty in pursuit of innovation. All things the commander certainly faced during their adventure on Castora, but Vloxx proved to be a more complex opponent. His mission was a ruse, viewing the Inquest simply as tools while he sought to remedy something far more severe. Now, the former Inquest director has taken up the mantle of eternity while Kuda has taken up the Inquest he left behind.</p>
+<p>In the final update of <em>Guild Wars 2: Visions of Eternity</em>, the commander and Isgarren must coordinate with their allies to fight back against those who threaten everything they&#8217;ve built and fought to preserve.</p>
+<p><iframe width="590" height="332" src="//www.youtube.com/embed/_UWVB6E-itc?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe></p>
+<h3>Leyspring Hollows</h3>
+<p>At the start of &#8220;Code of Creation,&#8221; you&#8217;ll venture deep into the cavernous expanse of Leyspring Hollows in pursuit of both Kuda&#8217;s Inquest and Vloxx.</p>
+<p>The depths are a mysterious place, and like many things you&#8217;ve encountered on Castora, they&#8217;re as dangerous as they&#8217;re disarmingly beautiful. As you traverse the twisting veins of the leyspring in pursuit of your enemies, you&#8217;ll uncover the seer doyen&#8217;s greatest secret and the heart of his people&#8217;s spiritual undertaking on Castora. The Stewards of Galdra, &#8220;living&#8221; remnants of this once great society, are eager to keep these secrets from the clutches of your enemies and have offered their aid in your quest.</p>
+<p>Although Vloxx abandoned the Inquest, they now pose a threat that cannot be ignored. Kuda is unhinged; she&#8217;s been waiting her entire life for this moment—and no one is taking it away from her. Left to their own devices, many of the Inquest are plundering the depths for power. No longer on their heels, you and your allies must make a final stand against them before Kuda pushes the Inquest into a new level of brutality.</p>
+<p>Our enemies cannot succeed.</p>
+<p><iframe width="590" height="332" src="//www.youtube.com/embed/Z0xR1t3AfgU?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe></p>
+<h3>The Depths of Cruelty</h3>
+<p>In &#8220;Code of Creation,&#8221; you&#8217;ll fight against the Inquest in a multistage meta-event as tensions come to a head with the newly crowned Director Kuda. In the Depths of Cruelty meta, you&#8217;ll face a greater challenge than those set before within the expansion. Communication and collaboration will be key in thwarting Kuda&#8217;s plans, with the weight of your decisions having a direct impact on swinging the tide of battle in your favor.</p>
+<p>Unlike the other meta-events in <em>Guild Wars 2: Visions of Eternity</em>, the Depths of Cruelty is set on a three-hour cycle rather than two, which is similar to Convergences. We&#8217;ve also shuffled the Shackles of the Ancients meta-event start time five minutes earlier. We decided on these changes to allow for each meta-event within <em>Guild Wars 2: Visions of Eternity</em>, as well as the Convergence, to run with a reduced chance of potential competition with the other&#8217;s start times. That way, you&#8217;ll be able to go from event to event, across each map, with minimal disruption.</p>
+<p>Another reason for the adjustment is to allow you more time to engage with content on the map before the meta-event begins. Similar to maps like Dragon&#8217;s End and Amnytas, Leyspring Hollows will close after the meta-event is completed, but instead of closing immediately, you&#8217;ll get a prompt to move to a new map within one hour.</p>
+<ul class="blog-screenshots">
+<li class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/95a4eresize-Map-016.jpg"><img src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/95a4eresize-Map-016-196x124.jpg" alt="" /></a></li>
+<li class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/cfcc3resize-Map-001.jpg"><img src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/cfcc3resize-Map-001-196x124.jpg" alt="" /></a></li>
+<li class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/935acresized-Map-020.jpg"><img src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/09/935acresized-Map-020-196x124.jpg" alt="" /></a></li>
+</ul>
+<h3>Changing Up Convergences</h3>
+<p>For this release, you&#8217;ll participate in a new Convergence where you&#8217;ll find yourself coming head-to-head against in the Nexus of Eternity. You&#8217;ll face challenges that call back to experiences and mechanics throughout other parts of Tyria.</p>
+<p>Unlike the Mount Balrior and Outer Nayos Convergences, where you clash against a rotation of bosses, the Nexus of Eternity Convergence contains one robust encounter with multiple distinct phases. With this change, you&#8217;ll be able to experience the full variety of mechanics with each run and the choices you make will keep the encounter feeling fresh.</p>
+<p>We&#8217;ve also adjusted the risk vs. reward elements of essence gathering. You must now push yourself to the limit by gathering max stacks of the essence before they can be cleared. Though, doing so will now reward a powerful ability based on your profession, allowing you to turn the tides of battle in your favor.</p>
+<p><iframe width="590" height="332" src="//www.youtube.com/embed/a6XHZ3TlsAA?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe></p>
+<h3>Prepare Your Squad for New Challenges</h3>
+<p>In addition to a new Convergence, the Nexus of Eternity has also been adapted to test your mettle as a challenging raid encounter. This encounter requires a squad of ten players to work together to face the great challenges that await them in the finale of <em>Guild Wars 2: Visions of Eternity</em>.</p>
+<p>A new fractal, Solitary Throne, is also releasing with &#8220;Code of Creation.&#8221; Groups of up to five players can explore what happens when a single being harnesses too much power. Avoid hazards while navigating a mysterious, celestial environment to reach and defeat the Eternal Tyrant himself.</p>
+<p>If you&#8217;re hungry for a more severe challenge, we will also be releasing Challenge Modes for the Convergence, raid encounter, and fractal two weeks after &#8220;Code of Creation&#8221; launches on September 29. Following that, the Legendary Mode for the raid encounter will launch on October 13.</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/0c85cenUS-gw2-ex6-voe-qr3-studio-roadmap-CRM-1200x760.png"><img class="alignnone wp-image-60206 size-full" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/0c85cenUS-gw2-ex6-voe-qr3-studio-roadmap-CRM-1200x760.png" alt="Four vertical pictures are shown. Left to right they are of Vloxx, the Mad King’s moon, the Fractal lobby, and an Asura dressed for Wintersday. The words “The Road Ahead” are at the bottom. " width="1200" height="760" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/0c85cenUS-gw2-ex6-voe-qr3-studio-roadmap-CRM-1200x760.png 1200w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/0c85cenUS-gw2-ex6-voe-qr3-studio-roadmap-CRM-1200x760-196x124.png 196w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/0c85cenUS-gw2-ex6-voe-qr3-studio-roadmap-CRM-1200x760-768x486.png 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/0c85cenUS-gw2-ex6-voe-qr3-studio-roadmap-CRM-1200x760-590x374.png 590w" sizes="(max-width: 1200px) 100vw, 1200px" /></a></p>
+<h3>Coming Up This Fall</h3>
+<p>&#8220;Code of Creation&#8221; kicks off a season that is jam-packed with bonus events, festivals, and game updates. The complete roadmap is detailed below, but let&#8217;s discuss some of the highlights.</p>
+<p>Later this month, we&#8217;ll be debuting a new event called &#8220;Dismount Rush&#8221; that will offer temporary bonus rewards for forgoing your mounts in content designed before mounts were introduced. This fall, the Fractal Incursion event will return with new rewards, and we&#8217;ll be kicking off the beta for our new WvW map where your feedback will help shape its development. Then, we have our annual Extra Life charity game day and accompanying in-game event, which is always a highlight of our year. Finally, we&#8217;ll cap off the year with our first Hall of Monuments update, allowing players to start earning rewards for <em>Guild Wars 3™</em>!</p>
+<p>Get ready for what we have coming up:</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080.jpg"><img class="alignnone size-full wp-image-60208" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080.jpg" alt="A roadmap in orange and purple showing the timeline of what’s coming to the game from September to December. " width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/841c9enUS-gw2-ex6-voe-qr3-studio-roadmap-1920x1080-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<p>&nbsp;</p>
+<p><strong>September</strong></p>
+<ul>
+<li><strong>September 29–October 6:</strong> Dismount Rush Event</li>
+<li><strong>September 29:</strong> Fractal Challenge Mode: Solitary Throne</li>
+<li><strong>September 29:</strong> Raid Challenge Mode: Nexus of Eternity</li>
+<li><strong>September 29:</strong> Convergence Challenge Mode: Nexus of Eternity</li>
+</ul>
+<p><strong>October</strong></p>
+<ul>
+<li><strong>October 13–November 3:</strong> Shadow of the Mad King</li>
+<li><strong>October 13:</strong> Raid Legendary Mode: Nexus of Eternity</li>
+</ul>
+<p><strong>November</strong></p>
+<ul>
+<li><strong>November 10–December 1:</strong> Fractal Incursion</li>
+<li><strong>November 10:</strong> Skills and Balance Update</li>
+<li><strong>November 10:</strong> WvW New Map Beta</li>
+<li><strong>November 10–December 1:</strong> Extra Life Bonus Event</li>
+<li><strong>November 13–14:</strong> Extra Life Game Day</li>
+<li><strong>November 23– December 1:</strong> Gnashbash &#8220;Birthday&#8221; Celebration</li>
+</ul>
+<p><strong>December</strong></p>
+<ul>
+<li><strong>December 8–January 5:</strong> Wintersday Festival</li>
+<li><strong>To Be Announced:</strong> Hall of Monuments Begins</li>
+</ul>
+<p>Stay tuned for more information in the coming days on our social media channels and our official Discord. We&#8217;re looking forward to watching you experience everything we have waiting for you in the &#8220;Code of Creation.&#8221;</p>
+<p>—The <em>Guild Wars 2 </em>Team</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>14 Years of Guild Wars 2: Celebrate the Anniversary with up to 40% off Our Past Expansions</title>
+		<link>https://www.guildwars2.com/en/news/14-years-of-guild-wars-2-celebrate-the-anniversary-with-up-to-40-off-our-past-expansions/?utm_source=rss&#038;utm_medium=news&#038;utm_campaign=rss</link>
+		<pubDate>Tue, 25 Aug 2026 17:00:13 +0000</pubDate>
+		<dc:creator><![CDATA[The Guild Wars 2 Team]]></dc:creator>
+				<category><![CDATA[Home Page]]></category>
+		<category><![CDATA[Launcher]]></category>
+		<category><![CDATA[News]]></category>
+
+		<guid isPermaLink="false">https://www.guildwars2.com/?p=60167</guid>
+		<description><![CDATA[Whether you're brand new to Tyria or catching up on the expansions, now is the perfect time to expand your journey!</p><p class="more"><a href="https://www.guildwars2.com/en/news/14-years-of-guild-wars-2-celebrate-the-anniversary-with-up-to-40-off-our-past-expansions/?utm_source=rss&utm_medium=news&utm_campaign=rss">Read More</a></p>]]></description>
+				<content:encoded><![CDATA[<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/51b06GW2_AnniversarySale_Social_1920x1080_EN_announcement.png"><img class="alignnone size-full wp-image-60185" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/51b06GW2_AnniversarySale_Social_1920x1080_EN_announcement.png" alt="A promotional image detailing the anniversary sale information." width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/51b06GW2_AnniversarySale_Social_1920x1080_EN_announcement.png 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/51b06GW2_AnniversarySale_Social_1920x1080_EN_announcement-768x432.png 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/51b06GW2_AnniversarySale_Social_1920x1080_EN_announcement-590x332.png 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/51b06GW2_AnniversarySale_Social_1920x1080_EN_announcement-130x73.png 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/51b06GW2_AnniversarySale_Social_1920x1080_EN_announcement-139x79.png 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/51b06GW2_AnniversarySale_Social_1920x1080_EN_announcement-290x164.png 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<p>The 14th anniversary of <em>Guild Wars 2</em>® is here, and one of the ways we&#8217;re celebrating is by offering savings on past expansions and digital deluxe upgrades. Visit the <a href="https://a.ua.ncsoft.com/c/t2pjtt" target="_blank" rel="noopener">web</a>, <a href="https://a.ua.ncsoft.com/c/nwgssw" target="_blank" rel="noopener">Steam</a>, or in-game stores between now and September 1 at 10:00 a.m. Pacific Time (UTC-7) to take advantage of this deal!</p>
+<ul>
+<li>Expansion 5—<em>Guild Wars 2: Janthir Wilds</em>™ (Standard Edition only)</li>
+<li>Expansion 4—<em>Guild Wars 2: Secrets of the Obscure</em>™ (Standard &amp; Deluxe Editions)</li>
+<li>Expansion 3—<em>Guild Wars 2: End of Dragons</em>® (Standard &amp; Deluxe Editions)</li>
+<li>Expansions 1 and 2—<em>Guild Wars 2: Heart of Thorns</em>® and <em>Guild Wars 2: Path of Fire</em>™</li>
+<li><em>Guild Wars 2</em>—The Elder Dragon Saga Complete Collection (Complete, Deluxe &amp; Standard Editions)</li>
+<li>Living World™ Seasons</li>
+<li>The <em>Guild Wars 2 </em>Starter Pack—A one-time account upgrade with a Raptor Mount Unlock, Basic Gliding Unlock, Bank Tab Expansion, Upgraded Bag Slot Expansion, and Total Makeover Kit.</li>
+</ul>
+<h2>Claim a Freebie in the Gem Store</h2>
+<p>Log in and head to the Gem Store now to collect one free Black Lion Chest Key and, if you missed it last year, Prince Rurik&#8217;s Vanguard Cape Skin. Additionally, get 30% off Black Lion Chest Keys and 10% off all Black Lion Vouchers until September 1 at 9:00 a.m. Pacific Time (UTC-7).</p>
+<p>During the same discount period, you can store more loot with 20% off Bank Tab Expansions or enjoy exclusive areas with all the conveniences by snagging one of our permanent lounge passes, which are also 20% off.</p>
+<p>Select mount skins have also been discounted by 20% until September 4, including the Synergetics Cyberscale Skyscale Skin, the Plush Raptor Skin, the Plush Skimmer Skin, and the Mischievous Ferret Warclaw Skin.</p>
+<p>Finally, we have a new festive set of infinite gathering tools. The Piñata Harvesting Tool, the Piñata Logging Tool, and the Piñata Mining Tool are available for 2,700 gems. See them in action here:</p>
+<p><iframe width="590" height="332" src="//www.youtube.com/embed/LyL_2W72fJo?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe></p>
+<p>We&#8217;ve had 14 years of adventures, stories, and friendships, and we&#8217;re forever grateful to our community of players that call Tyria home. Happy anniversary, <em>Guild Wars 2</em>!</p>
+<p>—The <em>Guild Wars 2</em> Team</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>The Festival of the Four Winds Is Live Now!</title>
+		<link>https://www.guildwars2.com/en/news/the-festival-of-the-four-winds-is-live-now/?utm_source=rss&#038;utm_medium=news&#038;utm_campaign=rss</link>
+		<pubDate>Tue, 11 Aug 2026 16:00:58 +0000</pubDate>
+		<dc:creator><![CDATA[The Guild Wars 2 Team]]></dc:creator>
+				<category><![CDATA[Home Page]]></category>
+		<category><![CDATA[Launcher]]></category>
+		<category><![CDATA[News]]></category>
+
+		<guid isPermaLink="false">https://www.guildwars2.com/?p=60139</guid>
+		<description><![CDATA[Visit the Labyrinthine Cliffs between now and September 1 to celebrate.</p><p class="more"><a href="https://www.guildwars2.com/en/news/the-festival-of-the-four-winds-is-live-now/?utm_source=rss&utm_medium=news&utm_campaign=rss">Read More</a></p>]]></description>
+				<content:encoded><![CDATA[<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/eef9denUS-gw2-fotfw-2024-1920x1080.jpg"><img class="alignnone size-full wp-image-60147" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/eef9denUS-gw2-fotfw-2024-1920x1080.jpg" alt="The Festival of the Four Winds" width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/eef9denUS-gw2-fotfw-2024-1920x1080.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/eef9denUS-gw2-fotfw-2024-1920x1080-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/eef9denUS-gw2-fotfw-2024-1920x1080-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/eef9denUS-gw2-fotfw-2024-1920x1080-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/eef9denUS-gw2-fotfw-2024-1920x1080-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/eef9denUS-gw2-fotfw-2024-1920x1080-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<p>The Festival of the Four Winds, one of Tyria&#8217;s beloved summer traditions, is upon us again. Hot-air balloons in each nation&#8217;s capital stand ready to whisk visitors away to the Labyrinthine Cliffs to visit the Zephyrites and the Crown Pavilion in Divinity&#8217;s Reach, which has flung open its doors for combat-ready visitors.</p>
+<ul class="blog-screenshots">
+<li class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/376144winds2026-001.jpg"><img src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/376144winds2026-001-196x124.jpg" alt="" /></a></li>
+<li class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/cff0cgw178.jpg"><img src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/cff0cgw178-196x124.jpg" alt="" /></a></li>
+<li class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/7b9d2gw199.jpg"><img src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/7b9d2gw199-196x124.jpg" alt="" /></a></li>
+</ul>
+<p>As you play, earn rewards like the new Cloud Pteruges leg-armor skin (complete with an unclouded alternate skin), Spellwork weapons, a Plush Kralky Backpack, and thematic homestead decoration recipes. Special objectives in the Wizard&#8217;s Vault will even award you with Astral Acclaim for participating in the Crown Pavilion and Zephyrite activities. Evon Gnashblade is getting into the spirit of things, too. While the festival is running, select Zephyrite-themed items from the Black Lion Trading Company will be available at a 20% discount.</p>
+<p>Preview some of this year&#8217;s rewards in the video below, check out the <a target="_blank" href="https://en-forum.guildwars2.com/topic/175644-game-update-notes-august-11-2026/">full release notes</a>, then head in-game to enjoy the festivities until September 1!</p>
+<p><iframe width="590" height="332" src="//www.youtube.com/embed/bo8BhKvnNhI?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe></p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>WvW War Score: Beta 2 Results and What&#8217;s Next</title>
+		<link>https://www.guildwars2.com/en/news/wvw-war-score-beta-2-results-and-whats-next/?utm_source=rss&#038;utm_medium=news&#038;utm_campaign=rss</link>
+		<pubDate>Tue, 04 Aug 2026 16:00:49 +0000</pubDate>
+		<dc:creator><![CDATA[The Guild Wars 2 Team]]></dc:creator>
+				<category><![CDATA[Home Page]]></category>
+		<category><![CDATA[Launcher]]></category>
+		<category><![CDATA[News]]></category>
+
+		<guid isPermaLink="false">https://www.guildwars2.com/?p=60055</guid>
+		<description><![CDATA[Get the details on what we learned from our recent beta and the changes we're making for Beta 3.</p><p class="more"><a href="https://www.guildwars2.com/en/news/wvw-war-score-beta-2-results-and-whats-next/?utm_source=rss&utm_medium=news&utm_campaign=rss">Read More</a></p>]]></description>
+				<content:encoded><![CDATA[<p>Hello, Tyrians!</p>
+<p>Throughout this year, the Competitive team has been <a href="https://www.guildwars2.com/news/help-us-test-new-wvw-scoring-in-a-beta-test-starting-february-27/">running beta tests</a> to improve how scoring works in World vs. World (WvW). The focus of the betas has been to shift score generation toward tangible player actions like sieging, capturing objectives, and killing players while moving away from passive mechanics like owning objectives over time that can happen whether players are involved or not.</p>
+<p>After the first beta, we shared our findings in a <a href="https://en-forum.guildwars2.com/topic/169869-war-score-beta-2-announcement-and-beta-1-retro/">retrospective</a> posted on our forums. Today, we&#8217;re here to discuss our feedback and changes based on the second War Score beta we ran during the matchup in May. This beta included new placement-based match rewards, a series of scoring adjustments, and the addition of points awarded for upgrading objectives.</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/2934cwvw3.jpg"><img src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/2934cwvw3.jpg" alt="A skirmish in WvW on top of a tower wall." width="1920" height="1080" class="alignnone size-full wp-image-60137" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/2934cwvw3.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/2934cwvw3-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/2934cwvw3-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/2934cwvw3-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/2934cwvw3-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/08/2934cwvw3-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<h3>Balancing Active and Passive Play</h3>
+<p>While the first beta started with zero passively gained points aside from supply deliveries, we agreed with players that defending objectives was not adequately rewarding. In response, we adjusted to a good mix of score accrual from holding objectives that still encouraged interaction from enemy teams. Some points were added back to holding tier 3 objectives, but a larger number of points were added to objective tier-ups. This created contention that players could expect and play around instead of having all objectives constantly trickling points.</p>
+<p>So how was the balance? After fixing some extreme outliers—dolyak’s deliveries, for instance—we landed on a much healthier spread in Beta 2 compared to Beta 1:</p>
+<ul>
+<li>Objective captures resulted in roughly 30% of all War Score generated.</li>
+<li>Player combat was about 25% of all War Score generated.</li>
+<li>Progress ticks accounted for 5% of the total, but combined with upgrades, holding objectives jumps to 15%.</li>
+<li>The single largest source of War Score generation was keep captures followed closely by player kills.</li>
+</ul>
+<p>For reference, the score breakdown for normal gameplay outside of the betas is roughly 40% player combat and 35% passive objective ticks with objective assaults being only 9% of the total score generation.</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/f9268GW2_WvW_Warscore_Stats_1920x1080.jpg"><img class="alignnone wp-image-60126 size-full" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/f9268GW2_WvW_Warscore_Stats_1920x1080.jpg" alt="War score by categories." width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/f9268GW2_WvW_Warscore_Stats_1920x1080.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/f9268GW2_WvW_Warscore_Stats_1920x1080-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/f9268GW2_WvW_Warscore_Stats_1920x1080-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/f9268GW2_WvW_Warscore_Stats_1920x1080-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/f9268GW2_WvW_Warscore_Stats_1920x1080-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/f9268GW2_WvW_Warscore_Stats_1920x1080-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<h3>Adjustments for Beta 3</h3>
+<p>Dolyak deliveries are still on the watchlist. Supply is the lifeblood of WvW, so we&#8217;re very hesitant to remove scoring from dolyaks entirely even if they do provide a challenge for balancing passive score generation. We will continue to adjust their point value. Additionally, while guard kills do add some flavor with a low barrier to interaction, their total score value outweighs their mechanical contribution to the game mode, so they will no longer reward War Score in Beta 3.</p>
+<p>One mechanic in the beta that hasn&#8217;t had much attention is scaling score based on player counts. The intent was to encourage player congregation, but the system has been overly complex to balance and not easily understood. Plus, the majority of points being scored were coming from objectives that already had naturally incrementing point values.</p>
+<p>Therefore, for Beta 3, we will be removing player count and objective type/tier scaling multipliers for simplicity, though the capability will still be there if we want to bring it back.</p>
+<p>Beta 3 will include the return of placement-based match rewards, placement-based skirmish rewards, more balance changes, and boosted points for defensive player kills. For defensive actions, smaller areas around objectives will be used instead of the entire sector.</p>
+<p>Another exciting new feature to look forward to is an in-game breakdown of War Score sources. We believe that if there are rewards attached to winning, players deserve more insight into what results in victory and the ability to compare against opponents. We&#8217;re looking forward to your feedback on these additions!</p>
+<p class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/b65cbenUS-gw2-wvw-warscore-update.jpg"><img class="alignnone wp-image-60127 size-full" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/b65cbenUS-gw2-wvw-warscore-update.jpg" alt="Match Statistics UI" width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/b65cbenUS-gw2-wvw-warscore-update.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/b65cbenUS-gw2-wvw-warscore-update-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/b65cbenUS-gw2-wvw-warscore-update-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/b65cbenUS-gw2-wvw-warscore-update-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/b65cbenUS-gw2-wvw-warscore-update-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/b65cbenUS-gw2-wvw-warscore-update-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<h3>What&#8217;s Next for WvW?</h3>
+<p>At the end of the War Score betas, we&#8217;re going to have new tech that we can leverage, regardless of whether we permanently adopt the adjusted scoring paradigms or not. This would include keeping the new in-game match scoring breakdown and placement-based rewards locked in to continue incentivizing players to care about scoring.</p>
+<p>Lastly, don&#8217;t forget we&#8217;re also developing a new WvW borderlands map alongside the community. For a refresher on that and our upcoming WvW initiatives, here&#8217;s a recap of what our Game Director, Josh Davis, spoke about in June:</p>
+<p><iframe width="590" height="332" src="//www.youtube.com/embed/BZyIUc8nlzI?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe></p>
+<p>Beta 3 will begin in the middle of a matchup, so we want to make you aware in advance.  We&#8217;re looking forward to hearing your feedback about our latest changes to War Score when you get to experience it in WvW during Beta 3 running from August 11 until September 4.</p>
+<p>We&#8217;ll see you in the Mists!</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Share Your Best Screenshots in the Homestead Design Contest</title>
+		<link>https://www.guildwars2.com/en/news/share-your-best-screenshots-in-the-homestead-design-contest/?utm_source=rss&#038;utm_medium=news&#038;utm_campaign=rss</link>
+		<pubDate>Thu, 30 Jul 2026 17:00:32 +0000</pubDate>
+		<dc:creator><![CDATA[The Guild Wars 2 Team]]></dc:creator>
+				<category><![CDATA[Home Page]]></category>
+		<category><![CDATA[Launcher]]></category>
+		<category><![CDATA[News]]></category>
+
+		<guid isPermaLink="false">https://www.guildwars2.com/?p=60068</guid>
+		<description><![CDATA[PLUS: Twitch Drops, a developer livestream, and savings on Digital Deluxe upgrades!</p><p class="more"><a href="https://www.guildwars2.com/en/news/share-your-best-screenshots-in-the-homestead-design-contest/?utm_source=rss&utm_medium=news&utm_campaign=rss">Read More</a></p>]]></description>
+				<content:encoded><![CDATA[<p>It&#8217;s time to dazzle your fellow Tyrians with displays of homestead creativity—the Homestead Design Contest is upon us! From now through August 6, submit screenshots of your best homestead design (from either homestead map) to our <a href="https://discord.gg/guildwars">official Discord channel</a> to share with the whole community. One submission (of 1–10 screenshots) per person will be accepted until August 6 at 11:59 p.m. Pacific Time (UTC-7). Community voting will last until August 11 at 2:00 p.m. Pacific Time (UTC-7). The top homestead designers, as determined by total number of emoji reactions received, will win gem prizes! Full rules and eligibility can be found <a href="https://www.arena.net/legal/guild-wars-2-homestead-design-contest">here</a>.</p>
+<p><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/1a94eenUS-gw2-homestead-twitch-drops-1920x1080.jpg"><img class="alignnone size-full wp-image-60072" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/1a94eenUS-gw2-homestead-twitch-drops-1920x1080.jpg" alt="" width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/1a94eenUS-gw2-homestead-twitch-drops-1920x1080.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/1a94eenUS-gw2-homestead-twitch-drops-1920x1080-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/1a94eenUS-gw2-homestead-twitch-drops-1920x1080-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/1a94eenUS-gw2-homestead-twitch-drops-1920x1080-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/1a94eenUS-gw2-homestead-twitch-drops-1920x1080-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/1a94eenUS-gw2-homestead-twitch-drops-1920x1080-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<p><a href="https://www.guildwars2.com/en/twitch-drops/">Twitch Drops</a> are available starting now, so tune in to your favorite <em>Guild Wars 2®</em> streamers (or discover a new one!) to earn rewards between now and August 2. Join us Wednesday, August 5 at 12:00 p.m. Pacific Time (UTC-7) on our <a href="https://www.twitch.tv/guildwars2">Twitch channel</a> as our partner, <a href="https://www.twitch.tv/engelburtmeow/">EngleburtMeow</a>, cosplays as a homestead and hosts a casual tour of some of the community&#8217;s most imaginative homesteads. Yes, you read that correctly. She will become one with the architecture, dressed in one of her signature <a href="https://ebmcursedcosplays.com/">cursed cosplays</a>.</p>
+<p><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/3c9e3GW2_Homestead_Livestream_1920x1080.jpg"><img class="alignnone size-full wp-image-60085" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/3c9e3GW2_Homestead_Livestream_1920x1080.jpg" alt="Cursed Cosplay: Homestead" width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/3c9e3GW2_Homestead_Livestream_1920x1080.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/3c9e3GW2_Homestead_Livestream_1920x1080-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/3c9e3GW2_Homestead_Livestream_1920x1080-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/3c9e3GW2_Homestead_Livestream_1920x1080-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/3c9e3GW2_Homestead_Livestream_1920x1080-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/3c9e3GW2_Homestead_Livestream_1920x1080-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<p>As a final part of the celebration, we have a discount on the Digital Deluxe upgrades for both expansions with a homestead map, <em>Guild Wars 2: Janthir Wilds</em>™ and <em>Guild Wars 2: Visions of Eternity</em>™<em>. </em>Discounts are available in-game and in the <a href="https://buy.guildwars2.com/">official store</a> until August 6, 10:00 a.m. Pacific Time (UTC-7).</p>
+<p>Check out our official <a href="https://discord.gg/guildwars">Discord</a> for more details and enjoy the week of homestead homages!</p>
+<ul class="blog-screenshots">
+<li class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/f7375forestmanor.jpg"><img src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/f7375forestmanor-196x124.jpg" alt="" /></a></li>
+<li class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/a3a0bStarfall_Observatory2.jpg"><img src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/a3a0bStarfall_Observatory2-196x124.jpg" alt="" /></a></li>
+<li class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/49195signal-homestead.jpg"><img src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/49195signal-homestead-196x124.jpg" alt="" /></a></li>
+<li class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/55fe6island-homestead.jpg"><img src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/55fe6island-homestead-196x124.jpg" alt="" /></a></li>
+<li class="screenshot"><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/9e288junglepalace.jpg"><img src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/9e288junglepalace-196x124.jpg" alt="" /></a></li>
+</ul>
+<p><span data-teams="true">These are the unbelievable community homesteads homesteads that will be toured during our livestream. Images courtesy of ArenaNet partner: <a id="menur3eo" class="fui-Link ___1q1shib f2hkw1w f3rmtva f1ewtqcl fyind8e f1k6fduh f1w7gpdv fk6fouc fjoy568 figsok6 f1s184ao f1mk8lai fnbmjn9 f1o700av f13mvf36 f1cmlufx f9n3di6 f1ids18y f1tx3yz7 f1deo86v f1eh06m1 f1iescvh fhgqx19 f1olyrje f1p93eir f1nev41a f1h8hb77 f1lqvz6u f10aw75t fsle3fq f17ae5zn" title="https://uaot.art/" href="https://uaot.art/" target="_blank" rel="noreferrer noopener" aria-label="Link United Arts of Tyria">United Arts of Tyria</a></span></p>
+<p>—The Guild Wars 2 Team</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Get Ready—The Guild Wars 2 Community Homestead Contest Launches Next Week!</title>
+		<link>https://www.guildwars2.com/en/news/get-ready-the-guild-wars-2-community-homestead-contest-launches-next-week/?utm_source=rss&#038;utm_medium=news&#038;utm_campaign=rss</link>
+		<pubDate>Thu, 23 Jul 2026 16:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[The Guild Wars 2 Team]]></dc:creator>
+				<category><![CDATA[Home Page]]></category>
+		<category><![CDATA[Launcher]]></category>
+		<category><![CDATA[News]]></category>
+
+		<guid isPermaLink="false">https://www.guildwars2.com/?p=60047</guid>
+		<description><![CDATA[Share your best homestead design with the community on Discord.</p><p class="more"><a href="https://www.guildwars2.com/en/news/get-ready-the-guild-wars-2-community-homestead-contest-launches-next-week/?utm_source=rss&utm_medium=news&utm_campaign=rss">Read More</a></p>]]></description>
+				<content:encoded><![CDATA[<p><a href="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/a5fdegw2-homestead-contest-1920x1080.jpg"><img class="alignnone size-full wp-image-60062" src="//d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/a5fdegw2-homestead-contest-1920x1080.jpg" alt="Homestead Design Contest" width="1920" height="1080" srcset="https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/a5fdegw2-homestead-contest-1920x1080.jpg 1920w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/a5fdegw2-homestead-contest-1920x1080-768x432.jpg 768w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/a5fdegw2-homestead-contest-1920x1080-590x332.jpg 590w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/a5fdegw2-homestead-contest-1920x1080-130x73.jpg 130w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/a5fdegw2-homestead-contest-1920x1080-139x79.jpg 139w, https://d3qqidoz8mm2hm.cloudfront.net/wp-content/uploads/2026/07/a5fdegw2-homestead-contest-1920x1080-290x164.jpg 290w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<p>Join us next week for a celebration of our <em>Guild Wars 2</em>® homesteads! Ever since Homesteads were released with <em>Guild Wars 2: Janthir Wilds</em>™, we&#8217;ve been in awe of the community&#8217;s creative constructions. To celebrate that creativity and encourage new designs, we&#8217;re holding the Homestead Design Contest on our <a href="https://discord.gg/guildwars">official Discord channel</a> starting July 30!</p>
+<p>Conjure your best designs in either homestead map and start snapping some screenshots. There&#8217;s no specific theme, so let your creativity run wild! Then, submit your screenshots for peer review and a chance to win gem prizes via community vote!</p>
+<p>Submissions of 1–10 screenshots will be accepted from July 30 at 9:00 a.m. Pacific Time (UTC-7) until August 6 at 11:59 p.m. Pacific Time (UTC-7). Community voting will last from the beginning of the entry period on July 30 until August 11 at 2:00 p.m. Pacific Time (UTC-7). At that point, voting will end and winners will be determined by the total number of emoji reactions received. Full rules and eligibility can be found <a href="https://www.arena.net/legal/guild-wars-2-homestead-design-contest">here</a>.</p>
+<p>While the contest is running, there will be other reasons to celebrate Homesteads. We&#8217;ll have Twitch drops available for watching your favorite <em>Guild Wars 2</em> streamers starting on July 30. And we&#8217;ll be hosting a homestead livestream on Wednesday, August 5 at 12:00 p.m. Pacific Time (UTC-7) on our <a href="https://www.twitch.tv/guildwars2">Twitch channel</a>. Check out Discord next week for more details, but in the meantime, have fun staging your homestead for sharing with the community!</p>
+<p>—The <em>Guild Wars 2</em> Team</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Play Your Way in Guild Wars 2</title>
+		<link>https://www.guildwars2.com/en/news/play-your-way-in-guild-wars-2/?utm_source=rss&#038;utm_medium=news&#038;utm_campaign=rss</link>
+		<pubDate>Wed, 15 Jul 2026 16:00:28 +0000</pubDate>
+		<dc:creator><![CDATA[The Guild Wars 2 Team]]></dc:creator>
+				<category><![CDATA[Home Page]]></category>
+		<category><![CDATA[Launcher]]></category>
+		<category><![CDATA[News]]></category>
+
+		<guid isPermaLink="false">https://www.guildwars2.com/?p=60037</guid>
+		<description><![CDATA[Our partner, Kroof, breaks down the various playstyles of Guild Wars 2.</p><p class="more"><a href="https://www.guildwars2.com/en/news/play-your-way-in-guild-wars-2/?utm_source=rss&utm_medium=news&utm_campaign=rss">Read More</a></p>]]></description>
+				<content:encoded><![CDATA[<p>With <em>Guild Wars 2®</em> rapidly approaching its 14<sup>th</sup> anniversary, it’s abundantly clear that there are numerous ways to enjoy the game. For some, the draw is immersing themselves into the lore of Tyria and getting engrossed in the stories of its inhabitants.  For others, it’s tackling the toughest encounters or knocking out every achievement they can.</p>
+<p>Whether you spend your time collecting legendary weapons, decking your many characters out in the most fabulous ensembles, or exploring every secret nook in the vast open world, one thing is certain: there’s no wrong way to play <em>Guild Wars 2</em>.</p>
+<p>Today, we invite you to go on a journey exploring the various playstyles of <em>Guild Wars 2</em> with a video from one of our incredible partner program members, <a href="https://www.youtube.com/@KROOF/">Kroof</a>. And over the next few weeks, stay tuned to our <a href="https://www.instagram.com/guildwars2">social channels</a> and <a href="https://discord.gg/guildwars">Discord</a> as we invite you to share with us how you play your way.<strong><br />
+</strong></p>
+<p><iframe width="590" height="332" src="//www.youtube.com/embed/Trq7RIS0Eoo?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe></p>
+]]></content:encoded>
+			</item>
+	</channel>
+</rss>

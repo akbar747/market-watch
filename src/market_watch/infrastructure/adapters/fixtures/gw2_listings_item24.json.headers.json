@@ -1,0 +1,11 @@
+{
+  "url": "https://api.guildwars2.com/v2/commerce/listings/24",
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/json; charset=utf-8",
+    "Cache-Control": "public,max-age=1200",
+    "X-Result-Total": "27997",
+    "Access-Control-Expose-Headers": "X-Result-Total",
+    "X-Rate-Limit-Limit": "600"
+  }
+}

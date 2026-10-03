@@ -1,0 +1,13 @@
+{
+  "url": "https://api.guildwars2.com/v2/items?ids=24,68",
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/json; charset=utf-8",
+    "Cache-Control": "public,max-age=3600",
+    "Server": "Quaggans",
+    "X-Result-Total": "74291",
+    "X-Result-Count": "2",
+    "Access-Control-Expose-Headers": "X-Result-Total,X-Result-Count",
+    "X-Rate-Limit-Limit": "600"
+  }
+}

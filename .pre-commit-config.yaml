@@ -1,0 +1,116 @@
+# .pre-commit-config.yaml —— market-watch 提交期闸门
+#
+# 覆盖：ruff（lint + 导入排序）、black（格式化）、mypy（类型）、
+#       scripts/check_layers.py（依赖方向铁律，架构 §3）、基础静态钩子。
+#
+# 全部 hook 来自**正式组织仓库**（pre-commit / astral-sh / psf / pre-commit-mirrors），
+# 不使用任何个人 fork。
+#
+# ── 格式化器的取舍（重要，别手滑加回来）───────────────────────────────────────
+# 本仓库**只保留一个格式化器**：black（line-length=100，见 pyproject 的 [tool.black]）。
+# 因此这里**没有** ruff-format。ruff 只跑 lint（含自动修复），不参与格式化。
+# 格式化只认 black（line-length=100，见 pyproject 的 [tool.black]），
+# ruff 只跑 lint（含自动修复），ruff-format 不在本仓库。
+# 这里曾经写着相反方向的迁移建议（「删 black 换 ruff-format」），已作废：
+# black 就是权威，别加回 ruff-format，也别在 CI 里再跑一遍 `ruff format --check`。
+#
+# 安装：uv run pre-commit install
+# 全量：uv run pre-commit run --all-files
+default_language_version:
+  python: python3  # 实际解释器版本由 uv / 本机决定（项目要求 >=3.13）
+
+repos:
+  # ==========================================================================
+  # 1. 基础静态钩子（来自 pre-commit 官方仓库）
+  # ==========================================================================
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=5120"]  # 保护 vendor/echarts.min.js 之外的巨型文件
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+        args: ["--allow-multiple-documents"]
+      - id: end-of-file-fixer
+        exclude: ^src/market_watch/interfaces/web/static/vendor/.*$
+      - id: trailing-whitespace
+        exclude: ^src/market_watch/interfaces/web/static/vendor/.*$
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+        exclude: ^src/market_watch/interfaces/web/static/vendor/.*$
+
+  # ==========================================================================
+  # 2. 分层铁律（架构 §3）——本项目特有，只能本地挂
+  #    架构 §9.3 要求 CI 强制检查，这里在提交期就拦，比 CI 更早。
+  # ==========================================================================
+  - repo: local
+    hooks:
+      - id: check-layers
+        name: dependency-direction (interfaces -> application -> domain <- infrastructure)
+        entry: scripts/check_layers.py
+        language: system
+        files: ^src/market_watch/
+        pass_filenames: false
+        require_serial: true
+        description: >
+          L1 domain/ 禁 import httpx|sqlite3|requests|fastapi|pandas；
+          L2 infrastructure/ 禁 import application（application.config 例外）；
+          L3 domain/application 签名禁出现 httpx.Response / sqlite3.Row；
+          L4 application/infrastructure 禁 import interfaces。
+
+  # ==========================================================================
+  # 3. ruff：lint + 自动修复（含 isort 的 I 规则）
+  # ==========================================================================
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # v0.16.10 = pyproject dev extras 的边界（`ruff>=0.16,<0.17`）。
+    # 实测（2026-10-03）：ruff 0.11.13 判红 64 个文件、0.16.10 也判 64 个，
+    # 但归格式后 0.11.13 仍残留 13 个判红（其格式化规则是 black 26 的真子集）。
+    # 所以必须升到 0.16.10，否则本地 pre-commit 在 CI 绿的时候照样红 13 个。
+    rev: v0.16.10  # 常用稳定版，以官方发布为准；与 pyproject [tool.ruff] 配套
+    hooks:
+      - id: ruff
+        name: ruff (lint + fix)
+        args: ["--fix", "--exit-non-zero-on-fix"]
+        files: ^(src|tests|bench|scripts|examples)/
+      # ruff-format 已于 2026-10-03 移除：格式化只认 black（见 [tool.black]），
+      # ruff 只跑 lint。别把它加回来 —— 实测同一批文件 black 判 0 红、
+      # ruff format 仍判 9 个要改（判红集合不重合），两个门禁同时挂，
+      # CI 必然红在一条 black 视为合规的文件上，且无法靠重格式消解。
+
+  # ==========================================================================
+  # 4. black：唯一的格式化器（line-length=100）
+  # ==========================================================================
+  - repo: https://github.com/psf/black
+    # 26.5.1 = pyproject [tool.pytest? no] dev extras 里的边界（`black>=26.5,<27`）。
+    # 从 25.1.0 升上来是因为实测：25.1.0 只判红 34 个文件、26.5.1 判 64 个
+    # （26 新增「模块 docstring 结束后补一个空行」规则）。若这里继续钉 25.1.0，
+    # 归格式后开发者本地 pre-commit 与 CI 会判两套口径，必然错位。
+    rev: 26.5.1  # 常用稳定版，以官方发布为准
+    hooks:
+      - id: black
+        files: ^(src|tests|bench|scripts|examples)/.*\.py$
+
+  # ==========================================================================
+  # 5. mypy：类型检查（渐进式；新模块先上 --strict）
+  # ==========================================================================
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0  # 常用稳定版，以官方发布为准
+    hooks:
+      - id: mypy
+        name: mypy (src)
+        files: ^src/market_watch/
+        # mirrors-mypy 跑在隔离 venv 里，必须把第三方依赖的存根一起装上，
+        # 否则每条 import 都会是 "Cannot find implementation"。
+        additional_dependencies:
+          - pydantic>=2.11
+          - pydantic-settings>=2.10
+          - httpx>=0.28
+          - structlog>=25.1
+          - fastapi>=0.115
+          - uvicorn>=0.34
+          - jinja2>=3.1
+          - feedparser>=6.0
+          - anyio>=4.9
+          - types-cffi  # httpx 的可选依赖需要类型存根
+        args: ["--config-file=pyproject.toml", "--ignore-missing-imports"]

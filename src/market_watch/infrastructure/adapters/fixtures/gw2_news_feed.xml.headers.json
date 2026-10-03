@@ -1,0 +1,7 @@
+{
+  "url": "https://www.guildwars2.com/en/feed/",
+  "status": 200,
+  "headers": {
+    "Content-Type": "text/xml; charset=utf-8"
+  }
+}

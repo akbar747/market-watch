@@ -1,0 +1,187 @@
+# .github/workflows/release.yml
+# 打 tag（v*）触发：Windows runner 上用 PyInstaller 打单目录 exe 发布包 →
+# 冒烟验证（--help / policy-check 9/9 / status）→ 校验关键资源随包落地 →
+# 把 exe 发布包与 wheel/sdist 一起挂到 GitHub Release。
+#
+# 触发条件：push 匹配 `v*` 的 tag，或手动 workflow_dispatch。
+# 产物：`market-watch.zip`（内含 market-watch.exe + _internal/ + config/ + docs/ + data/）、
+#       `market_watch-<version>-py3-none-any.whl`、`market_watch-<version>.tar.gz`。
+#
+# 冒烟为什么是三件事而不止 `--help`：
+#   - `--help` / `--version` 只碰 cli.py 的**顶层** import，函数体延迟导入一律不执行；
+#   - `policy-check` 全绿也只证明 domain 层与仓库文件（robots 快照 / bench 目标）在，
+#     证明不了 `market_watch.wiring`、`market_watch.infrastructure.storage.repositories`
+#     这些**写在函数体里**的 import 被打进了冻结包；
+#   - 所以再补一条 `status`：它走的是与 `serve`/`once` 同类的一条函数体延迟导入链。
+#
+# 前置条件（任一不成立，exe 能构建成功但一跑就崩）：
+#   - `src/market_watch/interfaces/cli.py` 的相对导入层级必须正确。该文件曾有两处写错：
+#     `from ..web.app import create_app` 与 `from ..wiring import build_runtime`
+#     （cli.py 在 `market_watch.interfaces/` 下，`..web` 会解析成不存在的 `market_watch.web`），
+#     现已修为 `.web.app` / `.wiring` 并在 src 里留了注释，见 README「当前进度与已知问题」。
+#     PyInstaller 的 hiddenimports **只能登记真实存在的模块**——相对导入写错这一层，
+#     在 release/ 层怎么配都救不了，只能靠冒烟兜住。
+#   - 构建环境里必须能 import 到运行期依赖（pydantic/httpx/fastapi/uvicorn/jinja2/
+#     structlog/feedparser），否则 Analysis 静默跳过，产物连 `--help` 都跑不起来。
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  PYTHONUTF8: "1"
+
+jobs:
+  build-windows-exe:
+    name: Build Windows exe + smoke test
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout (full history for tag)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Set up Python 3.13
+        run: uv python install 3.13
+
+      - name: Install project + runtime deps (PyInstaller 分析期必须能 import)
+        # ★ 少了这一步，CI 上打出来的 exe 是「构建成功、跑不起来」的绿壳。
+        #   PyInstaller 的 Analysis 会 import 目标模块扫依赖：fastapi/uvicorn/jinja2/
+        #   structlog/feedparser/pydantic 都来自 [project.dependencies]，-e . 把它们与
+        #   market_watch 本体一起装进同一个 venv；spec 里的 collect_all 也要能找到这些包
+        #   才能把模板、静态资源、路由表收进去。
+        #   实测（本机 pyinstaller 6.22.3，只装 pyinstaller 的干净 venv 重跑本 spec）：
+        #   构建全程 0 报错、EXE/COLLECT 都 "completed successfully"，但产物
+        #   `_internal/` 里没有 uvicorn/fastapi/starlette，`--help` 直接
+        #   ModuleNotFoundError: No module named 'pydantic'。
+        #   这里刻意不用 `uv sync`：仓库现在没有 uv.lock，`uv sync` 会在 CI 运行里
+        #   顺手生成 lock 文件（应作为源码提交，不该由 CI 写）。等 uv.lock 入库后
+        #   改成 `uv sync --python 3.13`（开发期依赖不进构建环境）。
+        #   -e . 是 editable 安装：path 仍指向 src/，spec 的 pathex 与 _detect_root 按源码走。
+        run: uv pip install --python 3.13 -e .
+
+      - name: Install PyInstaller
+        # 常用稳定版，以官方发布为准
+        run: uv pip install --python 3.13 pyinstaller
+
+      - name: Patch version into wheel/sdist metadata
+        run: uv build --python 3.13 --out-dir release/dist
+        if: startsWith(github.ref, 'refs/tags/')
+
+      - name: Build exe (PyInstaller)
+        # 等价于本地 release/build_exe.py 的前半段；dist/work 目录显式指定，不污染仓库根。
+        # 不加 --specpath：PyInstaller ≥ 6 同时给出 .spec 与 --specpath 会报
+        # `makespec options not valid when a .spec file is given`（本机 6.22.3 实测）。
+        # 本步非 0 即失败，不做 `|| true`：出包脚本自己有 serve/status 冒烟，红了就该红。
+        run: |
+          uv run --python 3.13 python release/build_exe.py
+
+      - name: Smoke test exe (--help)
+        run: |
+          ./release/dist/market-watch/market-watch.exe --help
+          ./release/dist/market-watch/market-watch.exe --version
+
+      - name: Smoke test exe (policy-check 必须 9/9)
+        shell: bash
+        env:
+          MW_CONTACT_URL: https://you.example/contact
+        run: |
+          out=$(./release/dist/market-watch/market-watch.exe policy-check) && echo "$out" || { echo "$out"; exit 1; }
+          echo "$out" | grep -q "合规检查通过 9/9"
+
+      - name: Smoke test exe (status：另一条函数体延迟导入链)
+        # status 走 cmd_status -> ..infrastructure.storage.repositories -> sqlite，
+        # 与 once/serve 一样是函数体延迟导入，只冒烟 serve 同样会漏掉这一类。
+        # 这一步就是「模块没打进冻结包」的探针：status 路径上缺任何一个模块，
+        # Python 都会直接 traceback + 非 0 退出，和 ModuleNotFoundError 同源。
+        #
+        # 曾经这里做过指纹分类：把 sqlite3.OperationalError（no such table / unable to open
+        # database file）判黄放行，因为当时 cmd_status 用只读连接开一个还不存在的文件必然抛错，
+        # 判红会在干净产物目录上**永远**失败，把真正要抓的模块缺失淹没在噪音里。
+        # src 已修（Repository 对不存在的库补零字节占位、加 _ready 探测、cmd_status 走公开的
+        # source_states()），本机实测 `status` 在全新空库上 rc=0 直出空统计。
+        # 所以现在收成**纯 rc 判断**：任何非 0 退出都红，不做分类放行。
+        # 「exe 启动即崩」最硬的一条红线在 build_exe.py 的 _smoke_serve()：那里面把
+        # 「Traceback (most recent call last)」「ModuleNotFoundError」
+        # 「Failed to execute script」三类关键词全列为失败条件。
+        # 这里只补 status 这一条独立路径的纯 rc 判断。
+        shell: bash
+        env:
+          MW_CONTACT_URL: https://you.example/contact
+        run: |
+          exe=./release/dist/market-watch/market-watch.exe
+          set +e
+          out=$("$exe" status 2>&1); rc=$?
+          echo "$out"
+          if [ "$rc" -ne 0 ]; then
+            echo "::error::status 在干净产物目录上以 rc=$rc 退出"
+            if echo "$out" | grep -qE "ModuleNotFoundError|ImportError|Failed to execute script"; then
+              echo "::error::命中模块缺失：冻结包疑似少打了 hidden import（函数体延迟导入）"
+            fi
+            exit 1
+          fi
+          echo "status OK (rc=0)"
+
+      - name: Assert archive carries no build leftovers
+        # build_exe.py 的 _purge_release_junk() 在打 zip **之前**清掉了 data/*.db* 与
+        # serve-smoke.log。这一步在 CI 里把同一条不变量再验一遍，理由是：
+        #   1) 冒烟必须真跑（才能抓到模块缺失 / 启动即崩），跑完必然在 exe 同目录留痕；
+        #   2) 留痕会被 make_archive 原样打进 zip —— 实测把开发者本地 SQLite 的
+        #      -wal（267832 字节未 checkpoint 的抓取数据）一起分发给了用户；
+        #   3) 这类问题在 CI 上平时不现形（每次干净 checkout），只在本地出包时累积，
+        #      等用户拆包才发现就晚了。
+        # 所以这里做成硬断言：以后谁新增冒烟步骤、或把清理删了，都会在这一步红。
+        shell: bash
+        # ★ 故意不写正则、不用 $ 锚点：这段 python 被 bash 双引号包着，正则里的 `$'`
+        #   会被 bash 当成 ANSI-C 引号的起始（$'...'），跨行直接语法错。
+        #   改成 endswith 三元元组，零转义、零歧义，CI 上是 bash 也不会被 shell 咬一口。
+        run: |
+          uv run --python 3.13 python -c "import sys, zipfile
+          zpath = 'release/dist/market-watch.zip'
+          banned = ('.db', '.db-wal', '.db-shm', 'serve-smoke.log')
+          hits = sorted(n for n in zipfile.ZipFile(zpath).namelist() if n.endswith(banned))
+          if hits:
+              print('::error::发布包里混进了构建产物：', file=sys.stderr)
+              for n in hits:
+                  print('   ', n, file=sys.stderr)
+              raise SystemExit(1)
+          print('发布包干净：无 .db / -wal / -shm / serve-smoke.log')"
+
+      - name: Verify vendored ECharts shipped
+        # 看板图表靠 vendored static/vendor/echarts.min.js，漏打就是白屏。
+        # 下面四个路径都是**exe 所在目录**（不是 _internal/）：onedir 布局下 _MEIPASS 就是
+        # _internal/，而 release/market_watch_console.py 的 _seed() 会把 _internal 里的
+        # config/、docs/_robots_snapshot.json、bench/bench_fetch.py 播种到 exe 同目录，
+        # 所以 config/sources.yaml 落在 release/dist/market-watch/config/、
+        # docs/_robots_snapshot.json 落在 release/dist/market-watch/docs/——这两个别改。
+        # _internal 下的两条才是构建期直收的（模板/静态/migrations）。
+        shell: bash
+        run: |
+          ls -l release/dist/market-watch/_internal/market_watch/interfaces/web/static/vendor/echarts.min.js
+          ls -l release/dist/market-watch/_internal/market_watch/infrastructure/storage/migrations/0001_init.sql
+          ls -l release/dist/market-watch/config/sources.yaml
+          ls -l release/dist/market-watch/docs/_robots_snapshot.json
+
+      - name: Upload artifacts to the Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/dist/market-watch.zip
+            release/dist/*.whl
+            release/dist/*.tar.gz
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

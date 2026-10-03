@@ -1,0 +1,99 @@
+# config/sources.yaml
+# 数据源清单：source_id → 适配器 / 端点 / 礼貌参数 / 启用开关
+#
+# ⚠️ 合规铁律（不可协商）：
+#   1. 只允许 **官方公开端点**（免鉴权、只读 GET）。
+#   2. `per_host_rps` 上限 = 官方 600/min ÷ 60 × 安全系数 0.8 = **8.0 rps**。
+#      这是合规换算的**上限起点，不是性能调优结果**。
+#      ★ 想提速的唯一合法路径是「用满 page_size=200 减少请求数」，
+#        禁止提高 rps / concurrency（主理人裁决 2）。
+#   3. `OFFICIAL_RATE_LIMIT_PER_MIN` 与 `HOST_SAFETY_FACTOR` 是 `domain/policy.py`
+#      里的**代码常量**，不在此文件暴露，也不接受环境变量覆盖。
+#
+# 本文件不引 YAML 依赖时由 `application/alert_service.py` 的同款极简解析器读取；
+# 装了 PyYAML 则优先用它。
+
+version: 1
+default_enabled: true
+
+sources:
+  - id: gw2_prices
+    adapter: market_watch.infrastructure.adapters.gw2_prices.Gw2PricesAdapter
+    authorization: official_public
+    kind: price
+    host: api.guildwars2.com
+    path: /v2/commerce/prices
+    enabled: true
+    strategy: paged
+    page_size: 200           # 官方上限；用满它 = 减少请求数的唯一合法提速路径
+    interval_seconds: 300    # 会被 Cache-Control: max-age=120 抬升（实测值）
+    politeness:
+      rps: 8.0
+      burst: 12
+      concurrency: 4
+      min_interval_seconds: 120
+      respect_max_age: true
+
+  - id: gw2_listings
+    adapter: market_watch.infrastructure.adapters.gw2_listings.Gw2ListingsAdapter
+    authorization: official_public
+    kind: orderbook
+    host: api.guildwars2.com
+    path: /v2/commerce/listings
+    enabled: false           # 默认关闭：仅在观测清单非空时才有意义
+    strategy: watchlist
+    interval_seconds: 300
+    # ⚠️ 实测：listings 单品响应 Cache-Control: max-age=1200。
+    #    按 §4.4 铁律实际周期会被抬到 1200s 并打 interval.clamped。
+    politeness:
+      rps: 8.0
+      burst: 12
+      concurrency: 4
+      min_interval_seconds: 1200
+      respect_max_age: true
+
+  - id: gw2_items
+    adapter: market_watch.infrastructure.adapters.gw2_items.Gw2ItemsAdapter
+    authorization: official_public
+    kind: item_meta
+    host: api.guildwars2.com
+    path: /v2/items
+    enabled: true
+    strategy: single
+    interval_seconds: 86400  # 实测 max-age=3600；日级刷新即可
+    politeness:
+      rps: 8.0
+      burst: 12
+      concurrency: 4
+      min_interval_seconds: 3600
+      respect_max_age: true
+
+  - id: gw2_news_rss
+    adapter: market_watch.infrastructure.adapters.rss_generic.RssAdapter
+    authorization: official_public
+    kind: announcement
+    host: www.guildwars2.com
+    path: /en/feed/
+    enabled: true
+    strategy: single
+    interval_seconds: 900    # 用 If-None-Match / If-Modified-Since；304 不消耗配额
+    politeness:
+      rps: 8.0
+      burst: 12
+      concurrency: 4
+      min_interval_seconds: 900
+      respect_max_age: false  # RSS 不返回 Cache-Control
+
+# ---------------------------------------------------------------------------
+# §1.4 否决源登记表（禁止静默加回；此处留痕供 policy-check 与人工复核）
+# ---------------------------------------------------------------------------
+rejected_sources:
+  - id: esi_evetech
+    host: esi.evetech.net
+    reason: "robots.txt = 'User-agent: * / Disallow: /' → 命中 C2 红线"
+    evidence: "curl -s https://esi.evetech.net/robots.txt"
+    reenable_requires: "运营方书面授权 + docs/04-compliance.md 登记 + RobotsGuard 显式放行（代码变更 + PR 评审，不允许环境变量开关）"
+  - id: any_login_walled
+    reason: "需登录 / 付费墙 / 验证码 → 红线否决"
+  - id: any_third_party_mirror
+    reason: "非官方镜像 / 第三方黑盒聚合 → 数据可追溯性不可证明，且存在转售风险"

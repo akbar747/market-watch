@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}market-watch{% endblock %}</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <script src="/static/vendor/echarts.min.js"></script>
+</head>
+<body>
+  <header class="mw-header">
+    <div class="mw-brand">market-watch <span class="mw-ver">v{{ version }}</span></div>
+    <nav class="mw-nav">
+      <span class="mw-note">官方公开数据 · 只读 · 自限 {{ rps_cap }} rps</span>
+      <span class="mw-note">联系：{{ contact_url }}</span>
+    </nav>
+  </header>
+  <main class="mw-main">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="mw-footer">
+    数据源：Guild Wars 2 官方 v2 API（免鉴权、官方公开端点）。
+    本看板不采集任何个人信息，不使用代理池，不绕过任何访问控制。
+  </footer>
+  <script src="/static/app.js"></script>
+</body>
+</html>
