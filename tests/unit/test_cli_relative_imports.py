@@ -113,11 +113,11 @@ def test_the_two_known_p0_sites_are_still_lazy() -> None:
     """
     scoped = _function_scoped_relative_imports()
 
-    assert "cmd_serve" in scoped, (
-        f"cmd_serve 内不再有相对导入，P0 现场变了；当前函数内相对导入在：{sorted(scoped)}"
-    )
-    assert "cmd_once" in scoped, (
-        f"cmd_once 内不再有相对导入，P0 现场变了；当前函数内相对导入在：{sorted(scoped)}"
-    )
+    assert (
+        "cmd_serve" in scoped
+    ), f"cmd_serve 内不再有相对导入，P0 现场变了；当前函数内相对导入在：{sorted(scoped)}"
+    assert (
+        "cmd_once" in scoped
+    ), f"cmd_once 内不再有相对导入，P0 现场变了；当前函数内相对导入在：{sorted(scoped)}"
     # cmd_once 里还嵌了一层 `_run`，那里面的导入同样得是延迟的。
     assert any(name.startswith("cmd_once.") for name in scoped), "cmd_once._run 不在延迟导入之列"
