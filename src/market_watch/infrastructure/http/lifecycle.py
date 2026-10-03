@@ -117,7 +117,10 @@ async def run_until_stopped(
     loop = asyncio.get_running_loop()
     install_signal_handlers(loop, stop)
 
-    task = asyncio.create_task(start(stop))
+    # `start` 的契约是 `Callable[[ShutdownSignal], Awaitable[None]]`（返回协程/awaitable），
+    # 而 `create_task` 只吃 `Coroutine`；`ensure_future` 才接受 `Awaitable` 并按情况包成
+    # Task（协程）或原样返回 Future，两者都支持后面的 `task.done()` / `task.cancel()`。
+    task: asyncio.Task[None] = asyncio.ensure_future(start(stop))
 
     # 双 Ctrl+C → 立刻全部取消并退 130（§4.6-4）
     watcher = asyncio.create_task(_interrupt_watcher(stop, task))

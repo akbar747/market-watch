@@ -100,7 +100,11 @@ def decide(
     if attempt >= pol["max_attempts"]:
         return False, 0.0
 
-    rng = rng or random  # noqa: S311 - 退避抖动，非安全用途
+    if rng is None:
+        # 必须用实例而非 `rng or random`：后者把**模块**当发生器用，模块不是
+        # `random.Random`，`rng.uniform` 在类型上不成立；full jitter 只用局部
+        # `uniform(0, cap)`，不碰全局随机状态，换实例不产生行为差异。
+        rng = random.Random()  # noqa: S311 - 退避抖动，非安全用途（§5.2 full jitter）
     retry_after = view.retry_after_seconds if view is not None else None
 
     # --- 420 / vendor 限流：强制 30s 起步 ---

@@ -134,9 +134,10 @@ class Gw2ListingsAdapter:
                 ),
             )
 
-        try:
-            item_id = int(payload.get("id"))
-        except (TypeError, ValueError):
+        id_value = payload.get("id")
+        # id 只可能是 JSON 的 int / float / str；其余（None / `{}` / bool）→ 判缺失
+        item_id = int(id_value) if isinstance(id_value, (int, float, str)) else None
+        if item_id is None:
             return ParseResult(
                 task_id=task.task_id,
                 cycle_id=cycle_id,
@@ -250,11 +251,25 @@ class Gw2ListingsAdapter:
 
 
 def _as_int(value: object) -> int | None:
+    """把 JSON 原始字段转成整数；不可转（None / bool / `{}` / 其他结构）→ None。
+
+    Args:
+        value: `view.json()` 取出的原始字段。JSON 语法把它限定为 `int` / `float` /
+            `str` / `None`，其余标量（`{}` 空对象、`[]`、嵌套结构）一律 → None。
+
+    收窄理由：`view.json()` 声明返回 `Any`，参数只能标 `object`；而 `int(object)`
+    没有匹配的重载（typeshed 只接受 `str | bytes | SupportsInt | ...`），直接喂会把
+    返回值退化成 `Any` 并触发 `no-any-return`。故先用 `isinstance` 收窄再交给 `int()`。
+    """
     if value is None or isinstance(value, bool):
+        # bool 是真 int 子类：JSON 里 `true` 不可能当 id / 单价，判 None 而非 int(True)=1
+        return None
+    if not isinstance(value, (int, float, str)):
         return None
     try:
         return int(value)
     except (TypeError, ValueError):
+        # 不可转整数（如 `int("abc")`）→ None，与收窄前完全一致
         return None
 
 
