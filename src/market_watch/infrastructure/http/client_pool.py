@@ -109,7 +109,7 @@ class ClientPool:
         headers: dict[str, str],
         proxy_url: str | None = None,
         http2: bool = False,
-        transport_factory: Callable[[], httpx.AsyncTransport] | None = None,
+        transport_factory: Callable[[], httpx.AsyncBaseTransport] | None = None,
         on_rebuild: Callable[[str, str], None] | None = None,
         max_lifetime_s: float = POOL_MAX_LIFETIME_S,
         max_requests: int = POOL_MAX_REQUESTS,

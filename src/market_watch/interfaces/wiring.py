@@ -115,15 +115,21 @@ async def build_runtime(settings: Settings, *, dry_run: bool = False) -> Runtime
 
     metrics = Metrics(fetch_log_sink=lambda row: writer.submit(("fetch_log", [row])))
 
+    # 池重建 → rate *= 0.7（比 429 轻柔的自适应减速，§4.5 信号表）。
+    # 用具名函数而非 lambda：lambda 在这里无法让 mypy 推出 `on_rebuild` 所需的
+    # `Callable[[str, str], None]`（推断成 `Callable[[Any, Any], float]`，返回 float
+    # 而非 None，且参数类型无法收敛）。`reason` 是回调契约的一部分（`ClientPool`
+    # 重建时必传），此处只做降速不区分原因，故不读该参数。
+    def _on_pool_rebuild(host: str, reason: str = "pool_rebuilt") -> None:
+        limiter.penalize(host, 0.7)  # noqa: ARG005 - reason 属回调契约，此处不区分原因
+
     pool = ClientPool(
         timeout=settings.httpx_timeout(),
         limits=settings.httpx_limits(),
         headers={"User-Agent": settings.user_agent, "Accept": "application/json, text/xml;q=0.9"},
         proxy_url=settings.proxy_url,
         http2=settings.http2,
-        # 池重建 → rate *= 0.7（比 429 轻柔的自适应减速，§4.5 信号表）。
-        # `reason` 是回调契约的一部分（`ClientPool` 会传），此处只做降速不区分原因。
-        on_rebuild=lambda host, reason="pool_rebuilt": limiter.penalize(host, 0.7),  # noqa: ARG005
+        on_rebuild=_on_pool_rebuild,
     )
 
     fetcher = Fetcher(

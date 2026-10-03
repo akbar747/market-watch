@@ -76,7 +76,7 @@ class RobotsGuard:
         *,
         timeout_s: float = 10.0,
         ttl_s: int = ROBOTS_CACHE_TTL_S,
-        transport_factory: Callable[[], httpx.AsyncTransport] | None = None,
+        transport_factory: Callable[[], httpx.AsyncBaseTransport] | None = None,
         on_deny: Callable[[str, str], None] | None = None,
         preloaded: dict[str, RobotsRecord] | None = None,
     ) -> None:
