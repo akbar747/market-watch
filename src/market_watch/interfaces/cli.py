@@ -15,6 +15,7 @@ import json
 import os
 from pathlib import Path
 import re
+import sqlite3
 import sys
 from typing import Final
 
@@ -37,6 +38,9 @@ _log = get_logger("market_watch.cli")
 
 EXIT_OK: Final[int] = 0
 EXIT_POLICY: Final[int] = 2
+#: 存储层异常（库打不开 / 不是库 / 无权限）。与 EXIT_POLICY 区分开：前者是
+#: 「配置或环境不对」，后者是「合规检查没过」，CI 里要靠退出码分派，别混用。
+EXIT_STORAGE: Final[int] = 3
 
 #: 出网方法白名单（§11.3 policy-check 第 6 项）
 ALLOWED_METHODS_TXT: Final[str] = "GET, HEAD"
@@ -362,7 +366,18 @@ def cmd_gc(settings: Settings, now_iso: str | None, *, as_json: bool) -> int:
     now = datetime.fromisoformat(now_iso.replace("Z", "+00:00")) if now_iso else utc_now()
     from ..infrastructure.storage.maintenance import run_gc
 
-    stats = run_gc(settings.db_path, now=now)
+    # ★ 存储层异常在 CLI 边界收口，不把 traceback 直吐给用户。
+    #   与 `Repository` 空库 traceback（零字节占位 + `_ready` + `_query` 那套）
+    #   同一类兜底思路：存储内部自己认「空库」是正常态（`Maintenance.gc()` 里
+    #   有幂等 `apply_migrations`），空库根本到不了这里；能到这里的只有
+    #   「库文件打不开 / 不是库 / 无权限 / 磁盘满」这类真异常，它们统一收成
+    #   一条可读提示 + `EXIT_STORAGE`，保留 `exc` 供日志定位。
+    try:
+        stats = run_gc(settings.db_path, now=now)
+    except (sqlite3.Error, OSError) as exc:
+        _log.error("gc.failed db_path=%s err=%s", settings.db_path, exc)
+        print(f"[ERROR] GC 失败：{exc}（db_path={settings.db_path}）", file=sys.stderr)
+        return EXIT_STORAGE
     if as_json:
         print(json.dumps(stats, ensure_ascii=False, indent=2, default=str))
     else:
