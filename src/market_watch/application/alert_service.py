@@ -97,43 +97,42 @@ def load_rules(path) -> tuple[Rule, ...]:  # noqa: ANN001 - Path
     return _rules_from_mapping(data)
 
 
-#: `kind` / `severity` 的白名单。`Rule` 是 frozen dataclass——它字段上的 `Literal`
-#: 只给类型检查器看，运行时**不校验**；配置又是外部 YAML，所以合法值集合必须在
-#: 这条边界上显式写死。非法值若放过去，`detect` → `_triggered` **没有「未知 kind」
-#: 分支**，直接落到 `curr >= threshold`（abs 语义），而告警文案却仍按 pct 拼——
-#: 配置的语义被悄悄换掉，日志里一点痕迹都没有，比直接报错更危险。
+#: `kind` / `severity` 的合法值白名单。`Rule` 是 `@dataclass(frozen=True)`——字段上的
+#: `Literal` **只给类型检查器看，运行时不校验**；配置又是外部 YAML，所以合法值集合必须
+#: 在这条边界上显式写死。
+#:
+#: ★ 这两个枚举**没有自然默认值**（`kind` 拼错一个字母就换一整套语义），因此非法值的
+#: 处理与 `threshold` / `window` / `cooldown_seconds` 这些数值字段完全一致：
+#: **记 error 日志 + 跳过该规则**。绝不「退回默认值」——把非法 `kind` 静默变成 `abs`
+#: 更糟：用户会照常收到警报，但文案是 pct 的、阈值是绝对值（见 `_triggered` 无
+#: 「未知 kind」分支，非法值一路掉到 `curr >= threshold`）。
 _KINDS: Final[frozenset[Literal["pct", "zscore", "abs"]]] = frozenset({"pct", "zscore", "abs"})
-_KIND_FALLBACK: Final[Literal["pct", "zscore", "abs"]] = "pct"
 _SEVERITIES: Final[frozenset[Literal["info", "warn", "critical"]]] = frozenset(
     {"info", "warn", "critical"}
 )
-_SEVERITY_FALLBACK: Final[Literal["info", "warn", "critical"]] = "warn"
+_DEFAULT_KIND: Final[Literal["pct", "zscore", "abs"]] = "pct"
+_DEFAULT_SEVERITY: Final[Literal["info", "warn", "critical"]] = "warn"
 
 
 def _rules_from_mapping(data: Mapping) -> tuple[Rule, ...]:
     out: list[Rule] = []
     for raw in data.get("rules", []):
-        # ★ 白名单校验放在 try 之外：不合法只记 error 日志 + 退回默认值，绝不外抛
-        kind_raw = str(raw.get("kind", _KIND_FALLBACK))
-        kind: Literal["pct", "zscore", "abs"] = _KIND_FALLBACK
-        if kind_raw in _KINDS:
-            kind = kind_raw
-        else:
-            _log.error(
-                "alerts.rule.kind_invalid raw=%s kind=%r -> 退回 %r", raw, kind_raw, _KIND_FALLBACK
-            )
+        # ★ 白名单校验在 try 之外：非法值记 error 日志 + 跳过该规则，不外抛、不降级。
+        # 两个 `Literal` 注解是为了让 mypy 把 `kind_raw / sev_raw` 从 `str` 收窄到
+        # 字面量联合——`Rule` 的字段是 `Literal[...]`，直接传 `str` 类型检查过不去。
+        kind_raw = str(raw.get("kind", _DEFAULT_KIND))
+        if kind_raw not in _KINDS:
+            _log.error("alerts.rule.kind_invalid raw=%s kind=%r -> 跳过该规则", raw, kind_raw)
+            continue
+        kind: Literal["pct", "zscore", "abs"] = kind_raw
 
-        sev_raw = str(raw.get("severity", _SEVERITY_FALLBACK))
-        severity: Literal["info", "warn", "critical"] = _SEVERITY_FALLBACK
-        if sev_raw in _SEVERITIES:
-            severity = sev_raw
-        else:
+        sev_raw = str(raw.get("severity", _DEFAULT_SEVERITY))
+        if sev_raw not in _SEVERITIES:
             _log.error(
-                "alerts.rule.severity_invalid raw=%s severity=%r -> 退回 %r",
-                raw,
-                sev_raw,
-                _SEVERITY_FALLBACK,
+                "alerts.rule.severity_invalid raw=%s severity=%r -> 跳过该规则", raw, sev_raw
             )
+            continue
+        severity: Literal["info", "warn", "critical"] = sev_raw
 
         try:
             out.append(
