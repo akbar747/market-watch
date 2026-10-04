@@ -52,7 +52,8 @@
 - `gc` / `status` 在空库上不再抛 `OperationalError` / `no such table`：零字节占位 + 只读打开 + `_ready` 探测。
 - GBK 控制台打印 `⚠️` 崩溃：运行时钩子 `SetConsoleOutputCP(65001)` + 入口 `sys.stdout.reconfigure(encoding="utf-8")` 双重兜底。
 - 格式化器只保留 black（`line-length=100`），移除 `ruff format` 门禁；`ruff` / `black` / `mypy` 的版本上限与 `.pre-commit-config.yaml` 的 rev 对齐。
-- `gw2_prices` / `gw2_listings` 里各有一份的 `_as_int` **抽成公共 helper** `infrastructure/adapters/_coerce.py` 并对齐语义：原先两侧对 `bool` 的处理分叉（`True` → `1` vs `None`），现统一为 **`bool` → `None`**——`True` 被静默强转成单价 `1` 会让脏数据以合法身份混入均价与告警基线，代价远大于丢掉一个观测点。`tests/unit/test_gw2_int_coercion.py` 有一条判函数对象同一性的用例锁住「不会再漂回两份」。**已知缺口**：判成 `None` 后与「该侧本来无挂单」在下游无法区分（两者都是合法态），脏输入会被静默吸收、不留 `ConsistencyViolation`；要可观测需在 adapter 的 `_one` 里区分「键不存在」与「键存在但不可转」，留作后续项。
+- `gw2_prices` / `gw2_listings` 里各有一份的 `_as_int` **抽成公共 helper** `infrastructure/adapters/_coerce.py` 并对齐语义：原先两侧对 `bool` 的处理分叉（`True` → `1` vs `None`），现统一为 **`bool` → `None`**——`True` 被静默强转成单价 `1` 会让脏数据以合法身份混入均价与告警基线，代价远大于丢掉一个观测点。`tests/unit/test_gw2_int_coercion.py` 有一条判函数对象同一性的用例锁住「不会再漂回两份」。
+- 上一条的**后续项也一并收口**：`_coerce.as_int_field` 把「键不存在 / 值为 `null`」与「键存在但不可转」分开，脏值（如 `unit_price: true`）现在会留下一条 `schema.field_not_integer`（`warn`），不再被静默吸收。反向约束同样钉住：无挂单侧的 `{}` 与显式 `null` **不算脏**，否则真实数据里成千上万个无买盘物品会刷出一屏告警把真问题淹掉——已在真实录制的 fixture 上验证新规则命中数为 **0**。
 
 ### 质量门（打 tag 时的实测值）
 
@@ -61,7 +62,7 @@
 | `mypy` | `Success: no issues found in 59 source files` |
 | `ruff check` | `All checks passed` |
 | `black --check` | `85 files unchanged` |
-| `pytest` | `260 passed / 0 failed`（260 collected） |
+| `pytest` | `269 passed / 0 failed`（269 collected） |
 | 覆盖率 | `50%`（CI 闸门 `--cov-fail-under=35`） |
 | CI | 13 个 step，含 source / exe 双份 `policy-check`、domain purity AST 静态检查、gitleaks 密钥扫描 |
 

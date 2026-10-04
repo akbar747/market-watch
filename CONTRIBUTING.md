@@ -40,7 +40,7 @@ PYTHONPATH=src python bench/bench_fetch.py
 
 需要这么写的入口（截至 2026-10-03）：`examples/fetch_one_item.py`、`examples/alert_webhook.py`、`examples/smoke_policy_check.py`、`scripts/check_layers.py`、`scripts/_record_fixtures.py`、`bench/bench_fetch.py`；以及 `PYTHONPATH=src python mw_ast_check.py` 这类一次性自查脚本（不进仓库，跑相对导入校验时必须带它，否则父包都 import 不进去，会凭空多出一堆假报错）。
 
-**`pytest` 不用管**：`pyproject.toml` 的 `[tool.pytest.ini_options]` 已经写了 `pythonpath = ["src"]`，裸跑 `uv run pytest` 收得到全部用例（实测 260 个、0 collection error）。
+**`pytest` 不用管**：`pyproject.toml` 的 `[tool.pytest.ini_options]` 已经写了 `pythonpath = ["src"]`，裸跑 `uv run pytest` 收得到全部用例（实测 269 个、0 collection error）。
 
 业务入口不要手敲模块路径，用控制台脚本：
 
@@ -68,8 +68,8 @@ black --check src/market_watch/application/alert_service.py
 
 ## 4. 测试与覆盖率
 
-- 当前 `pytest` 实测 **260 passed / 0 failed**（2026-10-04）。
-- 覆盖率实测 **50%**（`TOTAL 3987 1899 920 59`），CI 闸门 `--cov-fail-under=35`。**闸门就是 35，不设更高档位，也不是发布阻塞项**；缺口集中在编排层（`orchestrator` / `fanout` / `dedupe` / `scheduler` / `config` / `rates`），采集与落库主路径已覆盖。要补就从编排层补，补完再自行上调闸门，本文件不规定上调路线。
+- 当前 `pytest` 实测 **269 passed / 0 failed**（2026-10-04）。
+- 覆盖率实测 **50%**（`TOTAL 4012 1899 932 59`），CI 闸门 `--cov-fail-under=35`。**闸门就是 35，不设更高档位，也不是发布阻塞项**；缺口集中在编排层（`orchestrator` / `fanout` / `dedupe` / `scheduler` / `config` / `rates`），采集与落库主路径已覆盖。要补就从编排层补，补完再自行上调闸门，本文件不规定上调路线。
 - **不要为了让 CI 变绿而删测试、加 `--deselect`、加 `-p no:cacheprovider`。**
 
 ### 本机跑 pytest 会遇到的两个环境坑（不是测试失败）
@@ -95,7 +95,7 @@ uv run coverage report | tail -1
 ```bash
 PYTHONPATH=src CODEBUDDY_SAFE_DELETE_ENABLED=0 uv run pytest --junitxml=/tmp/junit.xml -q >/dev/null 2>&1
 uv run python -c "import xml.etree.ElementTree as ET;s=ET.parse('/tmp/junit.xml').getroot();s=s if s.tag=='testsuite' else s.find('testsuite');print({k:s.attrib[k] for k in ('tests','failures','errors','skipped')})"
-# 实测输出：{'tests': '260', 'failures': '0', 'errors': '0', 'skipped': '0'}
+# 实测输出：{'tests': '269', 'failures': '0', 'errors': '0', 'skipped': '0'}
 ```
 
 所以本机的退出码 / 汇总行**不可作为门禁判据**；`--junitxml` 的 `failures`+`errors` 才是。CI 在 Linux 上跑不受这两个坑影响，正常看汇总行即可。

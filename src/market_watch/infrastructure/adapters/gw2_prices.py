@@ -39,7 +39,7 @@ from ...domain.models import (
     ResponseView,
     utc_now,
 )
-from ._coerce import as_int
+from ._coerce import as_int_field
 
 __all__ = ["HOST", "MAX_PAGE_SIZE", "PATH", "Gw2PricesAdapter"]
 
@@ -210,15 +210,44 @@ class Gw2PricesAdapter:
         if not isinstance(sells, dict):
             sells = {}
 
+        buy_unit_price, buy_price_dirty = as_int_field(buys, "unit_price")
+        buy_quantity, buy_qty_dirty = as_int_field(buys, "quantity")
+        sell_unit_price, sell_price_dirty = as_int_field(sells, "unit_price")
+        sell_quantity, sell_qty_dirty = as_int_field(sells, "quantity")
+
+        # 脏字段（键存在但不可转成整数）单独留痕：无挂单侧是 `{}`，那是合法态不算脏。
+        # 这里只报不改——记录照常产出，脏值按 `as_int` 的语义保持 None。
+        dirty_fields = (
+            ("buys.unit_price", buy_price_dirty),
+            ("buys.quantity", buy_qty_dirty),
+            ("sells.unit_price", sell_price_dirty),
+            ("sells.quantity", sell_qty_dirty),
+        )
+        for field, is_dirty in dirty_fields:
+            if not is_dirty:
+                continue
+            side, name = field.split(".")
+            observed = (buys if side == "buys" else sells).get(name)
+            failures.append(
+                ConsistencyViolation(
+                    rule="schema.field_not_integer",
+                    item_id=item_id,
+                    field=field,
+                    observed=repr(observed),
+                    expected="整数，或该侧无挂单时整个对象缺省（{}）",
+                    severity="warn",
+                )
+            )
+
         tick = PriceTick(
             source_id=self.source_id,
             item_id=item_id,
             observed_at=observed_at,
             cycle_id=cycle_id,
-            buy_unit_price=as_int(buys.get("unit_price")),
-            buy_quantity=as_int(buys.get("quantity")),
-            sell_unit_price=as_int(sells.get("unit_price")),
-            sell_quantity=as_int(sells.get("quantity")),
+            buy_unit_price=buy_unit_price,
+            buy_quantity=buy_quantity,
+            sell_unit_price=sell_unit_price,
+            sell_quantity=sell_quantity,
             whitelisted=bool(raw.get("whitelisted", False)),
             quality="COMPLETE",
         )

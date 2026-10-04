@@ -522,8 +522,8 @@ python release/build_exe.py       # 产物 release/dist/market-watch/ + .zip，�
 
 ## 当前进度与已知问题
 
-- ✅ Phase 1 架构 + Phase 2 采集与落库实现完成，测试 **260 passed / 0 failed**（2026-10-04 实测）。
-- 覆盖率 **50%**（出处：`pytest --cov=market_watch` 的 TOTAL 行 `TOTAL 3987 1899 920 59`，2026-10-04 实测）。CI 闸门是 `--cov-fail-under=35`——**闸门就是 35，没有别的数**。缺口集中在 `storage/*`、`orchestrator`、`fetcher`、`lifecycle`、`interfaces/web/*`、`cli.py` 这几层，**这几块的用例欢迎来补，直接提 PR**：补完若想上调闸门，只改 `.github/workflows/ci.yml` 里那一处 `--cov-fail-under`（本项目不设更多档位）。
+- ✅ Phase 1 架构 + Phase 2 采集与落库实现完成，测试 **269 passed / 0 failed**（2026-10-04 实测）。
+- 覆盖率 **50%**（出处：`pytest --cov=market_watch` 的 TOTAL 行 `TOTAL 4012 1899 932 59`，2026-10-04 实测）。CI 闸门是 `--cov-fail-under=35`——**闸门就是 35，没有别的数**。缺口集中在 `storage/*`、`orchestrator`、`fetcher`、`lifecycle`、`interfaces/web/*`、`cli.py` 这几层，**这几块的用例欢迎来补，直接提 PR**：补完若想上调闸门，只改 `.github/workflows/ci.yml` 里那一处 `--cov-fail-under`（本项目不设更多档位）。
   - 约定只有一条：**不要为了让 CI 变绿而删测试、加 `--deselect`、或加 `-p no:cacheprovider`**。覆盖率是随补随涨的，不是靠调闸门涨的。
 - ⚠️ **`cli.py` 的相对导入曾有三处写错（已修复，留档以防回退）**：`src/market_watch/interfaces/cli.py` 里函数体的延迟导入曾写成 `from ...domain`（三层，包深度只有 2，越界）、`from ..wiring import build_runtime` 与 `from ..web.app import create_app`（少一层点，分别解析成不存在的 `market_watch.wiring` / `market_watch.web`）。正确写法是 `from ..domain`、`from .wiring`、`from .web.app`。修复前 `once` / `serve` 一跑就崩，`policy-check` 也因为启动失败跑不完。现在 `cli.py` 这三条都已改对并留了注释。
   - 别顺手改错的地方：`interfaces/web/{app,routes,deps}.py` 里的 `from ...application / ...domain / ...infrastructure / ...logging_setup` **是对的**（它们在包 `market_watch.interfaces.web` 下，三点相对导入等于 `market_watch.*`），改成两层反而会 `No module named 'market_watch.interfaces.application'`。

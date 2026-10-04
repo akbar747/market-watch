@@ -35,7 +35,7 @@ from ...domain.models import (
     utc_now,
 )
 from ...domain.policy import scan_pii
-from ._coerce import as_int
+from ._coerce import as_int_field
 
 __all__ = ["HOST", "PATH", "Gw2ListingsAdapter"]
 
@@ -202,6 +202,7 @@ class Gw2ListingsAdapter:
         observed_at: datetime,
         cycle_id: str,
     ) -> tuple[ListingLevel | None, list[ConsistencyViolation]]:
+        failures: list[ConsistencyViolation] = []
         if not isinstance(raw, dict):
             return None, [
                 ConsistencyViolation(
@@ -213,11 +214,30 @@ class Gw2ListingsAdapter:
                     severity="critical",
                 )
             ]
-        unit_price = as_int(raw.get("unit_price"))
-        quantity = as_int(raw.get("quantity"))
-        listings = as_int(raw.get("listings"))
+        unit_price, price_dirty = as_int_field(raw, "unit_price")
+        quantity, qty_dirty = as_int_field(raw, "quantity")
+        listings, listings_dirty = as_int_field(raw, "listings")
+
+        # 脏值单独留痕：与「字段根本没给」区分开（后者走下面的 level_missing_field）。
+        for name, is_dirty in (
+            ("unit_price", price_dirty),
+            ("quantity", qty_dirty),
+            ("listings", listings_dirty),
+        ):
+            if is_dirty:
+                failures.append(
+                    ConsistencyViolation(
+                        rule="schema.field_not_integer",
+                        item_id=item_id,
+                        field=f"{side}.{name}",
+                        observed=repr(raw[name]),
+                        expected="整数",
+                        severity="warn",
+                    )
+                )
+
         if unit_price is None or quantity is None:
-            return None, [
+            failures.append(
                 ConsistencyViolation(
                     rule="schema.level_missing_field",
                     item_id=item_id,
@@ -226,7 +246,8 @@ class Gw2ListingsAdapter:
                     expected="两个字段均为整数",
                     severity="critical",
                 )
-            ]
+            )
+            return None, failures
         level = ListingLevel(
             source_id=self.source_id,
             item_id=item_id,

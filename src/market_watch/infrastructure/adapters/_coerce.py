@@ -32,18 +32,18 @@ JSON 的 `true` / `false` 出现在 `id` / `unit_price` / `quantity` / `listings
 `float("inf")` / `float("-inf")` 走的是 `OverflowError`，不在 `try` 的捕获范围内，
 统一前后行为一致。此处刻意不把它写进测试，免得把「没兜住」这个现状固化成契约。
 
-已知缺口（本次合并未修，记账）
-----------------------------
-判成 `None` 之后，「这里是脏数据」和「该侧本来就没有挂单」在下游无法区分：GW2 确实
-会对无买盘的物品返回空对象，`validate_tick` 把 None 价格当合法态，所以 `unit_price:
-true` 落到 None 后就被静默吸收了，不留 `ConsistencyViolation`。要让它可观测，得在
-adapter 的 `_one` 里区分「键不存在」与「键存在但不可转」——那是一次 parse 层改动，
-本次只统一 coercion 语义，故只做记录，不改行为。
+字段级脏值判定（`as_int_field`）
+------------------------------
+「该侧无挂单」和「这个字段是脏数据」在 `as_int` 的输出里都是 `None`，而下游
+`validate_tick` 又因为「无买盘」是合法态而不报警，于是脏输入会被彻底静默吸收。
+`as_int_field` 就是用来把这两种情形分开的：见下方它的 docstring。
 """
 
 from __future__ import annotations
 
-__all__ = ["as_int"]
+from collections.abc import Mapping
+
+__all__ = ["as_int", "as_int_field"]
 
 
 def as_int(value: object) -> int | None:
@@ -70,3 +70,32 @@ def as_int(value: object) -> int | None:
     except (TypeError, ValueError):
         # 不可转整数（如 `int("abc")`）→ None
         return None
+
+
+def as_int_field(raw: Mapping[str, object], key: str) -> tuple[int | None, bool]:
+    """取一个整数字段，并把「字段不存在」与「字段存在但不可转」分开。
+
+    为什么要有这个二元组：`as_int` 把「无挂单」和「脏数据」都压成 `None`，而下游
+    `validate_tick` 又认定「无买盘」是合法态、不报警——于是 `unit_price: true`
+    这类脏输入落到 None 之后就被彻底静默吸收，官方哪天改了响应结构我们不会知道。
+    这里把两种情形分开，让 adapter 能给脏值留一条可排查的 `ConsistencyViolation`。
+
+    **显式 `null` 与「键不存在」同义，都不算脏**：官方对无挂单的一侧返回的是空对象
+    `{}`，不用 `null` 表示价格；假如把 `null` 也算脏，`{"unit_price": null}`
+    这种无害输入会刷出一堆噪音，反而淹没真正的问题。
+
+    Args:
+        raw: 已确认是 dict 的单条原始记录（挂单侧的对象或挂单档位对象）。
+        key: 字段名。
+
+    Returns:
+        `(值, 是否脏)`。脏 = 键在、值不是 `null`、但 `as_int` 判为不可转。
+        值本身仍然是「不可转 → None」，与 `as_int` 完全一致，本函数只多给一个标记。
+    """
+    if key not in raw:
+        return None, False
+    value = raw[key]
+    if value is None:
+        return None, False
+    coerced = as_int(value)
+    return coerced, coerced is None
