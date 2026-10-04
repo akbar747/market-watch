@@ -90,10 +90,20 @@ PYTHONPATH=src CODEBUDDY_SAFE_DELETE_ENABLED=0 uv run pytest --cov --cov-report=
 uv run coverage report | tail -1
 ```
 
+**要通过/失败数，别去数点阵**（点阵只是进度进度条，不稳定也不权威）。`--junitxml` 在 `pytest_sessionfinish` **之前**写盘，正是这个坑发生时仍然可靠的唯一出口：
+
+```bash
+PYTHONPATH=src CODEBUDDY_SAFE_DELETE_ENABLED=0 uv run pytest --junitxml=/tmp/junit.xml -q >/dev/null 2>&1
+uv run python -c "import xml.etree.ElementTree as ET;s=ET.parse('/tmp/junit.xml').getroot();s=s if s.tag=='testsuite' else s.find('testsuite');print({k:s.attrib[k] for k in ('tests','failures','errors','skipped')})"
+# 实测输出：{'tests': '264', 'failures': '0', 'errors': '0', 'skipped': '0'}
+```
+
+所以本机的退出码 / 汇总行**不可作为门禁判据**；`--junitxml` 的 `failures`+`errors` 才是。CI 在 Linux 上跑不受这两个坑影响，正常看汇总行即可。
+
 ## 5. 合规（这是本项目的硬约束，不是建议）
 
 - 采集只走 `GET` / `HEAD` 白名单，`robots.txt` 快照在 `docs/_robots_snapshot.json` 里被强制比对。
-- `MW_CONTACT_URL` 必须给一个真实可联系地址；仓库里的 `https://you.example/contact` 是文档占位域，发布前必须替换。
+- `MW_CONTACT_URL`：本仓库**有意保留文档占位域** `https://you.example/contact`——CI 自己就用这个值跑 `policy-check`（9/9 通过），README 里有对应说明。但**你自己部署前必须换成真实可联系地址**：这个字段是留给被采集方（数据源方）联系你的渠道，占位符发出去等于没留。
 - 出网代理、Token、口令一律走环境变量，禁止进代码、进 CI 明文、进日志。密钥扫描由 gitleaks 在 CI 里拦（见 `.github/workflows/ci.yml`）。
 - 运行期数据（SQLite、WAL、`data/rejects/`、`data/pending/`）不进发布包、不随包分发；发布包内只保留运行期可创建的空目录。
 

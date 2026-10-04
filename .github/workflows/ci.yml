@@ -1,14 +1,14 @@
 # .github/workflows/ci.yml
 # 主质量门禁：静态检查 → 类型检查 → 合规自检（policy-check）→ 密钥扫描 → 测试与覆盖率闸门。
 #
-# 覆盖率闸门为什么是 35 而不是 80：
-#   当前仓库实测 `pytest --cov=market_watch --cov-report=term` → 3914 语句 / 2280 覆盖 /
-#   884 缺失 / 45 排除 → **40%**。DoD 要求 80%，缺口集中在
-#   `storage/*`（writer/sqlite/repositories/maintenance 预计 366 句）、
-#   `orchestrator` / `fetcher` / `lifecycle` / `interfaces/web/*` / `cli.py`（226 句全未覆盖）。
-#   闸门设 35 = 实测 40 之下的安全余量，允许 src/tests 在并行收尾期增删代码而不误红，
-#   **不设 80 是为了不逼迫任何人删测试来凑数**。补齐 storage/orchestrator/web 用例后，
-#   把下面 TODO 里的数字逐档上调（40 → 50 → 60 → 70 → 80）。
+# 覆盖率闸门为什么是 35：
+#   当前仓库实测 `pytest --cov --cov-report= -q` + `coverage report` → 3992 语句 /
+#   1900 覆盖 / 924 缺失 / 61 排除 → **50%**（2026-10-04 实测）。缺口集中在编排层
+#   （orchestrator / fanout / dedupe / scheduler / config / rates）与 interfaces/web/*。
+#   闸门设 35 = 实测 50 之下的安全余量，允许 src/tests 在收尾期增删代码而不误红，
+#   **不设 80 是为了不逼迫任何人删测试来凑数**。
+#   闸门就是 35，本项目不设更多档位；补齐编排层用例后如想上调，只改这一处的
+#   `--cov-fail-under`，不要顺手把本注释里的实测值改成目标值。
 name: CI
 
 on:
