@@ -2,7 +2,7 @@
 
 `docs/demo.gif` **已录制并入库**（`fe69c59`）：5 帧 / 1406×803 / 76 KB / 总时长 7800 ms / 无限循环，录于 v0.1.0。
 
-本文件不是"录制计划"，是**怎么重录出同样一版**的说明——脚本在 [`scripts/record_demo_gif.py`](../scripts/record_demo_gif.py)（352 行，commit `e5864a3`），**本文件内不含任何脚本**。
+本文件不是"录制计划"，是**怎么重录出同样一版**的说明——脚本在 [`scripts/record_demo_gif.py`](../scripts/record_demo_gif.py)（412 行；改动历史用 `git log -- scripts/record_demo_gif.py` 看，本文件不再钉具体 hash，免得改一次脚本就过期一次），**本文件内不含任何脚本**。
 
 README 顶部的引用位（以 README 为准，两处 alt 文案必须一致）：
 
@@ -58,7 +58,8 @@ python scripts/record_demo_gif.py --verify docs/demo.gif   # 废帧自检
 ```
 usage: record_demo_gif.py [-h] [--verify GIF] [--url URL] [--out OUT]
                           [--edge EDGE] [--cdp-port CDP_PORT]
-                          [--search SEARCH] [--min-diff MIN_DIFF]
+                          [--search SEARCH] [--keep-frames DIR]
+                          [--min-diff MIN_DIFF]
 ```
 
 | 参数 | 说明 | 默认 |
@@ -68,15 +69,17 @@ usage: record_demo_gif.py [-h] [--verify GIF] [--url URL] [--out OUT]
 | `--edge` | Edge 可执行文件路径 | 自动探测（PATH 与两处常见安装路径） |
 | `--cdp-port` | CDP 调试端口 | `9333` |
 | `--search` | 第 2 帧在搜索框输入的关键字 | `Mighty` |
+| `--keep-frames` | 把 5 张中间 PNG 留在该目录（默认写临时目录并清掉，避免把 `docs/` 弄脏） | — |
 | `--min-diff` | 废帧判定阈值（比例） | `0.002` |
 | `--verify GIF` | 只自检已有 GIF 的帧间差异，不录制 | — |
 
 ---
 
-## 3. 脚本内建的两个防坑（都是真踩过的）
+## 3. 脚本内建的三个防坑（都是真踩过的）
 
 1. **搜到的物品不能还是表单默认的 `item_id=24`**：那样第 4 帧会和帧 3 一模一样（图表根本没动）。脚本检测到这种情况会打印告警，让你换 `--search`。**第一版就踩了**：搜 `Snow` 选中的仍是 #24，帧间差异只有 0.068%。
 2. **`--verify` 会逐段算相邻帧平均像素差**，低于 0.2% 阈值判为废帧并**返回退出码 1**。别把退出码 1 当成"脚本挂了"，那是它在告诉你"这帧白录了"。
+3. **关 Edge 别用 `taskkill /T /PID`**（脚本早期版本踩过）：`msedge.exe` 启动后会把真正的浏览器进程**另起一个**，launcher 自身随即退出，于是手里的 pid 已经不是进程树的根，`/T` 找不到子进程。后果是每录一轮就攒下 **12 个孤儿 headless 进程**，外加删不掉的临时 profile 目录（`WinError 32` 卡在文件句柄上）。脚本现在的做法是**按 `--user-data-dir` 匹配命令行**精确结束——每次录制都是唯一临时目录，所以只会命中本次启的进程，**不会碰你自己开着的 Edge**。
 
 ### `--verify` 实测输出（已入库那版）
 
