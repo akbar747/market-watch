@@ -1,0 +1,106 @@
+# .github/workflows/probe.yml
+# 临时诊断探针（v2）：只由 `probe-*` tag 触发，跑完即删。
+#
+# v1 探针忘了先装 uv（GitHub runner 不预装 uv），红在 `uv --version` 上，
+# 白跑一趟。v2 把 release.yml 的前半段**逐步**复刻一遍，每一步单独一个
+# step、各自独立失败，哪一步红就能直接对上 release.yml 里的哪一步。
+#
+# 目的：release.yml / ci.yml 在远端各跑一次都是 exit 1，而本机网络下
+# api.github.com 不可达、拿不到 job 日志；run 页的步骤列表是 JS 异步
+# 加载，服务端 HTML 里也没有。只能靠这种「逐步探针」把红点逼出来。
+#
+# 用完必须删除本文件与所有 probe-* tag。
+name: EnvProbe
+
+on:
+  push:
+    tags: ["probe-*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUTF8: "1"
+  UV_PYTHON: "3.13"
+
+jobs:
+  probe:
+    name: probe release.yml steps one by one
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - name: p0 checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: p1 install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: false
+
+      - name: p2 uv version
+        run: uv --version
+
+      - name: p3 set up python 3.13
+        run: uv python install 3.13
+
+      - name: p4 uv pip install -e .
+        # release.yml 里最要紧的一条：注释里写「少了这一步 CI 上打出来的
+        # exe 是绿壳」。这里单独跑一次，看它到底能不能在 runner 上成。
+        run: uv pip install --python 3.13 -e .
+
+      - name: p5 import runtime deps
+        run: uv run --python 3.13 python -c "import market_watch, httpx, pydantic, pydantic_settings, structlog, feedparser, uvicorn, fastapi, jinja2; print('runtime imports OK')"
+
+      - name: p6 uv pip install pyinstaller
+        run: uv pip install --python 3.13 pyinstaller
+
+      - name: p7 uv build (wheel/sdist)
+        run: uv build --python 3.13 --out-dir release/dist
+
+      - name: p8 build_exe.py（完整发布链路）
+        # 这一步本地跑过：27.1 MB zip + gc/once/reset/serve 四道冒烟全绿。
+        run: uv run --python 3.13 python release/build_exe.py
+
+      - name: p9 smoke --help / --version
+        run: |
+          ./release/dist/market-watch/market-watch.exe --help
+          ./release/dist/market-watch/market-watch.exe --version
+
+      - name: p10 smoke policy-check 9/9
+        shell: bash
+        env:
+          MW_CONTACT_URL: https://you.example/contact
+        run: |
+          out=$(./release/dist/market-watch/market-watch.exe policy-check) && echo "$out" || { echo "$out"; exit 1; }
+          echo "$out" | grep -q "合规检查通过 9/9"
+
+      - name: p11 smoke status
+        shell: bash
+        env:
+          MW_CONTACT_URL: https://you.example/contact
+        run: ./release/dist/market-watch/market-watch.exe status
+
+      - name: p12 assert zip clean
+        shell: bash
+        run: |
+          uv run --python 3.13 python -c "import sys, zipfile
+          zpath = 'release/dist/market-watch.zip'
+          banned = ('.db', '.db-wal', '.db-shm', 'serve-smoke.log')
+          hits = sorted(n for n in zipfile.ZipFile(zpath).namelist() if n.endswith(banned))
+          if hits:
+              print('::error::发布包里混进了构建产物：', file=sys.stderr)
+              for n in hits:
+                  print('   ', n, file=sys.stderr)
+              raise SystemExit(1)
+          print('发布包干净')"
+
+      - name: p13 verify vendored echarts
+        shell: bash
+        run: |
+          ls -l release/dist/market-watch/_internal/market_watch/interfaces/web/static/vendor/echarts.min.js
+          ls -l release/dist/market-watch/_internal/market_watch/infrastructure/storage/migrations/0001_init.sql
+          ls -l release/dist/market-watch/config/sources.yaml
+          ls -l release/dist/market-watch/docs/_robots_snapshot.json
