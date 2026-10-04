@@ -1,0 +1,70 @@
+# .github/workflows/probe.yml
+# 临时诊断探针：只由 `probe-*` tag 触发，跑完即删。
+#
+# 背景：release.yml 与 ci.yml 在 akbar747/market-watch 上各跑过一次，都是
+# exit code 1，而失败步骤看不到（api.github.com 在本机网络下不可达，
+# 拿不到 job 日志）。本探针的目的只有一个：把 ubuntu runner 上的 uv /
+# Python / 依赖解析 / gitleaks 下载这几条「本地无法 100% 复现」的环节
+# 单独跑一遍，让某一条红出来，从而定位 release.yml 真正挂在哪一步。
+#
+# 用完必须删除本文件，并删除 probe-* tag。
+name: EnvProbe
+
+on:
+  push:
+    tags: ["probe-*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUTF8: "1"
+  UV_PYTHON: "3.13"
+
+jobs:
+  probe:
+    name: probe uv / python / deps / gitleaks
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      # 每一步都独立，哪一步红一眼就能看出来（不要用 && 串起来，
+      # 否则第一红的会把后面的全吞掉，还看不出是哪条）。
+      - name: p0 checkout
+        uses: actions/checkout@v4
+
+      - name: p1 uv version
+        run: |
+          echo "uv: $(uv --version)"
+          echo "PATH_UV=$(command -v uv)"
+          echo "runner python: $(python3 --version 2>&1)"
+
+      - name: p2 install python 3.13
+        run: |
+          uv python install 3.13
+          uv python list
+
+      - name: p3 uv sync --extra dev
+        # 最可疑的一步：本地用已存在的 venv 跑门禁是全绿的，
+        # 云端则是全新解析（仓库未提交 uv.lock），26 秒就 exit 1 的
+        # CI 很可能是栽在这里。
+        run: uv sync --extra dev --python 3.13
+
+      - name: p4 runtime imports
+        run: uv run python -c "import market_watch, httpx, pydantic, pydantic_settings, structlog, feedparser, uvicorn, fastapi, jinja2; print('runtime imports OK')"
+
+      - name: p5 uv build
+        run: uv build --python 3.13 --out-dir release/dist
+
+      - name: p6 gitleaks download
+        run: |
+          set -euo pipefail
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v8.28.0/gitleaks_8.28.0_linux_x64.tar.gz" \
+            -o /tmp/gitleaks.tar.gz
+          sudo tar -xzf /tmp/gitleaks.tar.gz -C /usr/local/bin gitleaks
+          gitleaks version
+
+      - name: p7 pyinstaller importable
+        # 复刻 release.yml 里最容易「构建成功、跑不起来」的那条原理：
+        # 分析期必须能 import 运行期依赖。
+        run: uv pip install --python 3.13 pyinstaller
