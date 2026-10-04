@@ -35,6 +35,7 @@ from ...domain.models import (
     utc_now,
 )
 from ...domain.policy import scan_pii
+from ._coerce import as_int
 
 __all__ = ["HOST", "PATH", "Gw2ListingsAdapter"]
 
@@ -212,9 +213,9 @@ class Gw2ListingsAdapter:
                     severity="critical",
                 )
             ]
-        unit_price = _as_int(raw.get("unit_price"))
-        quantity = _as_int(raw.get("quantity"))
-        listings = _as_int(raw.get("listings"))
+        unit_price = as_int(raw.get("unit_price"))
+        quantity = as_int(raw.get("quantity"))
+        listings = as_int(raw.get("listings"))
         if unit_price is None or quantity is None:
             return None, [
                 ConsistencyViolation(
@@ -248,29 +249,6 @@ class Gw2ListingsAdapter:
     # ---- 合规区 ----
     def user_agent_suffix(self) -> str:
         return f"market-watch/{self._version} (+{self._contact_url})"
-
-
-def _as_int(value: object) -> int | None:
-    """把 JSON 原始字段转成整数；不可转（None / bool / `{}` / 其他结构）→ None。
-
-    Args:
-        value: `view.json()` 取出的原始字段。JSON 语法把它限定为 `int` / `float` /
-            `str` / `None`，其余标量（`{}` 空对象、`[]`、嵌套结构）一律 → None。
-
-    收窄理由：`view.json()` 声明返回 `Any`，参数只能标 `object`；而 `int(object)`
-    没有匹配的重载（typeshed 只接受 `str | bytes | SupportsInt | ...`），直接喂会把
-    返回值退化成 `Any` 并触发 `no-any-return`。故先用 `isinstance` 收窄再交给 `int()`。
-    """
-    if value is None or isinstance(value, bool):
-        # bool 是真 int 子类：JSON 里 `true` 不可能当 id / 单价，判 None 而非 int(True)=1
-        return None
-    if not isinstance(value, (int, float, str)):
-        return None
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        # 不可转整数（如 `int("abc")`）→ None，与收窄前完全一致
-        return None
 
 
 def _safe_json(view: ResponseView) -> object:

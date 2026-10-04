@@ -39,6 +39,7 @@ from ...domain.models import (
     ResponseView,
     utc_now,
 )
+from ._coerce import as_int
 
 __all__ = ["HOST", "MAX_PAGE_SIZE", "PATH", "Gw2PricesAdapter"]
 
@@ -214,10 +215,10 @@ class Gw2PricesAdapter:
             item_id=item_id,
             observed_at=observed_at,
             cycle_id=cycle_id,
-            buy_unit_price=_as_int(buys.get("unit_price")),
-            buy_quantity=_as_int(buys.get("quantity")),
-            sell_unit_price=_as_int(sells.get("unit_price")),
-            sell_quantity=_as_int(sells.get("quantity")),
+            buy_unit_price=as_int(buys.get("unit_price")),
+            buy_quantity=as_int(buys.get("quantity")),
+            sell_unit_price=as_int(sells.get("unit_price")),
+            sell_quantity=as_int(sells.get("quantity")),
             whitelisted=bool(raw.get("whitelisted", False)),
             quality="COMPLETE",
         )
@@ -251,30 +252,6 @@ class Gw2PricesAdapter:
 # ---------------------------------------------------------------------------
 # 局部工具（保持 adapter 无 IO）
 # ---------------------------------------------------------------------------
-def _as_int(value: object) -> int | None:
-    """官方对无挂单侧返回空对象 `{}` → None。None 是合法态，不是 0。
-
-    Args:
-        value: `view.json()` 取出的原始字段。JSON 语法把它限定为 `int` / `float` /
-            `str` / `None`，其余标量（`{}` 空对象、`[]`、嵌套结构）一律 → None。
-
-    收窄理由：`view.json()` 声明返回 `Any`，参数只能标 `object`；而 `int(object)`
-    没有匹配的重载（typeshed 只接受 `str | bytes | SupportsInt | ...`），直接喂会把
-    返回值退化成 `Any` 并触发 `no-any-return`。故先用 `isinstance` 收窄到 JSON 里
-    真正可能出现的三种标量，再交给 `int()`。
-    """
-    if value is None:
-        return None
-    if not isinstance(value, (int, float, str)):
-        # 显式覆盖 docstring 承诺的 `{}` / `[]` / 嵌套结构：整数不可转 → None
-        return None
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        # 不可转整数（如 `int("abc")`）→ None，与收窄前完全一致
-        return None
-
-
 def _safe_json(view: ResponseView) -> object:
     try:
         return view.json()
