@@ -175,9 +175,18 @@ def _js_string(value: str) -> str:
     return json.dumps(value)
 
 
-def record(url: str, out: Path, edge: str, cdp_port: int, search: str) -> int:
-    pictures = out.parent / "_frames"
-    pictures.mkdir(parents=True, exist_ok=True)
+def record(
+    url: str, out: Path, edge: str, cdp_port: int, search: str, keep_frames: str | None
+) -> int:
+    # 中间帧默认写临时目录并清掉——写到 GIF 旁边会把 `docs/` 弄脏（`git status`
+    # 里多出一个未跟踪目录）。要逐帧对照调试时用 `--keep-frames` 指定保留位置。
+    scratch: str | None = None
+    if keep_frames:
+        pictures = Path(keep_frames)
+        pictures.mkdir(parents=True, exist_ok=True)
+    else:
+        scratch = tempfile.mkdtemp(prefix="mw-gif-frames-")
+        pictures = Path(scratch)
     base = f"http://127.0.0.1:{cdp_port}"
 
     # ignore_cleanup_errors：Edge 的子进程可能还攥着 profile 里 Cache 的文件句柄
@@ -302,6 +311,8 @@ def record(url: str, out: Path, edge: str, cdp_port: int, search: str) -> int:
             _shutdown_edge(proc, profile)
             # 父进程退了不代表子进程松手；等一会儿让它们释放 profile 里的句柄。
             time.sleep(1.5)
+            if scratch is not None:
+                shutil.rmtree(scratch, ignore_errors=True)
 
     script = Path(__file__).resolve()
     with contextlib.suppress(ValueError):
@@ -369,6 +380,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--search", default="Mighty", help="第 2 帧在搜索框输入的关键字（别用命中的默认物品）"
     )
     parser.add_argument(
+        "--keep-frames",
+        default=None,
+        metavar="DIR",
+        help="把 5 张中间 PNG 留在该目录（默认写临时目录并清掉）",
+    )
+    parser.add_argument(
         "--min-diff",
         type=float,
         default=DEFAULT_MIN_DIFF,
@@ -386,7 +403,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             f"连不上看板 {args.url}。先起服务：market-watch serve --host 127.0.0.1 --port 8765"
         ) from exc
 
-    return record(args.url, args.out, find_edge(args.edge), args.cdp_port, args.search)
+    return record(
+        args.url, args.out, find_edge(args.edge), args.cdp_port, args.search, args.keep_frames
+    )
 
 
 if __name__ == "__main__":
