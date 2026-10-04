@@ -1,0 +1,121 @@
+# .github/workflows/probe.yml
+# 临时诊断探针（v4）：只由 `probe-*` tag 触发，跑完即删。
+#
+# 为什么是这种样子：本机网络下 api.github.com 不可达（拿不到 job 日志），
+# 而 GitHub run 页的步骤列表是 JS 异步加载、服务端 HTML 里根本没有步骤名。
+# 唯一能从服务端 HTML 读到的就是 **annotation 区** —— 所以这里用
+# `::error::` 把每一步的真实退出码和输出打进去，annotation 区就会原样列出，
+# 最后一条 MARK 之后没有第二条 = 卡在那一步挂掉。
+#
+# v1 忘装 uv 白跑；v2/v3 分别用 checkout@v4+setup-uv@v5、v7+v10，两次都是
+# failed（Node20 假设已推翻）。v4 也不假设，直接把每步 rc 打出来。
+#
+# 用完必须删除本文件与所有 probe-* tag。
+name: EnvProbe
+
+on:
+  push:
+    tags: ["probe-*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUTF8: "1"
+  UV_PYTHON: "3.13"
+
+jobs:
+  probe:
+    name: probe release.yml steps with rc markers
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - name: p0 checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: p1 setup-uv
+        uses: astral-sh/setup-uv@v10
+        with:
+          enable-cache: false
+
+      - name: p2 uv version
+        run: |
+          out=$(uv --version 2>&1); rc=$?
+          echo "$out"; echo "::error::MARK p2 uv --version rc=$rc"; [ $rc -ne 0 ] && exit $rc
+
+      - name: p3 uv python install 3.13
+        run: |
+          out=$(uv python install 3.13 2>&1); rc=$?
+          echo "$out" | tail -20; echo "::error::MARK p3 uv python install rc=$rc"; [ $rc -ne 0 ] && exit $rc
+
+      - name: p4 uv pip install -e .
+        # release.yml 里最要紧的一条（注释说"少了这一步 CI 上打出来的 exe 是绿壳"）
+        run: |
+          out=$(uv pip install --python 3.13 -e . 2>&1); rc=$?
+          echo "$out" | tail -25; echo "::error::MARK p4 uv pip install -e . rc=$rc"; [ $rc -ne 0 ] && exit $rc
+
+      - name: p5 runtime imports
+        run: |
+          out=$(uv run --python 3.13 python -c "import market_watch, httpx, pydantic, pydantic_settings, structlog, feedparser, uvicorn, fastapi, jinja2; print('runtime imports OK')" 2>&1); rc=$?
+          echo "$out" | tail -25; echo "::error::MARK p5 runtime imports rc=$rc"; [ $rc -ne 0 ] && exit $rc
+
+      - name: p6 uv pip install pyinstaller
+        run: |
+          out=$(uv pip install --python 3.13 pyinstaller 2>&1); rc=$?
+          echo "$out" | tail -25; echo "::error::MARK p6 pyinstaller rc=$rc"; [ $rc -ne 0 ] && exit $rc
+
+      - name: p7 uv build
+        run: |
+          out=$(uv build --python 3.13 --out-dir release/dist 2>&1); rc=$?
+          echo "$out" | tail -25; echo "::error::MARK p7 uv build rc=$rc"; [ $rc -ne 0 ] && exit $rc
+
+      - name: p8 build_exe.py
+        run: |
+          out=$(uv run --python 3.13 python release/build_exe.py 2>&1); rc=$?
+          echo "$out" | tail -40; echo "::error::MARK p8 build_exe.py rc=$rc"; [ $rc -ne 0 ] && exit $rc
+
+      - name: p9 smoke --help
+        run: |
+          out=$(./release/dist/market-watch/market-watch.exe --help 2>&1); rc=$?
+          echo "$out" | tail -20; echo "::error::MARK p9 --help rc=$rc"; [ $rc -ne 0 ] && exit $rc
+
+      - name: p10 smoke policy-check 9/9
+        shell: bash
+        env:
+          MW_CONTACT_URL: https://you.example/contact
+        run: |
+          out=$(./release/dist/market-watch/market-watch.exe policy-check 2>&1); rc=$?
+          echo "$out" | tail -20; echo "::error::MARK p10 policy-check rc=$rc"
+          echo "$out" | grep -q "合规检查通过 9/9" || { echo "::error::MARK p10 未达 9/9"; exit 1; }
+
+      - name: p11 smoke status
+        shell: bash
+        env:
+          MW_CONTACT_URL: https://you.example/contact
+        run: |
+          out=$(./release/dist/market-watch/market-watch.exe status 2>&1); rc=$?
+          echo "$out" | tail -20; echo "::error::MARK p11 status rc=$rc"; [ $rc -ne 0 ] && exit $rc
+
+      - name: p12 assert zip clean
+        shell: bash
+        run: |
+          uv run --python 3.13 python -c "import sys, zipfile
+          zpath = 'release/dist/market-watch.zip'
+          banned = ('.db', '.db-wal', '.db-shm', 'serve-smoke.log')
+          hits = sorted(n for n in zipfile.ZipFile(zpath).namelist() if n.endswith(banned))
+          if hits:
+              print('::error::MARK p12 发布包里混进了构建产物:', hits)
+              raise SystemExit(1)
+          print('::error::MARK p12 zip 干净')"
+
+      - name: p13 verify vendored echarts
+        shell: bash
+        run: |
+          ls -l release/dist/market-watch/_internal/market_watch/interfaces/web/static/vendor/echarts.min.js
+          ls -l release/dist/market-watch/_internal/market_watch/infrastructure/storage/migrations/0001_init.sql
+          ls -l release/dist/market-watch/config/sources.yaml
+          ls -l release/dist/market-watch/docs/_robots_snapshot.json
+          echo "::error::MARK p13 echarts 落地 OK"
