@@ -31,6 +31,7 @@ from collections.abc import Sequence
 import contextlib
 import io
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -54,6 +55,42 @@ _EDGE_CANDIDATES: tuple[str, ...] = (
     "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
 )
 _EDGE_NAMES: tuple[str, ...] = ("msedge", "microsoft-edge", "microsoft-edge-stable")
+
+
+def _shutdown_edge(proc: subprocess.Popen, profile: str) -> None:
+    """结束本次录制启的 Edge，含子进程。
+
+    为什么不是 `taskkill /T /PID`：Edge 启动后会把真正的浏览器进程另起一个
+    （launcher 自身随即退出），我们手里的 pid 往往已经不是进程树的根，`/T`
+    因此找不到子进程——实测孤儿进程一个没少，还白攒了 12 个 msedge 在后台。
+
+    可靠的做法是按 `--user-data-dir` 匹配命令行：每次录制都给一个唯一的临时
+    目录，所以这个匹配**只会命中本次启的进程**，不会碰用户自己开的 Edge。
+    profile 路径通过环境变量传入，避免在命令串里做引号转义（路径含中文与空格）。
+    """
+    if sys.platform == "win32":
+        script = (
+            "Get-CimInstance Win32_Process -Filter \"Name='msedge.exe'\" | "
+            "Where-Object { $_.CommandLine -and "
+            "$_.CommandLine.Contains($env:MW_GIF_PROFILE) } | "
+            "ForEach-Object { Stop-Process -Id $_.ProcessId -Force "
+            "-ErrorAction SilentlyContinue }"
+        )
+        subprocess.run(
+            ["powershell", "-NoProfile", "-NonInteractive", "-Command", script],
+            env={**os.environ, "MW_GIF_PROFILE": profile},
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+    else:
+        proc.terminate()
+    try:
+        proc.wait(timeout=10)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        proc.wait(timeout=5)
+    print("Edge 已关闭")
 
 
 def find_edge(explicit: str | None) -> str:
@@ -143,7 +180,11 @@ def record(url: str, out: Path, edge: str, cdp_port: int, search: str) -> int:
     pictures.mkdir(parents=True, exist_ok=True)
     base = f"http://127.0.0.1:{cdp_port}"
 
-    with tempfile.TemporaryDirectory(prefix="mw-gif-profile-") as profile:
+    # ignore_cleanup_errors：Edge 的子进程可能还攥着 profile 里 Cache 的文件句柄
+    # （实测 `PermissionError: [WinError 32]`），删不掉也不该让整次录制失败。
+    with tempfile.TemporaryDirectory(
+        prefix="mw-gif-profile-", ignore_cleanup_errors=True
+    ) as profile:
         print(f"启动 Edge (headless, CDP 端口 {cdp_port})...")
         proc = subprocess.Popen(
             [
@@ -258,14 +299,14 @@ def record(url: str, out: Path, edge: str, cdp_port: int, search: str) -> int:
                 f"总时长 {sum(durations)} ms"
             )
         finally:
-            proc.terminate()
-            try:
-                proc.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                proc.kill()
-            print("Edge 已关闭")
+            _shutdown_edge(proc, profile)
+            # 父进程退了不代表子进程松手；等一会儿让它们释放 profile 里的句柄。
+            time.sleep(1.5)
 
-    print(f"\n下一步自检（务必跑）：\n  python {Path(__file__).name} --verify {out}")
+    script = Path(__file__).resolve()
+    with contextlib.suppress(ValueError):
+        script = script.relative_to(Path.cwd())
+    print(f"\n下一步自检（务必跑）：\n  python {script} --verify {out}")
     return 0
 
 
