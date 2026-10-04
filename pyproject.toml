@@ -98,10 +98,10 @@ all = ["market-watch[ui,dev,bench]"]
 market-watch = "market_watch.interfaces.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/market-watch/market-watch"
-Repository = "https://github.com/market-watch/market-watch"
-Issues = "https://github.com/market-watch/market-watch/issues"
-Changelog = "https://github.com/market-watch/market-watch/blob/main/docs/CHANGELOG.md"
+Homepage = "https://github.com/akbar747/market-watch"
+Repository = "https://github.com/akbar747/market-watch"
+Issues = "https://github.com/akbar747/market-watch/issues"
+Changelog = "https://github.com/akbar747/market-watch/blob/main/docs/CHANGELOG.md"
 
 [build-system]
 requires = ["hatchling>=1.27"]

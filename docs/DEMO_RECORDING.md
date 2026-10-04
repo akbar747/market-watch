@@ -134,4 +134,6 @@ usage: record_demo_gif.py [-h] [--verify GIF] [--url URL] [--out OUT]
 
 ## 7. 关于文档里的占位符
 
-本文档与 README 里的 `https://github.com/OWNER/market-watch.git`、`https://you.example/contact` 都是**占位符**：`OWNER` 要换成真实组织名；`.example` 是 [RFC 2606](https://datatracker.ietf.org/doc/html/rfc2606) 保留的示例顶级域，不会被真实解析，仓库里保留它是为了让合规检查在「克隆下来」时就能跑通，部署前在 `.env` 里把 `MW_CONTACT_URL` 换成自己的可联系地址。
+仓库地址里的 `OWNER` 已落地为 `akbar747/market-watch`（`pyproject.toml` 的 `project.urls`、`README` 的 badge 与 clone 命令、`CHANGELOG` 的 compare/release 链接均已同步）。
+
+`https://you.example/contact` 仍是**占位符**：`.example` 是 [RFC 2606](https://datatracker.ietf.org/doc/html/rfc2606) 保留的示例顶级域，不会被真实解析，仓库里保留它是为了让合规检查在「克隆下来」时就能跑通，部署前在 `.env` 里把 `MW_CONTACT_URL` 换成自己的可联系地址。

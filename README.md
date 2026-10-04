@@ -2,7 +2,7 @@
 
 > 本地行情看板 + 异动提醒。**只**读取 Guild Wars 2 官方公开 v2 API 与官方公告 RSS，只读、免鉴权、自限速率；本地 SQLite 落库，FastAPI 看板离线可用。
 
-![build](https://github.com/OWNER/market-watch/actions/workflows/ci.yml/badge.svg)
+![build](https://github.com/akbar747/market-watch/actions/workflows/ci.yml/badge.svg)
 ![python](https://img.shields.io/badge/python-3.13%2B-blue?style=flat-square&logo=python&logoColor=white)
 ![license](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 ![compliance](https://img.shields.io/badge/compliance-9%2F9%20(C1%E2%80%93C9)-brightgreen?style=flat-square)
@@ -119,7 +119,7 @@ Windows 用户可以直接下 exe（[安装](#windows-下载发布包不用装-p
 ### 源码：uv（推荐）
 
 ```bash
-git clone https://github.com/OWNER/market-watch.git
+git clone https://github.com/akbar747/market-watch.git
 cd market-watch
 uv sync --extra dev          # 含 dev 工具链（ruff/black/mypy/pytest）
 uv sync                      # 只要运行时
@@ -128,7 +128,7 @@ uv sync                      # 只要运行时
 ### 源码：pip
 
 ```bash
-git clone https://github.com/OWNER/market-watch.git
+git clone https://github.com/akbar747/market-watch.git
 cd market-watch
 python -m venv .venv && . .venv/Scripts/activate      # Windows
 python -m pip install -U pip

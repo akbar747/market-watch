@@ -66,5 +66,5 @@
 | 覆盖率 | `50%`（CI 闸门 `--cov-fail-under=35`） |
 | CI | 13 个 step，含 source / exe 双份 `policy-check`、domain purity AST 静态检查、gitleaks 密钥扫描 |
 
-[Unreleased]: https://github.com/market-watch/market-watch/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/market-watch/market-watch/releases/tag/v0.1.0
+[Unreleased]: https://github.com/akbar747/market-watch/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/akbar747/market-watch/releases/tag/v0.1.0

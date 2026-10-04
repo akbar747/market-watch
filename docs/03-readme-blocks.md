@@ -156,7 +156,7 @@ graph TD
 
 ```bash
 # 路径一：uv（推荐，锁版本、一步装齐工具链）
-git clone https://github.com/OWNER/market-watch.git
+git clone https://github.com/akbar747/market-watch.git
 cd market-watch
 uv sync --extra dev          # 含 ruff / black / mypy / pytest
 uv run market-watch policy-check   # 应输出 9/9；任一不过则退出码 2
@@ -166,7 +166,7 @@ uv run market-watch serve          # 起看板 → http://127.0.0.1:8000
 
 ```bash
 # 路径二：pip（不引入 uv 也能跑）
-git clone https://github.com/OWNER/market-watch.git
+git clone https://github.com/akbar747/market-watch.git
 cd market-watch
 python -m venv .venv
 # Windows:  .venv\Scripts\python -m pip install -e ".[dev]"
