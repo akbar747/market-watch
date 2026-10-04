@@ -60,7 +60,7 @@
 | `mypy` | `Success: no issues found in 58 source files` |
 | `ruff check` | `All checks passed` |
 | `black --check` | `83 files unchanged` |
-| `pytest` | `264 collected` |
+| `pytest` | `264 passed / 0 failed`（264 collected） |
 | 覆盖率 | `50%`（CI 闸门 `--cov-fail-under=35`） |
 | CI | 13 个 step，含 source / exe 双份 `policy-check`、domain purity AST 静态检查、gitleaks 密钥扫描 |
 

@@ -68,7 +68,7 @@ git ls-tree -r v0.1.0 --name-only | grep -E "\.db$|\.db-wal|\.db-shm|\.log$|demo
 | 5 | `docs/RELEASE.md` 已提交 | `git ls-files docs/RELEASE.md` 有输出 |
 | 6 | mypy | `Success: no issues found in 58 source files` |
 | 7 | ruff / black | `All checks passed` / `83 files unchanged` |
-| 8 | pytest | `264 collected` |
+| 8 | pytest | `264 passed / 0 failed`（264 collected）。**本机的汇总行会被 tmp 清理异常吞掉、退出码变 1**，通过数必须走 `--junitxml` 判据，见 `CONTRIBUTING.md` §4 |
 | 9 | 覆盖率闸门 | `--cov-fail-under=35` 通过（当前实测 50%） |
 | 10 | 发布链路自验 | `python release/build_exe.py` 末尾打印「全部验证通过。」 |
 | 11 | 发布包卫生 | zip 内 `*.db` / `*.db-wal` / `*.db-shm` / `*.log` 均为 0（实测 461 条目） |
