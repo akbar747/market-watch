@@ -2,9 +2,12 @@
 # 主质量门禁：静态检查 → 类型检查 → 合规自检（policy-check）→ 密钥扫描 → 测试与覆盖率闸门。
 #
 # 覆盖率闸门为什么是 35：
-#   当前仓库实测 `pytest --cov --cov-report= -q` + `coverage report` → 3992 语句 /
-#   1900 覆盖 / 924 缺失 / 61 排除 → **50%**（2026-10-04 实测）。缺口集中在编排层
-#   （orchestrator / fanout / dedupe / scheduler / config / rates）与 interfaces/web/*。
+#   当前仓库实测（`pytest --cov=src` + `coverage report`）：4012 语句 / 1899 缺失 /
+#   932 分支，总覆盖率 **50%** —— 注意口径：总覆盖 = (行覆盖 2113 + 分支覆盖 365) /
+#   (4012 + 932) = 2478/4944，**50% 不是行覆盖率**（行覆盖是 52.7%，分支覆盖 39.2%）。
+#   `--cov-fail-under` 判的是总覆盖，所以文档里写 50%，不要改成 52.7%（2026-10-04 实测）。
+#   缺口集中在编排层（orchestrator / fanout / dedupe / scheduler / config / rates）与
+#   interfaces/web/*。
 #   闸门设 35 = 实测 50 之下的安全余量，允许 src/tests 在收尾期增删代码而不误红，
 #   **不设 80 是为了不逼迫任何人删测试来凑数**。
 #   闸门就是 35，本项目不设更多档位；补齐编排层用例后如想上调，只改这一处的

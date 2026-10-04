@@ -61,9 +61,9 @@
 |---|---|
 | `mypy` | `Success: no issues found in 59 source files` |
 | `ruff check` | `All checks passed` |
-| `black --check` | `85 files unchanged` |
-| `pytest` | `269 passed / 0 failed`（269 collected） |
-| 覆盖率 | `50%`（CI 闸门 `--cov-fail-under=35`） |
+| `black --check` | `88 files unchanged` |
+| `pytest` | `269 passed / 0 failed`（269 collected，另有 0 skipped / 0 xfailed） |
+| 覆盖率 | 总 **50%**（行覆盖 `52.7%` / 分支覆盖 `39.2%`，= `(2113+365)/(4012+932)`；CI 闸门 `--cov-fail-under=35` 判的是总数） |
 | CI | 13 个 step，含 source / exe 双份 `policy-check`、domain purity AST 静态检查、gitleaks 密钥扫描 |
 
 [Unreleased]: https://github.com/akbar747/market-watch/compare/v0.1.0...HEAD

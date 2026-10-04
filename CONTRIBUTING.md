@@ -69,7 +69,7 @@ black --check src/market_watch/application/alert_service.py
 ## 4. 测试与覆盖率
 
 - 当前 `pytest` 实测 **269 passed / 0 failed**（2026-10-04）。
-- 覆盖率实测 **50%**（`TOTAL 4012 1899 932 59`），CI 闸门 `--cov-fail-under=35`。**闸门就是 35，不设更高档位，也不是发布阻塞项**；缺口集中在编排层（`orchestrator` / `fanout` / `dedupe` / `scheduler` / `config` / `rates`），采集与落库主路径已覆盖。要补就从编排层补，补完再自行上调闸门，本文件不规定上调路线。
+- 覆盖率实测 **50%**（`TOTAL 4012 1899 932 59`，即 4012 语句 / 1899 缺失 / 932 分支 / 59 半覆盖分支；**这是含分支的总覆盖**，行覆盖是 52.7%、分支覆盖 39.2%），CI 闸门 `--cov-fail-under=35`。**闸门就是 35，不设更高档位，也不是发布阻塞项**；缺口集中在编排层（`orchestrator` / `fanout` / `dedupe` / `scheduler` / `config` / `rates`），采集与落库主路径已覆盖。要补就从编排层补，补完再自行上调闸门，本文件不规定上调路线。
 - **不要为了让 CI 变绿而删测试、加 `--deselect`、加 `-p no:cacheprovider`。**
 
 ### 本机跑 pytest 会遇到的两个环境坑（不是测试失败）

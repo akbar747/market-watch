@@ -67,9 +67,9 @@ git ls-tree -r v0.1.0 --name-only | grep -E "\.db$|\.db-wal|\.db-shm|\.log$|demo
 | 4 | `CHANGELOG.md` 已提交 | `git ls-files CHANGELOG.md` 有输出 |
 | 5 | `docs/RELEASE.md` 已提交 | `git ls-files docs/RELEASE.md` 有输出 |
 | 6 | mypy | `Success: no issues found in 59 source files` |
-| 7 | ruff / black | `All checks passed` / `85 files unchanged` |
+| 7 | ruff / black | `All checks passed` / `88 files unchanged` |
 | 8 | pytest | `269 passed / 0 failed`（269 collected）。**本机的汇总行会被 tmp 清理异常吞掉、退出码变 1**，通过数必须走 `--junitxml` 判据，见 `CONTRIBUTING.md` §4 |
-| 9 | 覆盖率闸门 | `--cov-fail-under=35` 通过（当前实测 50%） |
+| 9 | 覆盖率闸门 | `--cov-fail-under=35` 通过（当前实测总覆盖率 **50%** = 行覆盖 52.7% / 分支覆盖 39.2%） |
 | 10 | 发布链路自验 | `python release/build_exe.py` 末尾打印「全部验证通过。」 |
 | 11 | 发布包卫生 | zip 内 `*.db` / `*.db-wal` / `*.db-shm` / `*.log` 均为 0（实测 461 条目） |
 | 12 | 运行期数据不入库 | `git check-ignore -v src/market_watch/data/market_watch.db` 有命中（`.gitignore:58:*.db`） |
