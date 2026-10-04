@@ -51,13 +51,23 @@ Windows 用户可以直接下 exe（[安装](#windows-下载发布包不用装-p
 ## 演示
 
 <details>
-<summary>📈 演示（10–15 秒 GIF：policy-check 9/9 → once 跑一轮 → 浏览器看板）</summary>
+<summary>📈 演示（5 帧 / 7.8 秒 GIF：搜索物品 → 切换图表 → 合规页脚）</summary>
 
-![market-watch 演示：policy-check 9/9 → once 跑一轮 → 看板显示价格曲线与告警卡片](docs/demo.gif)
+![market-watch 本地看板：在物品搜索框输入 Mighty 选中 #68 Mighty Country Coat，点「查询」后价格曲线随 Y 轴重算而分离](docs/demo.gif)
+
+**录于 v0.1.0** —— 5 帧 / 1406×803 / 76 KB / 总时长 7800 ms / 无限循环（`loop=0`），帧时长 1400 → 1400 → 1000 → 1800 → 2200 ms。
+
+1. **首屏**：概览卡（物品总数 **24754** / 最近周期 `2026-10-04T05:39:17Z` / 24h 告警 0 / 24h 公告 0 / PARTIAL 0 / DB **17.71 MB**）、数据质量卡（24h 隔离记录 **10414**：`price.positive` 9808、`spread.non_negative` 606）、采集健康卡（`api.guildwars2.com` 与 `www.guildwars2.com` 各 **8.00 rps**、tokens 12.0、**0 次限流**）。图表默认 `item_id=24`。
+2. **搜索**：在「物品搜索」输入框打 `Mighty` → 下拉出现一条结果 `#68 Mighty Country Coat`。
+3. **选中**：点该结果 → `item_id` 输入框自动填 `68`，下拉收起（此时图表还没刷新）。
+4. **查询**：点「查询」→ 图表从 item 24 切到 item 68。这一帧最能说明问题：Y 轴从 125–126（该物品最低卖价 / 最高买价两条线几乎重合）**整体重算成 0–50**，最低卖价 ≈48、最高买价 ≈7，两条线明显分离。
+5. **滚到底部**：「最新告警」「官方公告」两个区块 + 页脚合规声明原文——「数据源：Guild Wars 2 官方 v2 API（免鉴权、官方公开端点）。本看板不采集任何个人信息，不使用代理池，不绕过任何访问控制。」
 
 </details>
 
-> GIF 位：仓库已备好录制脚本 `docs/DEMO_RECORDING.md`（10–15 秒：启动 → `policy-check` 9/9 → `market-watch once` → 浏览器看板）。**文件尚未录制**，见 [当前进度与已知问题](#当前进度与已知问题)，录制后直接放到 `docs/demo.gif` 即可生效，无需改 README 任何一行。
+> **演示里的数据是真跑真采的，不是 mock**：页面来自本机 `market-watch serve`（`http://127.0.0.1:8765`，Edge headless + CDP 截帧拼接），库里的数据来自 **4 轮 `market-watch once --source gw2_prices`** —— 每轮 `pages=140 / records=27997 / written=24754 / rejects=3445 / quality=COMPLETE`（写入去重后就是概览卡上的 24754 个物品）。
+>
+> ⚠️ **数据边界，别看错图**：这次演示只覆盖约 **15 分钟的采集跨度（4 个时间点）**，所以曲线是**短序列**，**不代表长期历史行情**；`price_hourly` 表在本次演示里是 **0 行**（rollup 要等 `gc` 滚动窗口才会填充），GIF 画的是默认的 `price_change` 表。想要长序列就让它多跑几轮、再跑一次 `gc`。
 
 ---
 
@@ -152,6 +162,13 @@ market-watch.exe serve
 ```bash
 cp .env.example .env          # 然后改 MW_CONTACT_URL
 ```
+
+#### 为什么仓库里保留 `you.example/contact` 这个占位域
+
+- **`.example` 是 RFC 2606 保留的示例顶级域**（与 `example.com` 同源），不会被真实解析——它出现在这里不是笔误，也不会指向任何真实站点。
+- **保留它是为了让合规链路「克隆下来就能跑通」**：`policy-check` 的 C1 要读 UA 里的联系地址，一个能解析的真实地址**不是**跑通的前提，但一个「一眼可见是占位」的地址**是**——它让 UA 自检有明确对象可判。所以默认值就钉在这里。
+- **部署 / 自用之前请换成你自己的**：在 `.env` 里设 `MW_CONTACT_URL=https://your.domain/contact`（隐私考虑可用 personal blog / 邮箱域名；除非你接受它出现在 UA 里，否则别填真实邮箱）。
+- **`cli.py` 那条 WARNING 是刻意保留的**：`policy-check` 输出里 `⚠️ 文档样例占位域，部署前必须替换` 就是给使用者看的正确提醒，**不是待清理的技术债，不要把它删掉或改成沉默**。同理 `example.invalid` 那一类是**拒绝启动**（比 WARNING 更硬），两者行为不同，别当同一件事。
 
 > 想看全部可配置项就翻 `.env.example`——它是从 `application/config.py` 的 `Settings` 字段逐条导出的，每一项都写了默认值与理由。**`OFFICIAL_LIMIT` 与 `HOST_SAFETY_FACTOR` 故意不在里面**：它们是 `domain/policy.py` 里的代码常量。
 
@@ -271,7 +288,7 @@ market-watch serve        # http://127.0.0.1:8000
 
 | 变量 | 默认 | 说明 |
 |---|---|---|
-| `MW_CONTACT_URL` | `https://you.example/contact` | C1，进 UA。**必填真实地址** |
+| `MW_CONTACT_URL` | `https://you.example/contact` | C1，进 UA。**必填**；默认值是 RFC 2606 保留域，能启动但会打 WARNING，部署前换成真实可联系地址（见上一节） |
 | `MW_PER_HOST_RPS` | `8.0` | 只能调低；>8.0 会被静默钳制并打 `rate.clamped` |
 | `MW_PER_HOST_CONCURRENCY` | `4` | 单主机在飞请求上限（1–8） |
 | `MW_PAGE_SIZE` | `200` | 官方上限，用满它是**唯一合法的提速路径** |
@@ -505,8 +522,9 @@ python release/build_exe.py       # 产物 release/dist/market-watch/ + .zip，�
 
 ## 当前进度与已知问题
 
-- ✅ Phase 1 架构 + Phase 2 采集与落库实现完成，测试 **201 passed / 0 failed**。
-- ⚠️ **覆盖率 48%**（`pytest --cov=market_watch` 的 TOTAL 行，见 [开发](#开发)），DoD 的 80% **未达标**。缺口集中在 `storage/*`、`orchestrator`、`fetcher`、`interfaces/web/*`、`cli.py`。CI 的 `--cov-fail-under` 因此设成 **35**（保障下限、留出安全余量），并在 workflow 里留了 TODO 要求逐档上调（48 → 50 → 60 → 70 → 80）。**本文不引用 80% 这个数，因为它既没做到也没进闸门；也不要为了让 CI 变绿而删测试。**
+- ✅ Phase 1 架构 + Phase 2 采集与落库实现完成，测试 **264 passed / 0 failed**（2026-10-03 实测）。
+- 覆盖率 **50%**（出处：`pytest --cov=market_watch` 的 TOTAL 行 `TOTAL 3992 1900 924 61`，2026-10-03 实测）。CI 闸门是 `--cov-fail-under=35`——**闸门就是 35，没有别的数**。缺口集中在 `storage/*`、`orchestrator`、`fetcher`、`lifecycle`、`interfaces/web/*`、`cli.py` 这几层，**这几块的用例欢迎来补，直接提 PR**：补完一档就按 `.github/workflows/ci.yml` 里那条 TODO 把闸门往上抬一档。
+  - 约定只有一条：**不要为了让 CI 变绿而删测试、加 `--deselect`、或加 `-p no:cacheprovider`**。覆盖率是随补随涨的，不是靠调闸门涨的。
 - ⚠️ **`cli.py` 的相对导入曾有三处写错（已修复，留档以防回退）**：`src/market_watch/interfaces/cli.py` 里函数体的延迟导入曾写成 `from ...domain`（三层，包深度只有 2，越界）、`from ..wiring import build_runtime` 与 `from ..web.app import create_app`（少一层点，分别解析成不存在的 `market_watch.wiring` / `market_watch.web`）。正确写法是 `from ..domain`、`from .wiring`、`from .web.app`。修复前 `once` / `serve` 一跑就崩，`policy-check` 也因为启动失败跑不完。现在 `cli.py` 这三条都已改对并留了注释。
   - 别顺手改错的地方：`interfaces/web/{app,routes,deps}.py` 里的 `from ...application / ...domain / ...infrastructure / ...logging_setup` **是对的**（它们在包 `market_watch.interfaces.web` 下，三点相对导入等于 `market_watch.*`），改成两层反而会 `No module named 'market_watch.interfaces.application'`。
   - 修完后的实测（Python 3.13.14 / Windows 11，源码模式）：`serve` 起来 → `GET /api/health` → `HTTP 200`；`GET /` → `HTTP 200`（2913 字节看板 HTML，内含 `static/vendor/echarts.min.js` 引用）。冻结 exe 侧另有一条验证：`once --dry-run --source gw2_items` → `pages=1 records=2 written=2 quality=COMPLETE`，exit 0。
@@ -516,7 +534,7 @@ python release/build_exe.py       # 产物 release/dist/market-watch/ + .zip，�
 - ✅ **`once` / `serve` 在冻结包里跑得起来**（原 P0，已修）：实测数据见上面 `cli.py` 那条的第 2 子项。`policy-check` 9/9、`status` 正常、`once` 端到端、`serve` 首页 + ECharts 全通。
 - ⚠️ **`release/build_exe.py` 的 serve 冒烟会在改坏 src 时拦住你**：它在 zip 打包**之前**跑 `_smoke_serve()`，扫日志里的 `Traceback (most recent call last)` / `ModuleNotFoundError` / `Failed to execute script`，任一命中就非 0 退出——也就是说exe 构建得再漂亮也不会静默产出坏包。历史上这条拦截真的抓到过（某次构建的 `release/dist/market-watch/serve-smoke.log` 里就是 `ModuleNotFoundError: No module named 'market_watch.web'`）。改完 src 重跑 `python release/build_exe.py` 即可。
 - ⚠️ **打包环境必须装齐运行期依赖，否则 exe 是「构建成功、跑不起来」的绿壳**：`release/market-watch.spec` 的 `collect_all` 要 import fastapi/uvicorn/jinja2/structlog/feedparser，Analysis 也要能 import pydantic。实测（pyinstaller 6.22.3 / Python 3.13，只装 pyinstaller 的干净 venv 重跑同一 spec）：构建全程 0 报错、`Building EXE/COLLECT completed successfully`，但产物 `_internal/` 里没有 uvicorn/fastapi/starlette，`--help` 直接 `ModuleNotFoundError: No module named 'pydantic'`。因此 `.github/workflows/release.yml` 在打 exe 之前有一行 `uv pip install --python 3.13 -e .`；本地手动打包（沿用已装依赖的 venv）也要满足同样条件，别只 `pip install pyinstaller`。
-- ⚠️ `docs/demo.gif` 待录制（脚本见 [`docs/DEMO_RECORDING.md`](docs/DEMO_RECORDING.md)），录制后直接放到 `docs/demo.gif` 即可，README 不用改。
+- ✅ `docs/demo.gif` **已录制并入库**（5 帧 / 1406×803 / 76 KB / 7800 ms，录于 v0.1.0，真采集非 mock）。录制脚本仍留在 [`docs/DEMO_RECORDING.md`](docs/DEMO_RECORDING.md)，重录时覆盖 `docs/demo.gif` 即可，README 那段只要帧内容没变就不用改。
 
 ---
 

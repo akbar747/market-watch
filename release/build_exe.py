@@ -56,6 +56,24 @@ def _run(cmd: list[str], *, cwd: Path) -> None:
         print(proc.stdout[-1500:])
 
 
+def _free_port() -> int:
+    """给 serve 冒烟挑一个**当前未被占用**的端口。
+
+    ★ 不能写死 8765：写死时若同一台机器上另有进程占着它（例如另一人录 demo.gif
+      时起的看板），冒烟会连到**别人的进程**上 —— `/api/health` 200、首页 200、
+      `echarts.min.js` 200 全绿，验的却是别的进程，而且从输出里**完全看不出来**。
+      这是「绿壳」里最难发现的一类：红会逼你查，假绿会让你把没验过的包发出去。
+      改成运行时向内核要空闲端口，撞端口这个故障模式直接消失。
+      （内核给端口与 exe 真正 bind 之间有一瞬窗口，理论存在 TOCTOU；真撞上 exe
+      会启动失败，下面的「serve 进程启动即退出」会判红 —— 红，不会假绿。）
+    """
+    import socket
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return int(s.getsockname()[1])
+
+
 def _smoke_serve(exe: Path, env: dict[str, str]) -> None:
     """冒烟 `serve`：起进程 → 探首页/health/静态资源 → 断言**没有任何 traceback** → 杀掉。
 
@@ -81,7 +99,7 @@ def _smoke_serve(exe: Path, env: dict[str, str]) -> None:
     #   报错长得像 serve 自己的问题，实际是构建脚本常量半改。别在这里偷偷补函数内
     #   import 了事：那会让顶部那两个 import 立刻变成 F401「未使用」，只剩红，
     #   真正的依赖反而被藏起来。顶部引一次、这里直接用。
-    port = 8765
+    port = _free_port()
     scratch = SCRATCH / "serve-smoke.log"
     # ★ 必须自己建目录：PyInstaller 只会造 exe 和它声明过的 `_internal/`，不会替你建
     #   `scratch/`。少了这两行，冒烟会卡在 `FileNotFoundError: .../scratch/serve-smoke.log`
@@ -226,8 +244,13 @@ def _purge_release_junk(app_dir: Path) -> None:
        保留 `data/pending/` 与 `data/rejects/` 两个空目录——运行期要往里写。
     2. `serve-smoke.log` —— 构建期冒烟日志，对使用者零价值，还会把构建机绝对路径带出去。
     """
-    for db in sorted(app_dir.glob("data/*.db*")):
-        print(f"  清理发布包内的数据库文件：{db.name}")
+    # ★ 改成 rglob 全扫，不再只清 `data/*.db*`：**运行期产生的 db 出现在 app_dir 的
+    #   任何位置都是漏**（仓库里 `src/market_watch/data/` 那个开发库就是这么混进来的
+    #   一类；spec 的 datas 没声明它，但它可能随 COLLECT 落地）。开发机上那个库里
+    #   压着真实抓取数据（行情/告警/请求证据），分发给下载者在 README 的免责条款里
+    #   是不允许的。判据按硬来：zip 里出现任何 `*.db` / `*.db-wal` / `*.db-shm` 就是失败。
+    for db in sorted(app_dir.rglob("*.db*")):
+        print(f"  清理发布包内的数据库文件：{db.relative_to(app_dir)}")
         db.unlink()
     smoke = app_dir / "serve-smoke.log"
     if smoke.exists():

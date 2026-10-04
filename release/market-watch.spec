@@ -15,10 +15,19 @@
 #   - `docs/_robots_snapshot.json` 是 C2 合规证据，`policy-check` 第 4 项会读它，缺了就 8/9。
 #
 # 打包前置条件（否则 exe 能启动但命令全挂）：
-#   `src/market_watch/interfaces/cli.py` 的相对导入必须是**两层**（`from ..domain import ...`），
-#   该文件位于 `market_watch/interfaces/`（包深度 2），写三层（`from ...`）
-#   会抛 `ImportError: attempted relative import beyond top-level package`。
-#   见 README「已知阻塞项」与 PR 评审清单。
+#   `src/market_watch/interfaces/cli.py` 的**相对导入级数不是统一的两层**，而是
+#   取决于目标模块相对 `market_watch.interfaces`（cli.py 所在包）的位置：
+#     - `from ..domain import ...`        —— 两层：回退到 `market_watch` 再往下走，对；
+#     - `from .web.app import create_app` —— 一层：目标就在 `market_watch.interfaces` 里，对；
+#     - `from .wiring import build_runtime`—— 同上，一层，对。
+#   ★ 唯一判据只有一条：Python 按级数还原出的**绝对模块名必须真实存在**。
+#     写成 `from ..web.app import ...` 会还原成并不存在的 `market_watch.web.app`，
+#     运行时 `ModuleNotFoundError: No module named 'market_watch.web'`，
+#     exe 表现为「policy-check 全绿、serve 一启动就崩」——这就是那个 P0 的原样。
+#     **别把上面一层点的两条「改成两层」，那是把已修的 bug 原样装回去。**
+#   回归测试见 `tests/unit/test_cli_relative_imports.py`（它按「还原绝对名再
+#   find_spec」判定，不按 `level` 断言，所以不会误杀模块作用域那些正常的 level-2 导入）；
+#   贡献者侧说明见 `CONTRIBUTING.md`。
 
 from contextlib import suppress
 from pathlib import Path
@@ -67,6 +76,7 @@ def _lazily_imported_modules() -> list[str]:
         out.append(dotted)
     return sorted(out)
 
+
 block_cipher = None
 
 # ---- collect-all：FastAPI/uvicorn/jinja2/structlog 会把包内数据（模板、路由、模板过滤器、
@@ -83,20 +93,26 @@ for _pkg in _COLLECT_PACKAGES:
     _collected_binaries.extend(_result[1] if len(_result) > 1 else [])
     _collected_hidden.extend(_result[2] if len(_result) > 2 else [])
 
-a = Analysis(                          # noqa: F821  (PyInstaller 注入的全局量)
+a = Analysis(  # noqa: F821  (PyInstaller 注入的全局量)
     [str(ROOT / "release" / "market_watch_console.py")],
     pathex=[str(SRC)],
     binaries=_collected_binaries,
     datas=[
         *_collected_datas,
         # 看板：vendored 静态资源 + Jinja2 模板
-        (str(SRC / "market_watch" / "interfaces" / "web" / "static"),
-         "market_watch/interfaces/web/static"),
-        (str(SRC / "market_watch" / "interfaces" / "web" / "templates"),
-         "market_watch/interfaces/web/templates"),
+        (
+            str(SRC / "market_watch" / "interfaces" / "web" / "static"),
+            "market_watch/interfaces/web/static",
+        ),
+        (
+            str(SRC / "market_watch" / "interfaces" / "web" / "templates"),
+            "market_watch/interfaces/web/templates",
+        ),
         # 建表 DDL
-        (str(SRC / "market_watch" / "infrastructure" / "storage" / "migrations"),
-         "market_watch/infrastructure/storage/migrations"),
+        (
+            str(SRC / "market_watch" / "infrastructure" / "storage" / "migrations"),
+            "market_watch/infrastructure/storage/migrations",
+        ),
         # 数据源与告警规则；冻结入口会播种到 exe 目录
         (str(ROOT / "config"), "config"),
         # C2 合规证据：robots 快照（policy-check 第 4 项读它）
