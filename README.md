@@ -534,7 +534,7 @@ python release/build_exe.py       # 产物 release/dist/market-watch/ + .zip，�
 - ✅ **`once` / `serve` 在冻结包里跑得起来**（原 P0，已修）：实测数据见上面 `cli.py` 那条的第 2 子项。`policy-check` 9/9、`status` 正常、`once` 端到端、`serve` 首页 + ECharts 全通。
 - ⚠️ **`release/build_exe.py` 的 serve 冒烟会在改坏 src 时拦住你**：它在 zip 打包**之前**跑 `_smoke_serve()`，扫日志里的 `Traceback (most recent call last)` / `ModuleNotFoundError` / `Failed to execute script`，任一命中就非 0 退出——也就是说exe 构建得再漂亮也不会静默产出坏包。历史上这条拦截真的抓到过（某次构建的 `release/dist/market-watch/serve-smoke.log` 里就是 `ModuleNotFoundError: No module named 'market_watch.web'`）。改完 src 重跑 `python release/build_exe.py` 即可。
 - ⚠️ **打包环境必须装齐运行期依赖，否则 exe 是「构建成功、跑不起来」的绿壳**：`release/market-watch.spec` 的 `collect_all` 要 import fastapi/uvicorn/jinja2/structlog/feedparser，Analysis 也要能 import pydantic。实测（pyinstaller 6.22.3 / Python 3.13，只装 pyinstaller 的干净 venv 重跑同一 spec）：构建全程 0 报错、`Building EXE/COLLECT completed successfully`，但产物 `_internal/` 里没有 uvicorn/fastapi/starlette，`--help` 直接 `ModuleNotFoundError: No module named 'pydantic'`。因此 `.github/workflows/release.yml` 在打 exe 之前有一行 `uv pip install --python 3.13 -e .`；本地手动打包（沿用已装依赖的 venv）也要满足同样条件，别只 `pip install pyinstaller`。
-- ✅ `docs/demo.gif` **已录制并入库**（5 帧 / 1406×803 / 76 KB / 7800 ms，录于 v0.1.0，真采集非 mock）。录制脚本仍留在 [`docs/DEMO_RECORDING.md`](docs/DEMO_RECORDING.md)，重录时覆盖 `docs/demo.gif` 即可，README 那段只要帧内容没变就不用改。
+- ✅ `docs/demo.gif` **已录制并入库**（5 帧 / 1406×803 / 76 KB / 7800 ms，录于 v0.1.0，真采集非 mock）。录制脚本是 [`scripts/record_demo_gif.py`](scripts/record_demo_gif.py)（Edge headless + CDP 驱动，含废帧自检 `--verify`），用法见 [`docs/DEMO_RECORDING.md`](docs/DEMO_RECORDING.md)。重录时覆盖 `docs/demo.gif` 即可，README 那段只要帧内容没变就不用改。
 
 ---
 
