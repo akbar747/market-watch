@@ -52,15 +52,16 @@
 - `gc` / `status` 在空库上不再抛 `OperationalError` / `no such table`：零字节占位 + 只读打开 + `_ready` 探测。
 - GBK 控制台打印 `⚠️` 崩溃：运行时钩子 `SetConsoleOutputCP(65001)` + 入口 `sys.stdout.reconfigure(encoding="utf-8")` 双重兜底。
 - 格式化器只保留 black（`line-length=100`），移除 `ruff format` 门禁；`ruff` / `black` / `mypy` 的版本上限与 `.pre-commit-config.yaml` 的 rev 对齐。
+- `gw2_prices` / `gw2_listings` 里各有一份的 `_as_int` **抽成公共 helper** `infrastructure/adapters/_coerce.py` 并对齐语义：原先两侧对 `bool` 的处理分叉（`True` → `1` vs `None`），现统一为 **`bool` → `None`**——`True` 被静默强转成单价 `1` 会让脏数据以合法身份混入均价与告警基线，代价远大于丢掉一个观测点。`tests/unit/test_gw2_int_coercion.py` 有一条判函数对象同一性的用例锁住「不会再漂回两份」。**已知缺口**：判成 `None` 后与「该侧本来无挂单」在下游无法区分（两者都是合法态），脏输入会被静默吸收、不留 `ConsistencyViolation`；要可观测需在 adapter 的 `_one` 里区分「键不存在」与「键存在但不可转」，留作后续项。
 
 ### 质量门（打 tag 时的实测值）
 
 | 项 | 实测 |
 |---|---|
-| `mypy` | `Success: no issues found in 58 source files` |
+| `mypy` | `Success: no issues found in 59 source files` |
 | `ruff check` | `All checks passed` |
-| `black --check` | `83 files unchanged` |
-| `pytest` | `264 passed / 0 failed`（264 collected） |
+| `black --check` | `85 files unchanged` |
+| `pytest` | `260 passed / 0 failed`（260 collected） |
 | 覆盖率 | `50%`（CI 闸门 `--cov-fail-under=35`） |
 | CI | 13 个 step，含 source / exe 双份 `policy-check`、domain purity AST 静态检查、gitleaks 密钥扫描 |
 
