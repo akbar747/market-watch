@@ -72,8 +72,10 @@ jobs:
       - name: ruff check
         run: uv run ruff check $(git ls-files '*.py')
 
-      - name: ruff format --check
-        run: uv run ruff format --check $(git ls-files '*.py')
+      # 这里**不要**再加回 `ruff format --check`：本仓库只认 black 一个格式化器
+      # （见 .pre-commit-config.yaml 顶部的格式化器取舍）。同一批文件 black 判 0 红、
+      # ruff format 仍判 9 个要改，两个门禁同时挂 = CI 必然红在一条 black 视为合规的
+      # 文件上，且这类红无法靠重格式消解，只会被无止境地两边对齐。2026-10-03 已实测。
 
       - name: black --check
         run: uv run black --check $(git ls-files '*.py')
